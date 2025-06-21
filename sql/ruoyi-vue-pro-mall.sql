@@ -2922,8 +2922,6 @@ CREATE TABLE `system_login_log`  (
 -- ----------------------------
 -- Records of system_login_log
 -- ----------------------------
-INSERT INTO `system_login_log` VALUES (3822, 100, '', 1, 2, 'admin', 0, '0:0:0:0:0:0:0:1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36', NULL, '2025-06-20 20:38:24', NULL, '2025-06-20 20:38:24', b'0', 1);
-INSERT INTO `system_login_log` VALUES (3823, 100, '', 1, 2, 'admin', 0, '0:0:0:0:0:0:0:1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36 Edg/122.0.0.0', NULL, '2025-06-21 15:54:21', NULL, '2025-06-21 15:54:21', b'0', 1);
 
 -- ----------------------------
 -- Table structure for system_mail_account
@@ -2949,10 +2947,6 @@ CREATE TABLE `system_mail_account`  (
 -- ----------------------------
 -- Records of system_mail_account
 -- ----------------------------
-INSERT INTO `system_mail_account` VALUES (1, '7684413@qq.com', '7684413@qq.com', '1234576', '127.0.0.1', 8080, b'0', b'0', '1', '2023-01-25 17:39:52', '1', '2025-04-04 16:34:40', b'0');
-INSERT INTO `system_mail_account` VALUES (2, 'ydym_test@163.com', 'ydym_test@163.com', 'WBZTEINMIFVRYSOE', 'smtp.163.com', 465, b'1', b'0', '1', '2023-01-26 01:26:03', '1', '2023-04-12 22:39:38', b'0');
-INSERT INTO `system_mail_account` VALUES (3, '76854114@qq.com', '3335', '11234', 'yunai1.cn', 466, b'0', b'0', '1', '2023-01-27 15:06:38', '1', '2023-01-27 07:08:36', b'1');
-INSERT INTO `system_mail_account` VALUES (4, '7685413x@qq.com', '2', '3', '4', 5, b'1', b'0', '1', '2023-04-12 23:05:06', '1', '2023-04-12 15:05:11', b'1');
 
 -- ----------------------------
 -- Table structure for system_mail_log
@@ -3013,9 +3007,6 @@ CREATE TABLE `system_mail_template`  (
 -- ----------------------------
 -- Records of system_mail_template
 -- ----------------------------
-INSERT INTO `system_mail_template` VALUES (13, '后台用户短信登录', 'admin-sms-login', 1, '奥特曼', '你猜我猜', '<p>您的验证码是{code}，名字是{name}</p>', '[\"code\",\"name\"]', 0, '3', '1', '2021-10-11 08:10:00', '1', '2023-12-02 19:51:14', b'0');
-INSERT INTO `system_mail_template` VALUES (14, '测试模版', 'test_01', 2, '芋艿', '一个标题', '<p>你是 {key01} 吗？</p><p><br></p><p>是的话，赶紧 {key02} 一下！</p>', '[\"key01\",\"key02\"]', 0, NULL, '1', '2023-01-26 01:27:40', '1', '2023-01-27 10:32:16', b'0');
-INSERT INTO `system_mail_template` VALUES (15, '3', '2', 2, '7', '4', '<p>45</p>', '[]', 1, '80', '1', '2023-01-27 15:50:35', '1', '2023-01-27 16:34:49', b'0');
 
 -- ----------------------------
 -- Table structure for system_menu
@@ -3981,9 +3972,6 @@ CREATE TABLE `system_notice`  (
 -- ----------------------------
 -- Records of system_notice
 -- ----------------------------
-INSERT INTO `system_notice` VALUES (1, '芋道的公众', '<p>新版本内容133</p>', 1, 0, 'admin', '2021-01-05 17:03:48', '1', '2022-05-04 21:00:20', b'0', 1);
-INSERT INTO `system_notice` VALUES (2, '维护通知：2018-07-01 系统凌晨维护', '<p><img src=\"http://test.yudao.iocoder.cn/b7cb3cf49b4b3258bf7309a09dd2f4e5.jpg\" alt=\"\" data-href=\"\">11112222<img src=\"http://test.yudao.iocoder.cn/fe44fc7bdb82ca421184b2eebbaee9e2148d4a1827479a4eb4521e11d2a062ba.png\" alt=\"image\" data-href=\"http://test.yudao.iocoder.cn/fe44fc7bdb82ca421184b2eebbaee9e2148d4a1827479a4eb4521e11d2a062ba.png\">3333</p>', 2, 1, 'admin', '2021-01-05 17:03:48', '1', '2025-04-18 23:56:40', b'0', 1);
-INSERT INTO `system_notice` VALUES (4, '我是测试标题', '<p>哈哈哈哈123</p>', 1, 0, '110', '2022-02-22 01:01:25', '110', '2022-02-22 01:01:46', b'0', 121);
 
 -- ----------------------------
 -- Table structure for system_notify_message
@@ -4013,15 +4001,6 @@ CREATE TABLE `system_notify_message`  (
 -- ----------------------------
 -- Records of system_notify_message
 -- ----------------------------
-INSERT INTO `system_notify_message` VALUES (2, 1, 2, 1, 'test', '123', '我是 1，我开始 2 了', 1, '{\"name\":\"1\",\"what\":\"2\"}', b'1', '2025-04-21 14:59:37', '1', '2023-01-28 11:44:08', '1', '2025-04-21 14:59:37', b'0', 1);
-INSERT INTO `system_notify_message` VALUES (3, 1, 2, 1, 'test', '123', '我是 1，我开始 2 了', 1, '{\"name\":\"1\",\"what\":\"2\"}', b'1', '2025-04-21 14:59:37', '1', '2023-01-28 11:45:04', '1', '2025-04-21 14:59:37', b'0', 1);
-INSERT INTO `system_notify_message` VALUES (4, 103, 2, 2, 'register', '系统消息', '你好，欢迎 哈哈 加入大家庭！', 2, '{\"name\":\"哈哈\"}', b'0', NULL, '1', '2023-01-28 21:02:20', '1', '2023-01-28 21:02:20', b'0', 1);
-INSERT INTO `system_notify_message` VALUES (5, 1, 2, 1, 'test', '123', '我是 芋艿，我开始 写代码 了', 1, '{\"name\":\"芋艿\",\"what\":\"写代码\"}', b'1', '2025-04-21 14:59:37', '1', '2023-01-28 22:21:42', '1', '2025-04-21 14:59:37', b'0', 1);
-INSERT INTO `system_notify_message` VALUES (6, 1, 2, 1, 'test', '123', '我是 芋艿，我开始 写代码 了', 1, '{\"name\":\"芋艿\",\"what\":\"写代码\"}', b'1', '2025-04-21 14:59:36', '1', '2023-01-28 22:22:07', '1', '2025-04-21 14:59:36', b'0', 1);
-INSERT INTO `system_notify_message` VALUES (7, 1, 2, 1, 'test', '123', '我是 2，我开始 3 了', 1, '{\"name\":\"2\",\"what\":\"3\"}', b'1', '2025-04-21 14:59:35', '1', '2023-01-28 23:45:21', '1', '2025-04-21 14:59:35', b'0', 1);
-INSERT INTO `system_notify_message` VALUES (8, 1, 2, 2, 'register', '系统消息', '你好，欢迎 123 加入大家庭！', 2, '{\"name\":\"123\"}', b'1', '2025-04-21 14:59:35', '1', '2023-01-28 23:50:21', '1', '2025-04-21 14:59:35', b'0', 1);
-INSERT INTO `system_notify_message` VALUES (9, 247, 1, 4, 'brokerage_withdraw_audit_approve', 'system', '您在2023-09-28 08:35:46提现￥0.09元的申请已通过审核', 2, '{\"reason\":null,\"createTime\":\"2023-09-28 08:35:46\",\"price\":\"0.09\"}', b'0', NULL, '1', '2023-09-28 16:36:22', '1', '2023-09-28 16:36:22', b'0', 1);
-INSERT INTO `system_notify_message` VALUES (10, 247, 1, 4, 'brokerage_withdraw_audit_approve', 'system', '您在2023-09-30 20:59:40提现￥1.00元的申请已通过审核', 2, '{\"reason\":null,\"createTime\":\"2023-09-30 20:59:40\",\"price\":\"1.00\"}', b'0', NULL, '1', '2023-10-03 12:11:34', '1', '2023-10-03 12:11:34', b'0', 1);
 
 -- ----------------------------
 -- Table structure for system_notify_template
@@ -4077,14 +4056,6 @@ CREATE TABLE `system_oauth2_access_token`  (
 -- ----------------------------
 -- Records of system_oauth2_access_token
 -- ----------------------------
-INSERT INTO `system_oauth2_access_token` VALUES (16697, 1, 2, '{\"nickname\":\"芋道源码\",\"deptId\":\"103\"}', '1f529fdc0a664509bb88ccd49a883bf1', '5d4c16a219e7466d8725cb08048d8c58', 'default', NULL, '2025-06-20 21:08:26', NULL, '2025-06-20 20:38:26', NULL, '2025-06-20 21:09:08', b'1', 1);
-INSERT INTO `system_oauth2_access_token` VALUES (16698, 1, 2, '{\"nickname\":\"芋道源码\",\"deptId\":\"103\"}', 'c9bdcb527b734c408310c557d78f1990', '5d4c16a219e7466d8725cb08048d8c58', 'default', NULL, '2025-06-20 21:39:08', NULL, '2025-06-20 21:09:08', NULL, '2025-06-21 12:27:54', b'1', 1);
-INSERT INTO `system_oauth2_access_token` VALUES (16699, 1, 2, '{\"nickname\":\"芋道源码\",\"deptId\":\"103\"}', 'c20c4c200b434d7e8e4da741da2b54ec', '5d4c16a219e7466d8725cb08048d8c58', 'default', NULL, '2025-06-21 12:57:55', NULL, '2025-06-21 12:27:55', NULL, '2025-06-21 12:58:00', b'1', 1);
-INSERT INTO `system_oauth2_access_token` VALUES (16700, 1, 2, '{\"nickname\":\"芋道源码\",\"deptId\":\"103\"}', 'e4b9c5c73cc24ab18e13f0e608ddb83f', '5d4c16a219e7466d8725cb08048d8c58', 'default', NULL, '2025-06-21 13:28:00', NULL, '2025-06-21 12:58:00', NULL, '2025-06-21 14:53:02', b'1', 1);
-INSERT INTO `system_oauth2_access_token` VALUES (16701, 1, 2, '{\"nickname\":\"芋道源码\",\"deptId\":\"103\"}', 'afc37af2c5ee4dfdabb66219653ae860', '5d4c16a219e7466d8725cb08048d8c58', 'default', NULL, '2025-06-21 15:23:02', NULL, '2025-06-21 14:53:02', NULL, '2025-06-21 15:24:03', b'1', 1);
-INSERT INTO `system_oauth2_access_token` VALUES (16702, 1, 2, '{\"nickname\":\"芋道源码\",\"deptId\":\"103\"}', '525844939e724f7cb62912c42fbdfbec', '5d4c16a219e7466d8725cb08048d8c58', 'default', NULL, '2025-06-21 15:54:03', NULL, '2025-06-21 15:24:03', NULL, '2025-06-21 15:24:03', b'0', 0);
-INSERT INTO `system_oauth2_access_token` VALUES (16703, 1, 2, '{\"nickname\":\"芋道源码\",\"deptId\":\"103\"}', 'e1e3fb2a4dc24a2b890ba281856c1ab2', '1ab812cf264945fa9341169ccc44bced', 'default', NULL, '2025-06-21 16:24:21', NULL, '2025-06-21 15:54:21', NULL, '2025-06-21 15:54:21', b'0', 1);
-INSERT INTO `system_oauth2_access_token` VALUES (16704, 1, 2, '{\"nickname\":\"芋道源码\",\"deptId\":\"103\"}', '8a9e5949777b4afd97742d0372b41e63', '5d4c16a219e7466d8725cb08048d8c58', 'default', NULL, '2025-06-21 16:28:37', NULL, '2025-06-21 15:58:37', NULL, '2025-06-21 15:58:37', b'0', 1);
 
 -- ----------------------------
 -- Table structure for system_oauth2_approve
@@ -4144,9 +4115,6 @@ CREATE TABLE `system_oauth2_client`  (
 -- Records of system_oauth2_client
 -- ----------------------------
 INSERT INTO `system_oauth2_client` VALUES (1, 'default', 'admin123', '芋道源码', 'http://test.yudao.iocoder.cn/20250502/sort2_1746189740718.png', '我是描述', 0, 1800, 2592000, '[\"https://www.iocoder.cn\",\"https://doc.iocoder.cn\"]', '[\"password\",\"authorization_code\",\"implicit\",\"refresh_token\"]', '[\"user.read\",\"user.write\"]', '[]', '[\"user.read\",\"user.write\"]', '[]', '{}', '1', '2022-05-11 21:47:12', '1', '2025-05-02 20:42:22', b'0');
-INSERT INTO `system_oauth2_client` VALUES (40, 'test', 'test2', 'biubiu', 'http://test.yudao.iocoder.cn/xx/20250502/ed07110a37464b5299f8bd7c67ad65c7_1746187077009.jpg', '啦啦啦啦', 0, 1800, 43200, '[\"https://www.iocoder.cn\"]', '[\"password\",\"authorization_code\",\"implicit\"]', '[\"user_info\",\"projects\"]', '[\"user_info\"]', '[]', '[]', '{}', '1', '2022-05-12 00:28:20', '1', '2025-05-02 19:58:08', b'0');
-INSERT INTO `system_oauth2_client` VALUES (41, 'yudao-sso-demo-by-code', 'test', '基于授权码模式，如何实现 SSO 单点登录？', 'http://test.yudao.iocoder.cn/it/20250502/sign_1746181948685.png', NULL, 0, 1800, 43200, '[\"http://127.0.0.1:18080\"]', '[\"authorization_code\",\"refresh_token\"]', '[\"user.read\",\"user.write\"]', '[]', '[]', '[]', NULL, '1', '2022-09-29 13:28:31', '1', '2025-05-02 18:32:30', b'0');
-INSERT INTO `system_oauth2_client` VALUES (42, 'yudao-sso-demo-by-password', 'test', '基于密码模式，如何实现 SSO 单点登录？', 'http://test.yudao.iocoder.cn/604bdc695e13b3b22745be704d1f2aa8ee05c5f26f9fead6d1ca49005afbc857.jpeg', NULL, 0, 1800, 43200, '[\"http://127.0.0.1:18080\"]', '[\"password\",\"refresh_token\"]', '[\"user.read\",\"user.write\"]', '[]', '[]', '[]', NULL, '1', '2022-10-04 17:40:16', '1', '2025-05-04 16:00:46', b'0');
 
 -- ----------------------------
 -- Table structure for system_oauth2_code
@@ -4199,8 +4167,6 @@ CREATE TABLE `system_oauth2_refresh_token`  (
 -- ----------------------------
 -- Records of system_oauth2_refresh_token
 -- ----------------------------
-INSERT INTO `system_oauth2_refresh_token` VALUES (2036, 1, '5d4c16a219e7466d8725cb08048d8c58', 2, 'default', NULL, '2025-07-20 20:38:26', NULL, '2025-06-20 20:38:26', NULL, '2025-06-20 20:38:26', b'0', 1);
-INSERT INTO `system_oauth2_refresh_token` VALUES (2037, 1, '1ab812cf264945fa9341169ccc44bced', 2, 'default', NULL, '2025-07-21 15:54:21', NULL, '2025-06-21 15:54:21', NULL, '2025-06-21 15:54:21', b'0', 1);
 
 -- ----------------------------
 -- Table structure for system_operate_log
