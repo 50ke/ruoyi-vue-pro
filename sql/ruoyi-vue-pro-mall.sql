@@ -2122,7 +2122,7 @@ CREATE TABLE `system_dept`  (
 -- ----------------------------
 -- Records of system_dept
 -- ----------------------------
-INSERT INTO `ruoyi-vue-pro`.`system_dept` (`id`, `name`, `parent_id`, `sort`, `leader_user_id`, `phone`, `email`, `status`, `creator`, `create_time`, `updater`, `update_time`, `deleted`, `tenant_id`) VALUES (1, '芋道源码', 0, 0, 1, '16666666666', '16666666666@qq.com', 0, '1', '2021-01-05 17:03:47', '1', '2025-06-21 14:13:53', b'0', 1);
+INSERT INTO `ruoyi-vue-pro`.`system_dept` (`id`, `name`, `parent_id`, `sort`, `leader_user_id`, `phone`, `email`, `status`, `creator`, `create_time`, `updater`, `update_time`, `deleted`, `tenant_id`) VALUES (1, '安泉到家', 0, 0, 1, '16666666666', 'anquandaojia@qq.com', 0, '1', '2025-06-20 00:00:00', '1', '2025-06-20 00:00:00', b'0', 1);
 
 -- ----------------------------
 -- Table structure for system_dict_data
@@ -3246,7 +3246,7 @@ CREATE TABLE `system_oauth2_client`  (
 -- ----------------------------
 -- Records of system_oauth2_client
 -- ----------------------------
-INSERT INTO `system_oauth2_client` VALUES (1, 'default', 'admin123', '芋道源码', 'http://test.yudao.iocoder.cn/20250502/sort2_1746189740718.png', '我是描述', 0, 1800, 2592000, '[\"https://www.iocoder.cn\",\"https://doc.iocoder.cn\"]', '[\"password\",\"authorization_code\",\"implicit\",\"refresh_token\"]', '[\"user.read\",\"user.write\"]', '[]', '[\"user.read\",\"user.write\"]', '[]', '{}', '1', '2022-05-11 21:47:12', '1', '2025-05-02 20:42:22', b'0');
+INSERT INTO `system_oauth2_client` VALUES (1, 'default', 'Hs2xyIOsG2Fq2eL0', '安泉到家', 'http://192.168.56.128:9000/mall/20250622/logo_1750558344111.jpg', '安泉到家', 0, 1800, 2592000, '[\"https://www.anquandaojia.cn\"]', '[\"password\",\"authorization_code\",\"implicit\",\"refresh_token\"]', '[\"user.read\",\"user.write\"]', '[]', '[\"user.read\",\"user.write\"]', '[]', '{}', '1', '2025-06-20 00:00:00', '1', '2025-06-20 00:00:00', b'0');
 
 -- ----------------------------
 -- Table structure for system_oauth2_code
@@ -3629,7 +3629,7 @@ CREATE TABLE `system_tenant`  (
 -- ----------------------------
 -- Records of system_tenant
 -- ----------------------------
-INSERT INTO `system_tenant` VALUES (1, '芋道源码', NULL, '芋艿', '17321315478', 0, 'www.iocoder.cn', 0, '2099-02-19 17:14:16', 9999, '1', '2021-01-05 17:03:47', '1', '2023-11-06 11:41:41', b'0');
+INSERT INTO `system_tenant` VALUES (1, '安泉到家', 1, '小安', '16666666666', 0, 'localhost', 0, '2099-12-31 23:59:59', 9999, '1', '2025-06-20 00:00:00', '1', '2025-06-20 00:00:00', b'0');
 
 -- ----------------------------
 -- Table structure for system_tenant_package
@@ -3728,7 +3728,7 @@ CREATE TABLE `system_users`  (
 -- ----------------------------
 -- Records of system_users
 -- ----------------------------
-INSERT INTO `ruoyi-vue-pro`.`system_users` (`id`, `username`, `password`, `nickname`, `remark`, `dept_id`, `post_ids`, `email`, `mobile`, `sex`, `avatar`, `status`, `login_ip`, `login_date`, `creator`, `create_time`, `updater`, `update_time`, `deleted`, `tenant_id`) VALUES (1, 'admin', '$2a$04$KljJDa/LK7QfDm0lF5OhuePhlPfjRH3tB2Wu351Uidz.oQGJXevPi', '芋道源码', '管理员', 1, '[]', '11aoteman@126.com', '18818260277', 2, 'http://test.yudao.iocoder.cn/test/20250502/avatar_1746154660449.png', 0, '0:0:0:0:0:0:0:1', '2025-06-21 22:06:25', '1', '2021-01-05 17:03:47', '1', '2025-06-21 14:36:34', b'0', 1);
+INSERT INTO `ruoyi-vue-pro`.`system_users` (`id`, `username`, `password`, `nickname`, `remark`, `dept_id`, `post_ids`, `email`, `mobile`, `sex`, `avatar`, `status`, `login_ip`, `login_date`, `creator`, `create_time`, `updater`, `update_time`, `deleted`, `tenant_id`) VALUES (1, 'admin', '$2a$04$KljJDa/LK7QfDm0lF5OhuePhlPfjRH3tB2Wu351Uidz.oQGJXevPi', '安泉到家', '管理员', 1, '[]', 'anquandaojia@qq.com', '16666666666', 2, 'http://192.168.56.128:9000/mall/20250622/logo_1750557007515.jpg', 0, '0:0:0:0:0:0:0:1', '2025-06-21 00:00:00', '1', '2025-06-20 00:00:00', '1', '2025-06-20 00:00:00', b'0', 1);
 
 -- ----------------------------
 -- Table structure for trade_after_sale
