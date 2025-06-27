@@ -543,7 +543,7 @@ CREATE TABLE `member_point_record`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `member_sign_in_config`;
 CREATE TABLE `member_sign_in_config`  (
-  `id` bigint NOT NULL COMMENT '规则自增主键',
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '规则自增主键',
   `day` int NOT NULL COMMENT '签到第 x 天',
   `point` int NOT NULL COMMENT '奖励积分',
   `experience` int NOT NULL COMMENT '奖励经验',
@@ -566,7 +566,7 @@ CREATE TABLE `member_sign_in_config`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `member_sign_in_record`;
 CREATE TABLE `member_sign_in_record`  (
-  `id` bigint NOT NULL COMMENT '编号（主键）',
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '编号（主键）',
   `user_id` bigint NOT NULL COMMENT '签到用户',
   `day` int NOT NULL COMMENT '第几天签到',
   `point` int NOT NULL COMMENT '签到的积分',
@@ -589,7 +589,7 @@ CREATE TABLE `member_sign_in_record`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `member_tag`;
 CREATE TABLE `member_tag`  (
-  `id` bigint NOT NULL COMMENT '编号（主键）',
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '编号（主键）',
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '标签名称',
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间',
@@ -610,7 +610,7 @@ CREATE TABLE `member_tag`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `member_user`;
 CREATE TABLE `member_user`  (
-  `id` bigint NOT NULL COMMENT '用户ID（主键）',
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '用户ID（主键）',
   `mobile` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '手机号码',
   `password` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '加密后的密码',
   `status` int NOT NULL COMMENT '账号状态 (枚举 CommonStatusEnum)',
@@ -1080,7 +1080,7 @@ CREATE TABLE `pay_wallet_transaction`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `product_brand`;
 CREATE TABLE `product_brand`  (
-  `id` bigint NOT NULL COMMENT '品牌编号',
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '品牌编号',
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '品牌名称',
   `pic_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '品牌图片',
   `sort` int NOT NULL COMMENT '品牌排序',
@@ -1127,7 +1127,7 @@ CREATE TABLE `product_browse_history`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `product_category`;
 CREATE TABLE `product_category`  (
-  `id` bigint NOT NULL COMMENT '分类编号',
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '分类编号',
   `parent_id` bigint NOT NULL DEFAULT 0 COMMENT '父分类编号，0表示根分类',
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '分类名称',
   `pic_url` varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '移动端分类图（建议180*180分辨率）',
@@ -3815,7 +3815,7 @@ CREATE TABLE `trade_after_sale_log`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `trade_brokerage_record`;
 CREATE TABLE `trade_brokerage_record`  (
-  `id` int NOT NULL AUTO_INCREMENT COMMENT '佣金记录编号，主键自增',
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '佣金记录编号，主键自增',
   `user_id` bigint NOT NULL COMMENT '用户编号（关联 member_user.id）',
   `biz_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '业务编号',
   `biz_type` int NOT NULL COMMENT '业务类型（枚举 BrokerageRecordBizTypeEnum）',
@@ -3945,7 +3945,7 @@ CREATE TABLE `trade_cart`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `trade_config`;
 CREATE TABLE `trade_config`  (
-  `id` bigint NOT NULL COMMENT '自增主键',
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '自增主键',
   `after_sale_refund_reasons` varchar(2048) NULL COMMENT '售后的退款理由',
   `after_sale_return_reasons` varchar(2048) NULL COMMENT '售后的退货理由',
   `delivery_express_free_enabled` tinyint(1) NULL DEFAULT NULL COMMENT '是否启用全场包邮',
@@ -4109,7 +4109,7 @@ CREATE TABLE `trade_delivery_pick_up_store`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `trade_order`;
 CREATE TABLE `trade_order`  (
-  `id` bigint NOT NULL COMMENT '订单编号',
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '订单编号',
   `no` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '订单流水号',
   `type` int NULL DEFAULT NULL COMMENT '订单类型',
   `terminal` int NULL DEFAULT NULL COMMENT '订单来源',
@@ -4180,7 +4180,7 @@ CREATE TABLE `trade_order`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `trade_order_item`;
 CREATE TABLE `trade_order_item`  (
-  `id` bigint NOT NULL COMMENT '订单项编号',
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '订单项编号',
   `user_id` bigint NOT NULL COMMENT '用户编号',
   `order_id` bigint NOT NULL COMMENT '订单编号',
   `cart_id` bigint NULL DEFAULT NULL COMMENT '购物车项编号',
@@ -4221,7 +4221,7 @@ CREATE TABLE `trade_order_item`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `trade_order_log`;
 CREATE TABLE `trade_order_log`  (
-  `id` bigint NOT NULL COMMENT '编号',
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '编号',
   `user_id` bigint NULL DEFAULT NULL COMMENT '用户编号',
   `user_type` int NULL DEFAULT NULL COMMENT '用户类型',
   `order_id` bigint NULL DEFAULT NULL COMMENT '订单号',
