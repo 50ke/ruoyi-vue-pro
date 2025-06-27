@@ -1,0 +1,68 @@
+@import '@/uni_modules/uni-scss/variables.scss';
+
+/* 泉水蓝色配色方案 - 安泉到家配送员客户端 */
+/* 主色调 - 清甜的泉水蓝 */
+$primary-blue: #2979ff;        /* 主蓝色 - 清澈的泉水 */
+$secondary-blue: #94bcff;      /* 次要蓝色 - 浅泉水 */
+$light-blue: #d4e4ff;          /* 浅蓝色 - 淡泉水 */
+
+/* 功能色彩 */
+$success-green: #52c41a;       /* 成功绿色 */
+$warning-orange: #fa8c16;      /* 警告橙色 */
+$error-red: #ff4d4f;           /* 错误红色 */
+$info-blue: #1890ff;           /* 信息蓝色 */
+
+/* 中性色彩 */
+$text-primary: #262626;        /* 主要文字 */
+$text-secondary: #595959;      /* 次要文字 */
+$text-tertiary: #8c8c8c;       /* 辅助文字 */
+$text-disabled: #bfbfbf;       /* 禁用文字 */
+
+/* 背景色彩 */
+$bg-primary: #ffffff;          /* 主背景 */
+$bg-secondary: #fafafa;        /* 次要背景 */
+$bg-tertiary: #f5f5f5;         /* 辅助背景 */
+$bg-page: #f8f9fa;             /* 页面背景 */
+
+/* 边框色彩 */
+$border-primary: #d9d9d9;      /* 主边框 */
+$border-secondary: #f0f0f0;    /* 次要边框 */
+$border-light: #f5f5f5;        /* 浅边框 */
+
+/* 阴影 */
+$shadow-light: 0 2rpx 8rpx rgba(0, 0, 0, 0.06);
+$shadow-medium: 0 4rpx 16rpx rgba(0, 0, 0, 0.08);
+$shadow-heavy: 0 8rpx 24rpx rgba(0, 0, 0, 0.12);
+
+/* 圆角 */
+$radius-small: 8rpx;
+$radius-medium: 16rpx;
+$radius-large: 24rpx;
+$radius-xl: 32rpx;
+
+/* 间距 */
+$spacing-xs: 8rpx;
+$spacing-sm: 16rpx;
+$spacing-md: 24rpx;
+$spacing-lg: 32rpx;
+$spacing-xl: 40rpx;
+$spacing-xxl: 48rpx;
+
+/* 字体大小 */
+$font-size-xs: 20rpx;
+$font-size-sm: 24rpx;
+$font-size-md: 28rpx;
+$font-size-lg: 32rpx;
+$font-size-xl: 36rpx;
+$font-size-xxl: 40rpx;
+
+/* 状态色彩 */
+$status-delivering: $primary-blue;
+$status-completed: $success-green;
+$status-pending: $warning-orange;
+$status-expired: $error-red;
+
+/* 渐变背景 */
+$gradient-primary: linear-gradient(135deg, $primary-blue, $secondary-blue);
+$gradient-success: linear-gradient(135deg, $success-green, #73d13d);
+$gradient-warning: linear-gradient(135deg, $warning-orange, #ffa940);
