@@ -50,5 +50,13 @@ rebel.xml
 
 application-my.yaml
 
-/ui/yudao-courier-uniapp/unpackage/
 **/.DS_Store
+
+/ui/yudao-courier-uniapp/unpackage/*
+/ui/yudao-courier-uniapp/node_modules/*
+/ui/yudao-courier-uniapp/package-lock.json
+/ui/yudao-mall-uniapp/unpackage/*
+/ui/yudao-mall-uniapp/node_modules/*
+/ui/yudao-mall-uniapp/package-lock.json
+
+
