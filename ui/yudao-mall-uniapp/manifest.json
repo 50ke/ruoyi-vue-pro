@@ -1,6 +1,6 @@
 {
   "name": "芋道商城",
-  "appid": "__UNI__460BC4C",
+  "appid": "__UNI__D6BDB8D",
   "description": "基于 uni-app + Vue3 技术驱动的在线商城系统，内含诸多功能与丰富的活动，期待您的使用和反馈。",
   "versionName": "2.1.0",
   "versionCode": "183",
@@ -182,7 +182,7 @@
     "versionCode": 100
   },
   "mp-weixin": {
-    "appid": "wx1e9cd68d14bd06e8",
+    "appid": "wxfa4e404075e159f0",
     "setting": {
       "urlCheck": false,
       "minified": true,
@@ -194,7 +194,11 @@
     "plugins": {},
     "lazyCodeLoading": "requiredComponents",
     "usingComponents": {},
-    "permission": {},
+    "permission": {
+      "scope.userLocation": {
+        "desc": "新增收货地址时需要地图定位"
+      }
+    },
     "requiredPrivateInfos": [
       "chooseAddress"
     ]
@@ -218,7 +222,11 @@
       "base": "/"
     },
     "sdkConfigs": {
-      "maps": {}
+      "maps": {
+        "tencent": {
+          "key": "72FBZ-PFJKT-7L2XX-VJBOH-NEGZ2-4UFGU"
+        }
+      }
     },
     "async": {
       "timeout": 20000
