@@ -26,6 +26,13 @@ public class CourierUserController {
     @Resource
     private CourierUserService courierUserService;
 
+    @PostMapping("/create")
+    @Operation(summary = "创建配送员用户")
+    @PreAuthorize("@ss.hasPermission('courier:user:create')")
+    public CommonResult<Long> createUser(@Valid @RequestBody CourierUserCreateReqVO createReqVO) {
+        return success(courierUserService.createUser(createReqVO));
+    }
+
     @PutMapping("/update")
     @Operation(summary = "更新配送员用户")
     @PreAuthorize("@ss.hasPermission('courier:user:update')")

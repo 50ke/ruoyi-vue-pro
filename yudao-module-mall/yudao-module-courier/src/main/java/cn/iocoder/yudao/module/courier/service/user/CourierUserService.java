@@ -1,8 +1,8 @@
 package cn.iocoder.yudao.module.courier.service.user;
 
 import cn.iocoder.yudao.framework.common.pojo.PageResult;
+import cn.iocoder.yudao.module.courier.controller.admin.user.vo.CourierUserCreateReqVO;
 import cn.iocoder.yudao.module.courier.controller.admin.user.vo.CourierUserPageReqVO;
-import cn.iocoder.yudao.module.courier.controller.admin.user.vo.CourierUserRespVO;
 import cn.iocoder.yudao.module.courier.controller.admin.user.vo.CourierUserUpdateReqVO;
 import cn.iocoder.yudao.module.courier.dal.dataobject.user.CourierUserDO;
 
@@ -21,7 +21,7 @@ public interface CourierUserService {
      * @param createReqVO 创建信息
      * @return 编号
      */
-    Long createUser(@Valid CourierUserDO createReqVO);
+    Long createUser(@Valid CourierUserCreateReqVO createReqVO);
 
     /**
      * 更新配送员用户

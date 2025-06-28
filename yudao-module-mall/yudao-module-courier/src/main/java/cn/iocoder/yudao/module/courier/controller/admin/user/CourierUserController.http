@@ -1,0 +1,45 @@
+### 创建配送员用户
+POST {{baseUrl}}/admin-api/courier/user/create
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "username": "courier001",
+  "password": "123456",
+  "nickname": "张三",
+  "avatar": "https://www.iocoder.cn/avatar.jpg",
+  "mobile": "15601691300",
+  "status": 1,
+  "workStatus": 0
+}
+
+### 更新配送员用户
+PUT {{baseUrl}}/admin-api/courier/user/update
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "id": 1,
+  "username": "courier001",
+  "nickname": "张三",
+  "avatar": "https://www.iocoder.cn/avatar.jpg",
+  "mobile": "15601691300",
+  "status": 1,
+  "workStatus": 1
+}
+
+### 删除配送员用户
+DELETE {{baseUrl}}/admin-api/courier/user/delete?id=1
+Authorization: Bearer {{token}}
+
+### 获得配送员用户
+GET {{baseUrl}}/admin-api/courier/user/get?id=1
+Authorization: Bearer {{token}}
+
+### 获得配送员用户分页
+GET {{baseUrl}}/admin-api/courier/user/page?pageNo=1&pageSize=10
+Authorization: Bearer {{token}}
+
+### 更新配送员工作状态
+PUT {{baseUrl}}/admin-api/courier/user/update-work-status?id=1&workStatus=1
+Authorization: Bearer {{token}} 

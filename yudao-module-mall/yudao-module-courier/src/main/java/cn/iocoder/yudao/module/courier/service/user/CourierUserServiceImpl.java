@@ -4,10 +4,13 @@ import cn.iocoder.yudao.framework.common.enums.CommonStatusEnum;
 import cn.iocoder.yudao.framework.common.exception.ServiceException;
 import cn.iocoder.yudao.framework.common.pojo.PageResult;
 import cn.iocoder.yudao.framework.common.util.object.BeanUtils;
+import cn.iocoder.yudao.module.courier.controller.admin.user.vo.CourierUserCreateReqVO;
 import cn.iocoder.yudao.module.courier.controller.admin.user.vo.CourierUserPageReqVO;
 import cn.iocoder.yudao.module.courier.controller.admin.user.vo.CourierUserUpdateReqVO;
+import cn.iocoder.yudao.module.courier.convert.user.CourierUserConvert;
 import cn.iocoder.yudao.module.courier.dal.dataobject.user.CourierUserDO;
 import cn.iocoder.yudao.module.courier.dal.mysql.user.CourierUserMapper;
+import cn.iocoder.yudao.module.courier.enums.CourierWorkStatusEnum;
 import cn.iocoder.yudao.module.courier.enums.ErrorCodeConstants;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -36,18 +39,23 @@ public class CourierUserServiceImpl implements CourierUserService {
     private PasswordEncoder passwordEncoder;
 
     @Override
-    public Long createUser(CourierUserDO createReqVO) {
+    public Long createUser(CourierUserCreateReqVO createReqVO) {
         // 1. 校验用户名唯一性
         validateUsernameUnique(null, createReqVO.getUsername());
         // 2. 校验手机号唯一性
         validateMobileUnique(null, createReqVO.getMobile());
 
         // 3. 插入
-        CourierUserDO courier = BeanUtils.toBean(createReqVO, CourierUserDO.class);
+        CourierUserDO courier = CourierUserConvert.INSTANCE.convert(createReqVO);
         courier.setPassword(passwordEncoder.encode(createReqVO.getPassword()));
-        courier.setStatus(CommonStatusEnum.ENABLE.getStatus());
+        // 设置默认值
+        if (courier.getStatus() == null) {
+            courier.setStatus(CommonStatusEnum.ENABLE.getStatus());
+        }
+        if (courier.getWorkStatus() == null) {
+            courier.setWorkStatus(CourierWorkStatusEnum.REST.getStatus()); // 默认休息中
+        }
         courier.setScore(new java.math.BigDecimal("5.0")); // 默认评分5.0
-        courier.setWorkStatus(0); // 默认休息中
         courierUserMapper.insert(courier);
         return courier.getId();
     }
