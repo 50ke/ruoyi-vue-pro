@@ -58,5 +58,6 @@ application-my.yaml
 /ui/yudao-mall-uniapp/unpackage/*
 /ui/yudao-mall-uniapp/node_modules/*
 /ui/yudao-mall-uniapp/package-lock.json
-
-
+/ui/yudao-ui-admin-vue3/unpackage/*
+/ui/yudao-ui-admin-vue3/node_modules/*
+/ui/yudao-ui-admin-vue3/package-lock.json
