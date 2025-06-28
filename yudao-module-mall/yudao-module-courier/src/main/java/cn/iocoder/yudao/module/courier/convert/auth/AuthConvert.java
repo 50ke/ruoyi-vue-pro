@@ -6,8 +6,9 @@ import cn.iocoder.yudao.module.courier.dal.dataobject.user.CourierUserDO;
 import cn.iocoder.yudao.module.system.api.sms.dto.code.SmsCodeSendReqDTO;
 import cn.iocoder.yudao.module.system.api.sms.dto.code.SmsCodeUseReqDTO;
 import cn.iocoder.yudao.module.system.api.sms.dto.code.SmsCodeValidateReqDTO;
-import cn.iocoder.yudao.module.system.enums.sms.SmsSceneEnum;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
 
 /**
@@ -24,7 +25,14 @@ public interface AuthConvert {
     SmsCodeUseReqDTO convert(AppAuthSmsLoginReqVO reqVO, Integer scene, String usedIp);
     SmsCodeUseReqDTO convert(AppAuthResetPasswordReqVO reqVO, Integer scene, String usedIp);
 
+    @Mappings({
+            @Mapping(source = "bean.userId", target = "userId")
+    })
     AppAuthLoginRespVO convert(OAuth2AccessTokenRespDTO bean, CourierUserDO courier);
+
+    @Mappings({
+            @Mapping(source = "bean.userId", target = "userId")
+    })
     AppAuthLoginRespVO convert(OAuth2AccessTokenRespDTO bean);
 
     SmsCodeValidateReqDTO convert(AppAuthSmsValidateReqVO bean);

@@ -204,6 +204,9 @@ public class OAuth2TokenServiceImpl implements OAuth2TokenService {
         } else if (userType.equals(UserTypeEnum.MEMBER.getValue())) {
             // 注意：目前 Member 暂时不读取，可以按需实现
             return Collections.emptyMap();
+        } else if (userType.equals(UserTypeEnum.COURIER.getValue())) {
+            // 注意：目前 COURIER 暂时不读取，可以按需实现
+            return Collections.emptyMap();
         }
         return null;
     }

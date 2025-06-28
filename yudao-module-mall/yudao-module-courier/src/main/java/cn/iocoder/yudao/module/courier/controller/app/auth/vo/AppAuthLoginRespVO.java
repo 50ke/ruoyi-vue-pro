@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 public class AppAuthLoginRespVO {
 
     @Schema(description = "配送员编号", requiredMode = Schema.RequiredMode.REQUIRED, example = "1024")
-    private Long courierId;
+    private Long userId;
 
     @Schema(description = "用户名", requiredMode = Schema.RequiredMode.REQUIRED, example = "courier001")
     private String username;
