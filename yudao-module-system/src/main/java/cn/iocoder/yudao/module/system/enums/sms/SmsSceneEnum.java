@@ -23,7 +23,10 @@ public enum SmsSceneEnum implements ArrayValuable<Integer> {
 
     ADMIN_MEMBER_LOGIN(21, "admin-sms-login", "后台用户 - 手机号登录"),
     ADMIN_MEMBER_REGISTER(22, "admin-sms-register", "后台用户 - 手机号注册"),
-    ADMIN_MEMBER_RESET_PASSWORD(23, "admin-reset-password", "后台用户 - 忘记密码");
+    ADMIN_MEMBER_RESET_PASSWORD(23, "admin-reset-password", "后台用户 - 忘记密码"),
+
+    COURIER_LOGIN(31, "courier-sms-login", "配送员 - 手机号登录"),
+    COURIER_RESET_PASSWORD(32, "courier-reset-password", "配送员 - 忘记密码");
 
     public static final Integer[] ARRAYS = Arrays.stream(values()).map(SmsSceneEnum::getScene).toArray(Integer[]::new);
 

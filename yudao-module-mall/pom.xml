@@ -15,13 +15,14 @@
     <name>${project.artifactId}</name>
 
     <description>
-        商城大模块，由 product 商品、promotion 营销、trade 交易、statistics 统计等组成
+        商城大模块，由 product 商品、promotion 营销、trade 交易、statistics 统计、courier 配送员等组成
     </description>
     <modules>
         <module>yudao-module-product</module>
         <module>yudao-module-promotion</module>
         <module>yudao-module-trade</module>
         <module>yudao-module-statistics</module>
+        <module>yudao-module-courier</module>
         <!--
             特殊：为什么会有 yudao-module-trade-api 呢？
                 yudao-module-promotion 和 yudao-module-trade 之间相互循环依赖，所以抽出 yudao-module-trade-api 模块，这样：

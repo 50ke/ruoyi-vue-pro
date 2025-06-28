@@ -1,0 +1,51 @@
+### 配送员登录
+POST {{baseUrl}}/courier/auth/login
+Content-Type: application/json
+
+{
+  "username": "courier001",
+  "password": "123456"
+}
+
+### 配送员登出
+POST {{baseUrl}}/courier/auth/logout
+Authorization: Bearer {{accessToken}}
+
+### 刷新令牌
+POST {{baseUrl}}/courier/auth/refresh-token?refreshToken={{refreshToken}}
+
+### 短信登录
+POST {{baseUrl}}/courier/auth/sms-login
+Content-Type: application/json
+
+{
+  "mobile": "15601691300",
+  "code": "123456"
+}
+
+### 发送短信验证码
+POST {{baseUrl}}/courier/auth/send-sms-code
+Content-Type: application/json
+
+{
+  "mobile": "15601691300"
+}
+
+### 校验短信验证码
+POST {{baseUrl}}/courier/auth/validate-sms-code
+Content-Type: application/json
+
+{
+  "mobile": "15601691300",
+  "code": "123456"
+}
+
+### 重置密码
+POST {{baseUrl}}/courier/auth/reset-password
+Content-Type: application/json
+
+{
+  "mobile": "15601691300",
+  "code": "123456",
+  "password": "123456"
+} 

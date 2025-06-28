@@ -1,0 +1,7 @@
+### 获得配送员用户详情
+GET {{baseUrl}}/courier/user/get
+Authorization: Bearer {{accessToken}}
+
+### 更新配送员工作状态
+PUT {{baseUrl}}/courier/user/update-work-status?workStatus=1
+Authorization: Bearer {{accessToken}} 

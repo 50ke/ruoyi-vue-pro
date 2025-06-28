@@ -1,0 +1,25 @@
+### 获得配送员用户
+GET {{baseUrl}}/courier/user/get?id=1
+
+### 获得配送员用户分页
+GET {{baseUrl}}/courier/user/page?pageNo=1&pageSize=10
+
+### 更新配送员用户
+PUT {{baseUrl}}/courier/user/update
+Content-Type: application/json
+
+{
+  "id": 1,
+  "username": "courier001",
+  "nickname": "张三",
+  "avatar": "https://www.iocoder.cn/avatar.jpg",
+  "mobile": "15601691300",
+  "status": 1,
+  "workStatus": 1
+}
+
+### 删除配送员用户
+DELETE {{baseUrl}}/courier/user/delete?id=1
+
+### 更新配送员工作状态
+PUT {{baseUrl}}/courier/user/update-work-status?id=1&workStatus=1 
