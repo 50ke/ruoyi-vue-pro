@@ -4274,4 +4274,35 @@ CREATE TABLE `trade_statistics`  (
 -- Records of trade_statistics
 -- ----------------------------
 
+-- ----------------------------
+-- Table structure for courier_user
+-- ----------------------------
+DROP TABLE IF EXISTS `courier_user`;
+CREATE TABLE `courier_user`  (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '配送员ID（主键）',
+  `username` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '用户名',
+  `password` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '加密后的密码',
+  `nickname` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '配送员昵称',
+  `avatar` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '配送员头像URL',
+  `mobile` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '手机号码',
+  `score` decimal(3,1) NOT NULL DEFAULT 5.0 COMMENT '评分（1-5分，保留一位小数）',
+  `status` int NOT NULL DEFAULT 1 COMMENT '账号状态 (枚举 CommonStatusEnum)',
+  `work_status` int NOT NULL DEFAULT 0 COMMENT '工作状态（0-休息中，1-空闲，2-配送中）',
+  `login_ip` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '最后登录IP',
+  `login_date` datetime NULL DEFAULT NULL COMMENT '最后登录时间',
+  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间',
+  `creator` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '创建者',
+  `updater` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '更新者',
+  `deleted` tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否删除',
+  `tenant_id` bigint NOT NULL DEFAULT 0 COMMENT '租户编号',
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `uk_username`(`username` ASC) USING BTREE,
+  UNIQUE INDEX `uk_mobile`(`mobile` ASC) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '配送员用户表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of courier_user
+-- ----------------------------
+
 SET FOREIGN_KEY_CHECKS = 1;
