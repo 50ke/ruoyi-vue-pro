@@ -26,7 +26,7 @@ import static cn.iocoder.yudao.framework.security.core.util.SecurityFrameworkUti
 @RequestMapping("/courier/auth")
 @Validated
 @Slf4j
-public class AppAuthController {
+public class AppCourierAuthController {
 
     @Resource
     private CourierAuthService authService;
