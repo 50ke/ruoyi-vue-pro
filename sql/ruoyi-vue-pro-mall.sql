@@ -1107,7 +1107,7 @@ CREATE TABLE `product_browse_history`  (
   `id` bigint NOT NULL AUTO_INCREMENT COMMENT '记录编号，主键自增',
   `spu_id` bigint NOT NULL COMMENT '商品 SPU 编号',
   `user_id` bigint NOT NULL COMMENT '用户编号',
-  `user_deleted` tinyint(1) NOT NULL COMMENT '用户是否删除（0：未删除，1：已删除）',
+  `user_deleted` tinyint(1) NOT NULL DEFAULT 0 COMMENT '用户是否删除（0：未删除，1：已删除）',
   `create_time` datetime NOT NULL COMMENT '创建时间',
   `update_time` datetime NOT NULL COMMENT '最后更新时间',
   `creator` varchar(255) NULL DEFAULT NULL COMMENT '创建者（SysUser 的 id 编号）',
