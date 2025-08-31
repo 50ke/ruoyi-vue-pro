@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Configuration;
 public class CourierWebConfiguration {
 
     /**
-     * member 模块的 API 分组
+     * courier 模块的 API 分组
      */
     @Bean
     public GroupedOpenApi courierGroupedOpenApi() {

@@ -1,0 +1,39 @@
+-- 配送员模块数据库脚本
+-- 配送员用户表
+DROP TABLE IF EXISTS `courier_user`;
+CREATE TABLE `courier_user` (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '配送员编号',
+  `nickname` varchar(50) NOT NULL COMMENT '昵称',
+  `mobile` varchar(20) DEFAULT NULL COMMENT '手机号',
+  `avatar` varchar(512) DEFAULT NULL COMMENT '头像',
+  `openid` varchar(128) DEFAULT NULL COMMENT '微信openid',
+  `status` tinyint NOT NULL COMMENT '状态',
+  `merchant_id` bigint NOT NULL COMMENT '商户ID',
+  `work_status` tinyint NOT NULL DEFAULT '1' COMMENT '工作状态(1:在线 2:离线)',
+  `creator` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '创建者',
+  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `updater` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '更新者',
+  `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  `deleted` bit(1) NOT NULL DEFAULT b'0' COMMENT '是否删除',
+  `tenant_id` bigint NOT NULL DEFAULT 0 COMMENT '租户编号',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='配送员用户';
+
+-- 配送订单关联表
+DROP TABLE IF EXISTS `courier_order`;
+CREATE TABLE `courier_order` (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '配送订单编号',
+  `courier_id` bigint NOT NULL COMMENT '配送员编号',
+  `order_id` bigint NOT NULL COMMENT '订单编号',
+  `status` tinyint NOT NULL COMMENT '状态',
+  `delivery_status` tinyint NOT NULL DEFAULT '1' COMMENT '配送状态(1:待配送 2:配送中 3:已送达 4:已取消)',
+  `pickup_time` datetime DEFAULT NULL COMMENT '取货时间',
+  `delivery_time` datetime DEFAULT NULL COMMENT '送达时间',
+  `creator` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '创建者',
+  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `updater` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '更新者',
+  `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  `deleted` bit(1) NOT NULL DEFAULT b'0' COMMENT '是否删除',
+  `tenant_id` bigint NOT NULL DEFAULT 0 COMMENT '租户编号',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='配送订单关联表';
