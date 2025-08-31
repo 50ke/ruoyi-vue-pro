@@ -1,378 +1,416 @@
 <template>
-	<view class="container">
-		<!-- 顶部信息卡片 -->
-		<view class="header-card">
-			<view class="user-info">
-				<image class="avatar" :src="userInfo.avatar || '/static/default-avatar.png'" mode="aspectFill"></image>
-				<view class="user-details">
-					<text class="nickname">{{ userInfo.nickname || '配送员' }}</text>
-					<text class="status" :class="userInfo.workStatus === 1 ? 'online' : 'offline'">
-						{{ userInfo.workStatus === 1 ? '在线' : '离线' }}
-					</text>
-				</view>
-			</view>
-			<view class="work-status-toggle">
-				<switch :checked="userInfo.workStatus === 1" @change="toggleWorkStatus" color="#3cc51f" />
-			</view>
-		</view>
+  <view class="delivery-home-page">
+    <!-- 搜索栏 -->
+    <view class="search-section">
+      <view class="search-container">
+        <uni-icons type="search" size="16" color="#8c8c8c"></uni-icons>
+        <input 
+          type="text" 
+          placeholder="搜索订单号或地址" 
+          v-model="searchKeyword" 
+          class="search-input"
+        />
+      </view>
+    </view>
 
-		<!-- 统计信息 -->
-		<view class="stats-section">
-			<view class="stat-item">
-				<text class="stat-number">{{ stats.pending }}</text>
-				<text class="stat-label">待配送</text>
-			</view>
-			<view class="stat-item">
-				<text class="stat-number">{{ stats.delivering }}</text>
-				<text class="stat-label">配送中</text>
-			</view>
-			<view class="stat-item">
-				<text class="stat-number">{{ stats.completed }}</text>
-				<text class="stat-label">已完成</text>
-			</view>
-		</view>
+    <!-- 订单状态筛选 -->
+    <view class="status-filter-section">
+      <view 
+        v-for="(statusItem, index) in orderStatusOptions" 
+        :key="index"
+        class="status-filter-item"
+        :class="{ active: currentOrderStatus === statusItem.value }"
+        @click="changeOrderStatus(statusItem.value)"
+      >
+        {{statusItem.label}}
+      </view>
+    </view>
 
-		<!-- 快捷操作 -->
-		<view class="quick-actions">
-			<view class="action-item" @click="goToOrders('pending')">
-				<view class="action-icon pending">📦</view>
-				<text class="action-text">待取货</text>
-			</view>
-			<view class="action-item" @click="goToOrders('delivering')">
-				<view class="action-icon delivering">🚚</view>
-				<text class="action-text">配送中</text>
-			</view>
-			<view class="action-item" @click="goToOrders('completed')">
-				<view class="action-icon completed">✅</view>
-				<text class="action-text">已完成</text>
-			</view>
-		</view>
-
-		<!-- 最近订单 -->
-		<view class="recent-orders">
-			<view class="section-header">
-				<text class="section-title">最近订单</text>
-				<text class="more" @click="goToOrderList">查看更多</text>
-			</view>
-			<view class="order-list">
-				<view v-for="order in recentOrders" :key="order.id" class="order-item" @click="goToOrderDetail(order.id)">
-					<view class="order-info">
-						<text class="order-id">订单号：{{ order.orderId }}</text>
-						<text class="order-status" :class="getStatusClass(order.deliveryStatus)">
-							{{ getStatusText(order.deliveryStatus) }}
-						</text>
-					</view>
-					<view class="order-time">
-						<text class="time">{{ formatTime(order.createTime) }}</text>
-						<text class="arrow">></text>
-					</view>
-				</view>
-			</view>
-		</view>
-	</view>
+    <!-- 订单列表 -->
+    <scroll-view
+      scroll-y
+      style="height: 70vh"
+      @scrolltolower="loadMoreOrders"
+      refresher-enabled
+      :refresher-triggered="isRefreshing"
+      @refresherrefresh="onPullDownRefresh"
+    >
+      <view class="order-list-container">
+        <view 
+          class="order-item-card" 
+          v-for="(orderItem, index) in filteredOrderList" 
+          :key="index" 
+          @click="navigateToOrderDetail(orderItem)"
+        >
+          <view class="order-header">
+            <view class="order-number">订单号：{{ orderItem.no }}</view>
+            <view class="order-status" :class="getStatusClass(orderItem.deliveryStatus)">
+              {{ getStatusText(orderItem.deliveryStatus) }}
+            </view>
+          </view>
+          
+          <view class="order-content">
+            <image class="product-image" :src="orderItem.pic" mode="aspectFill" />
+            <view class="order-info">
+              <view class="delivery-address">配送地址：{{ orderItem.receiverDetailArea }} {{ orderItem.receiverDetailAddress }}</view>
+              <view class="receiver-mobile">联系电话：{{ orderItem.receiverMobile }}</view>
+              <view class="action-buttons">
+                <view class="action-button phone-button" @click.stop="makePhoneCall(orderItem.receiverMobile)">
+                  <uni-icons type="phone-filled" size="18" color="#2979ff"></uni-icons>
+                </view>
+                <view class="action-button map-button" @click.stop="openLocationMap(orderItem)">
+                  <uni-icons type="paperplane-filled" size="18" color="#52c41a"></uni-icons>
+                </view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+      <uni-load-more :status="loadMoreStatus" />
+    </scroll-view>
+  </view>
 </template>
 
 <script>
+import uniLoadMore from '@/uni_modules/uni-load-more/components/uni-load-more/uni-load-more.vue'
+import uniIcons from '@/uni_modules/uni-icons/components/uni-icons/uni-icons.vue'
+import { getOrderPage } from '@/api/order.js';
+import { checkLogin } from '@/utils/auth.js';
+
 export default {
-	data() {
-		return {
-			userInfo: {
-				nickname: '张三',
-				avatar: '',
-				workStatus: 1
-			},
-			stats: {
-				pending: 0,
-				delivering: 0,
-				completed: 0
-			},
-			recentOrders: []
-		}
-	},
-	onLoad() {
-		this.loadUserInfo()
-		this.loadStats()
-		this.loadRecentOrders()
-	},
-	methods: {
-		// 加载用户信息
-		loadUserInfo() {
-			// TODO: 调用接口获取用户信息
-		},
-		
-		// 加载统计数据
-		loadStats() {
-			// TODO: 调用接口获取统计数据
-		},
-		
-		// 加载最近订单
-		loadRecentOrders() {
-			// TODO: 调用接口获取最近订单
-		},
-		
-		// 切换工作状态
-		toggleWorkStatus(e) {
-			const newStatus = e.detail.value ? 1 : 2
-			// TODO: 调用接口更新工作状态
-			this.userInfo.workStatus = newStatus
-		},
-		
-		// 跳转到订单列表
-		goToOrders(status) {
-			uni.navigateTo({
-				url: `/pages/order/list?status=${status}`
-			})
-		},
-		
-		// 跳转到订单详情
-		goToOrderDetail(id) {
-			uni.navigateTo({
-				url: `/pages/order/detail?id=${id}`
-			})
-		},
-		
-		// 跳转到订单列表
-		goToOrderList() {
-			uni.switchTab({
-				url: '/pages/order/list'
-			})
-		},
-		
-		// 获取状态样式类
-		getStatusClass(status) {
-			const statusMap = {
-				1: 'pending',
-				2: 'delivering',
-				3: 'completed',
-				4: 'cancelled'
-			}
-			return statusMap[status] || 'pending'
-		},
-		
-		// 获取状态文本
-		getStatusText(status) {
-			const statusMap = {
-				1: '待配送',
-				2: '配送中',
-				3: '已送达',
-				4: '已取消'
-			}
-			return statusMap[status] || '待配送'
-		},
-		
-		// 格式化时间
-		formatTime(time) {
-			if (!time) return ''
-			const date = new Date(time)
-			return `${date.getMonth() + 1}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}`
-		}
-	}
+  components: {
+    uniLoadMore,
+    uniIcons
+  },
+  data() {
+    return {
+      searchKeyword: '',
+      currentOrderStatus: 2,
+      orderStatusOptions: [
+		{ label: '待配送', value: 1 },
+        { label: '配送中', value: 2 },
+        { label: '已送达', value: 3 },
+		{ label: '已取消', value: 4 },
+        { label: '全部', value: 'all' }
+      ],
+      orderList: [],
+      currentPage: 1,
+      pageSize: 10,
+      loadMoreStatus: 'more', // more/loading/noMore
+      isRefreshing: false,
+      isAllLoaded: false
+    }
+  },
+  computed: {
+    filteredOrderList() {
+      return this.orderList.filter(orderItem => {
+        const statusMatch = this.currentOrderStatus === 'all' || orderItem.deliveryStatus === this.currentOrderStatus;
+        const searchMatch = !this.searchKeyword || 
+          (orderItem.orderNumber && orderItem.orderNumber.toLowerCase().includes(this.searchKeyword.toLowerCase())) ||
+          (orderItem.deliveryAddress && orderItem.deliveryAddress.toLowerCase().includes(this.searchKeyword.toLowerCase()));
+        return statusMatch && searchMatch;
+      });
+    }
+  },
+  onLoad() {
+    if (!checkLogin()) return;
+    this.refreshOrderList();
+  },
+  methods: {
+    changeOrderStatus(status) {
+      this.currentOrderStatus = status;
+      this.refreshOrderList();
+    },
+    
+    navigateToOrderDetail(orderItem) {
+      uni.navigateTo({ url: `/pages/order/order-detail?id=${orderItem.id}` })
+    },
+    
+    async refreshOrderList() {
+      this.currentPage = 1;
+      this.isAllLoaded = false;
+      await this.fetchOrderList(true);
+    },
+    
+    async onPullDownRefresh() {
+      this.isRefreshing = true;
+      await this.refreshOrderList();
+      this.isRefreshing = false;
+      uni.stopPullDownRefresh();
+    },
+    
+    async loadMoreOrders() {
+      if (this.loadMoreStatus === 'loading' || this.isAllLoaded) return;
+      this.loadMoreStatus = 'loading';
+      await this.fetchOrderList();
+    },
+    
+    async fetchOrderList(isRefresh = false) {
+      try {
+        const params = {
+          pageNo: this.currentPage,
+          pageSize: this.pageSize,
+          deliveryStatus: this.currentOrderStatus === 'all' ? undefined : this.currentOrderStatus,
+          keyword: this.searchKeyword
+        };
+        const res = await getOrderPage(params);
+        const newOrderData = (res.data && res.data.list) || [];
+        if (isRefresh) {
+          this.orderList = newOrderData;
+        } else {
+          this.orderList = this.orderList.concat(newOrderData);
+        }
+        if (newOrderData.length < this.pageSize) {
+          this.loadMoreStatus = 'noMore';
+          this.isAllLoaded = true;
+        } else {
+          this.currentPage++;
+          this.loadMoreStatus = 'more';
+        }
+      } catch (e) {
+        this.loadMoreStatus = 'noMore';
+        this.isAllLoaded = true;
+      }
+    },
+    
+    openLocationMap(orderItem) {
+      uni.openLocation({
+        latitude: 30.472641,
+        longitude: 114.423926,
+        name: orderItem.receiverDetailArea,
+        address: orderItem.receiverDetailAddress,
+        scale: 18
+      });
+    },
+    
+    makePhoneCall(phoneNumber) {
+      if (!phoneNumber) {
+        uni.showToast({ title: '无效的电话号码', icon: 'none' });
+        return;
+      }
+      uni.makePhoneCall({
+        phoneNumber: phoneNumber
+      });
+    },
+    
+    getStatusClass(status) {
+      const statusClassMap = {
+		1: 'status-pending',
+        2: 'status-delivering',
+        3: 'status-completed',
+		4: 'status-expired'
+      };
+      return statusClassMap[status] || '';
+    },
+    
+    getStatusText(status) {
+      const statusTextMap = {
+        1: '待配送',
+        2: '配送中',
+        3: '已送达',
+        4: '已取消'
+      };
+      return statusTextMap[status] || '未知状态';
+    }
+  }
 }
 </script>
 
-<style>
-.container {
-	padding: 20rpx;
-	background-color: #f5f5f5;
-	min-height: 100vh;
+<style lang="scss" scoped>
+@import '@/uni.scss';
+
+.delivery-home-page {
+  min-height: 100vh;
+  background: $bg-page;
+  padding: $spacing-md 0;
 }
 
-.header-card {
-	background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-	border-radius: 20rpx;
-	padding: 40rpx;
-	margin-bottom: 30rpx;
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	color: white;
+.search-section {
+  padding: $spacing-md;
+  background: $bg-primary;
+  border-radius: $radius-medium;
+  margin-bottom: $spacing-md;
+  box-shadow: $shadow-light;
 }
 
-.user-info {
-	display: flex;
-	align-items: center;
+.search-container {
+  display: flex;
+  align-items: center;
+  background: $bg-secondary;
+  border-radius: $radius-xl;
+  padding: $spacing-sm $spacing-md;
+  border: 1rpx solid $border-secondary;
 }
 
-.avatar {
-	width: 120rpx;
-	height: 120rpx;
-	border-radius: 60rpx;
-	margin-right: 30rpx;
-	border: 4rpx solid rgba(255, 255, 255, 0.3);
+.search-input {
+  flex: 1;
+  margin-left: $spacing-sm;
+  font-size: $font-size-md;
+  color: $text-primary;
 }
 
-.user-details {
-	display: flex;
-	flex-direction: column;
+.status-filter-section {
+  display: flex;
+  background: $bg-primary;
+  padding: $spacing-md;
+  border-radius: $radius-medium;
+  margin-bottom: $spacing-md;
+  box-shadow: $shadow-light;
 }
 
-.nickname {
-	font-size: 36rpx;
-	font-weight: bold;
-	margin-bottom: 10rpx;
+.status-filter-item {
+  flex: 1;
+  text-align: center;
+  font-size: $font-size-md;
+  color: $text-secondary;
+  position: relative;
+  padding: $spacing-sm 0;
+  transition: all 0.3s ease;
+  
+  &.active {
+    color: $primary-blue;
+    font-weight: 600;
+    
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 40rpx;
+      height: 4rpx;
+      background: $primary-blue;
+      border-radius: 2rpx;
+    }
+  }
 }
 
-.status {
-	font-size: 24rpx;
-	padding: 8rpx 20rpx;
-	border-radius: 20rpx;
-	background: rgba(255, 255, 255, 0.2);
+.order-list-container {
+  padding: $spacing-sm;
 }
 
-.status.online {
-	background: rgba(76, 175, 80, 0.8);
+.order-item-card {
+  background: $bg-primary;
+  margin-bottom: $spacing-md;
+  border-radius: $radius-medium;
+  padding: $spacing-md;
+  box-shadow: $shadow-light;
+  transition: all 0.3s ease;
+  
+  &:active {
+    transform: translateY(2rpx);
+    box-shadow: $shadow-medium;
+  }
 }
 
-.status.offline {
-	background: rgba(158, 158, 158, 0.8);
+.order-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: $spacing-md;
+  padding-bottom: $spacing-sm;
+  border-bottom: 1rpx solid $border-light;
 }
 
-.work-status-toggle {
-	transform: scale(0.8);
-}
-
-.stats-section {
-	display: flex;
-	justify-content: space-around;
-	margin-bottom: 30rpx;
-}
-
-.stat-item {
-	background: white;
-	border-radius: 20rpx;
-	padding: 30rpx;
-	text-align: center;
-	flex: 1;
-	margin: 0 10rpx;
-	box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.1);
-}
-
-.stat-number {
-	display: block;
-	font-size: 48rpx;
-	font-weight: bold;
-	color: #3cc51f;
-	margin-bottom: 10rpx;
-}
-
-.stat-label {
-	font-size: 24rpx;
-	color: #666;
-}
-
-.quick-actions {
-	display: flex;
-	justify-content: space-around;
-	margin-bottom: 30rpx;
-}
-
-.action-item {
-	background: white;
-	border-radius: 20rpx;
-	padding: 30rpx;
-	text-align: center;
-	flex: 1;
-	margin: 0 10rpx;
-	box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.1);
-}
-
-.action-icon {
-	font-size: 60rpx;
-	margin-bottom: 20rpx;
-}
-
-.action-text {
-	font-size: 26rpx;
-	color: #333;
-}
-
-.recent-orders {
-	background: white;
-	border-radius: 20rpx;
-	padding: 30rpx;
-	box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.1);
-}
-
-.section-header {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	margin-bottom: 30rpx;
-}
-
-.section-title {
-	font-size: 32rpx;
-	font-weight: bold;
-	color: #333;
-}
-
-.more {
-	font-size: 26rpx;
-	color: #3cc51f;
-}
-
-.order-item {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	padding: 20rpx 0;
-	border-bottom: 1rpx solid #f0f0f0;
-}
-
-.order-item:last-child {
-	border-bottom: none;
-}
-
-.order-info {
-	flex: 1;
-}
-
-.order-id {
-	display: block;
-	font-size: 28rpx;
-	color: #333;
-	margin-bottom: 10rpx;
+.order-number {
+  font-size: $font-size-md;
+  color: $text-primary;
+  font-weight: 500;
 }
 
 .order-status {
-	font-size: 24rpx;
-	padding: 6rpx 16rpx;
-	border-radius: 16rpx;
+  font-size: $font-size-sm;
+  padding: 4rpx 12rpx;
+  border-radius: $radius-small;
+  font-weight: 500;
+  
+  &.status-expired {
+    background: rgba($error-red, 0.1);
+    color: $error-red;
+  }
+  
+  &.status-delivering {
+    background: rgba($status-delivering, 0.1);
+    color: $status-delivering;
+  }
+  
+  &.status-pending {
+    background: rgba($status-pending, 0.1);
+    color: $status-pending;
+  }
+  
+  &.status-completed {
+    background: rgba($status-completed, 0.1);
+    color: $status-completed;
+  }
 }
 
-.order-status.pending {
-	background: #fff3e0;
-	color: #f57c00;
+.order-content {
+  display: flex;
+  align-items: flex-start;
 }
 
-.order-status.delivering {
-	background: #e3f2fd;
-	color: #1976d2;
+.product-image {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: $radius-small;
+  margin-right: $spacing-md;
+  background: $bg-secondary;
 }
 
-.order-status.completed {
-	background: #e8f5e8;
-	color: #388e3c;
+.order-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 120rpx;
 }
 
-.order-status.cancelled {
-	background: #ffebee;
-	color: #d32f2f;
+.delivery-address {
+  font-size: $font-size-md;
+  color: $text-primary;
+  margin-bottom: $spacing-xs;
+  line-height: 1.4;
 }
 
-.order-time {
-	display: flex;
-	align-items: center;
+.receiver-mobile {
+  font-size: $font-size-sm;
+  color: $text-secondary;
+  margin-bottom: $spacing-sm;
 }
 
-.time {
-	font-size: 24rpx;
-	color: #999;
-	margin-right: 20rpx;
+.action-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: $spacing-sm;
 }
 
-.arrow {
-	font-size: 24rpx;
-	color: #ccc;
+.action-button {
+  width: 56rpx;
+  height: 56rpx;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  
+  &.phone-button {
+    background: rgba($primary-blue, 0.1);
+    
+    &:active {
+      background: rgba($primary-blue, 0.2);
+      transform: scale(0.95);
+    }
+  }
+  
+  &.map-button {
+    background: rgba($success-green, 0.1);
+    
+    &:active {
+      background: rgba($success-green, 0.2);
+      transform: scale(0.95);
+    }
+  }
 }
-</style>
+</style> 
