@@ -1,1 +1,0 @@
-package cn.iocoder.boot.yudao.module.courier.controller.app;

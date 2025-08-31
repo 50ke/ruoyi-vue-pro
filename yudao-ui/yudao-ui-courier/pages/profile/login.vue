@@ -2,31 +2,11 @@
   <view class="login-container">
     <view class="header-decoration"></view>
     <view class="form-box">
-      <view class="title">欢迎登录</view>
+		<view class="btn-group">
+		  <button class="submit-btn" open-type="getPhoneNumber" @getphonenumber="handleSubmit">微信一键登录</button>
+		</view>
+		
       <view class="input-group">
-        <view class="tab-group">
-          <text :class="{active: loginType==='sms'}" @click="loginType='sms'">短信登录</text>
-          <text :class="{active: loginType==='pwd'}" @click="loginType='pwd'">账号密码登录</text>
-        </view>
-        <template v-if="loginType==='sms'">
-          <view class="input-box">
-            <input type="number" v-model="form.phone" maxlength="11" placeholder="请输入手机号" />
-          </view>
-          <view class="input-box code-box">
-            <input type="number" v-model="form.code" maxlength="6" placeholder="请输入验证码" />
-            <text class="code-btn" :class="{ disabled: counting }" @click="getVerifyCode">
-              {{ counting ? `${counter}s后重试` : '获取验证码' }}
-            </text>
-          </view>
-        </template>
-        <template v-else>
-          <view class="input-box">
-            <input type="text" v-model="form.username" placeholder="请输入用户名" />
-          </view>
-          <view class="input-box">
-            <input type="password" v-model="form.password" placeholder="请输入密码" />
-          </view>
-        </template>
         <view class="privacy-box">
           <checkbox-group @change="handlePrivacyChange">
             <checkbox :checked="form.agreePrivacy" style="transform:scale(0.7)" />
@@ -35,18 +15,13 @@
           <text class="privacy-link" @click="showPrivacyPolicy">《隐私政策》</text>
         </view>
       </view>
-      <view class="btn-group">
-        <button class="submit-btn" @click="handleSubmit">登 录</button>
-        <view class="action-links">
-          <text class="forget-pwd" @click="goToForgetPwd">忘记密码？</text>
-        </view>
-      </view>
+      
     </view>
   </view>
 </template>
 
 <script>
-import { loginByUsername, loginBySms, sendSmsCode } from '@/api/login.js';
+import { weixinLogin } from '@/api/login.js';
 export default {
   data() {
     return {
@@ -63,64 +38,38 @@ export default {
     }
   },
   methods: {
-    validatePhone(phone) {
-      return /^1[3-9]\d{9}$/.test(phone)
-    },
-    getVerifyCode() {
-      if (this.counting || this.loginType !== 'sms') return;
-      if (!this.form.phone) {
-        uni.showToast({ title: '请输入手机号', icon: 'none' }); return;
-      }
-      if (!this.validatePhone(this.form.phone)) {
-        uni.showToast({ title: '手机号格式不正确', icon: 'none' }); return;
-      }
-      this.counting = true; this.counter = 60;
-      const timer = setInterval(() => { this.counter--; if (this.counter <= 0) { clearInterval(timer); this.counting = false; } }, 1000);
-      sendSmsCode({ mobile: this.form.phone, scene: 31 }).then(res => {
-        if (res.code === 0) {
-          uni.showToast({ title: '验证码已发送', icon: 'success' });
-        }
-      });
-    },
     handlePrivacyChange(e) {
       this.form.agreePrivacy = e.detail.value.length > 0
     },
     showPrivacyPolicy() {
       uni.showModal({ title: '隐私政策', content: '这里是隐私政策内容...', showCancel: false })
     },
-    async handleSubmit() {
-      if (!this.form.agreePrivacy) {
-        uni.showToast({ title: '请同意隐私政策', icon: 'none' }); return;
-      }
-      if (this.loginType === 'sms') {
-        if (!this.form.phone || !this.form.code) {
-          uni.showToast({ title: '请填写完整信息', icon: 'none' }); return;
-        }
-        if (!this.validatePhone(this.form.phone)) {
-          uni.showToast({ title: '手机号格式不正确', icon: 'none' }); return;
-        }
-        const res = await loginBySms({ mobile: this.form.phone, code: this.form.code });
-        if (res.code === 0) {
-          uni.setStorageSync('token', res.data.accessToken);
-          uni.setStorageSync('refreshToken', res.data.refreshToken);
-          uni.showToast({ title: '登录成功', icon: 'success' });
-          setTimeout(() => { uni.switchTab({ url: '/pages/index/index' }); }, 500);
-        }
-      } else {
-        if (!this.form.username || !this.form.password) {
-          uni.showToast({ title: '请填写完整信息', icon: 'none' }); return;
-        }
-        const res = await loginByUsername({ username: this.form.username, password: this.form.password });
-        if (res.code === 0) {
-          uni.setStorageSync('token', res.data.accessToken);
-          uni.setStorageSync('refreshToken', res.data.refreshToken);
-          uni.showToast({ title: '登录成功', icon: 'success' });
-          setTimeout(() => { uni.switchTab({ url: '/pages/index/index' }); }, 500);
-        }
-      }
-    },
-    goToForgetPwd() {
-      uni.navigateTo({ url: '/pages/profile/forget-password' })
+	//获取手机号
+	getPhoneNumber(e){	
+		console.log(e);
+	},
+    async handleSubmit(e) {
+		if(e.detail.code == null){
+			uni.showToast({ title: '请允许授权手机号', icon: 'none' }); return;
+		}
+		if (!this.form.agreePrivacy) {
+		  uni.showToast({ title: '请同意隐私政策', icon: 'none' }); return;
+		}
+		uni.login({
+			provider: 'weixin', //使用微信登录
+			success: function (loginRes) {
+				const res = weixinLogin({ loginCode: loginRes.code, phoneCode: e.detail.code, state: '123' });
+				if (res.code === 0) {
+					uni.setStorageSync('token', res.data.accessToken);
+					uni.setStorageSync('refreshToken', res.data.refreshToken);
+					uni.showToast({ title: '登录成功', icon: 'success' });
+					setTimeout(() => { uni.switchTab({ url: '/pages/index/index' }); }, 500);
+				}
+			},
+			fail:function(err){
+				uni.showToast({ title: '登录失败', icon: 'none' }); return;
+			}
+		});	
     }
   }
 }
