@@ -32,6 +32,11 @@ public class CourierUserServiceImpl implements CourierUserService {
     }
 
     @Override
+    public CourierUserDO getByMobile(String mobile) {
+        return courierUserMapper.selectByMobile(mobile);
+    }
+
+    @Override
     public CourierUserDO createUserIfAbsent(String mobile, String registerIp, Integer terminal) {
         // 用户已经存在
         CourierUserDO user = courierUserMapper.selectByMobile(mobile);

@@ -15,8 +15,8 @@ import java.util.Arrays;
 @AllArgsConstructor
 public enum CourierWorkStatusEnum implements ArrayValuable<Integer> {
 
-    ONLINE(1, "在线"),
-    OFFLINE(2, "离线");
+    ONLINE(2, "在线"),
+    OFFLINE(1, "离线");
 
     public static final Integer[] ARRAYS = Arrays.stream(values()).map(CourierWorkStatusEnum::getStatus).toArray(Integer[]::new);
 

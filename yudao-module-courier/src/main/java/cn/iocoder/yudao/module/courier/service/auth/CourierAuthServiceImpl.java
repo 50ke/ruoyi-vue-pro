@@ -1,10 +1,12 @@
 package cn.iocoder.yudao.module.courier.service.auth;
 
 import cn.hutool.core.lang.Assert;
+import cn.iocoder.yudao.framework.common.exception.util.ServiceExceptionUtil;
 import cn.iocoder.yudao.module.courier.controller.app.auth.vo.AppAuthLoginRespVO;
 import cn.iocoder.yudao.module.courier.controller.app.auth.vo.AppAuthWeixinMiniAppLoginReqVO;
 import cn.iocoder.yudao.module.courier.convert.auth.AuthConvert;
 import cn.iocoder.yudao.module.courier.dal.dataobject.user.CourierUserDO;
+import cn.iocoder.yudao.module.courier.enums.ErrorCodeConstants;
 import cn.iocoder.yudao.module.courier.service.user.CourierUserService;
 import cn.iocoder.yudao.framework.common.biz.system.oauth2.OAuth2TokenCommonApi;
 import cn.iocoder.yudao.framework.common.biz.system.oauth2.dto.OAuth2AccessTokenCreateReqDTO;
@@ -59,9 +61,10 @@ public class CourierAuthServiceImpl implements CourierAuthService {
         Assert.notNull(phoneNumberInfo, "获得手机信息失败，结果为空");
 
         // 获得获得注册用户
-        CourierUserDO user = courierUserService.createUserIfAbsent(phoneNumberInfo.getPurePhoneNumber(),
-                getClientIP(), TerminalEnum.WECHAT_MINI_PROGRAM.getTerminal());
-        Assert.notNull(user, "获取用户失败，结果为空");
+        CourierUserDO user = courierUserService.getByMobile(phoneNumberInfo.getPurePhoneNumber());
+        if (user == null){
+            throw ServiceExceptionUtil.exception(ErrorCodeConstants.USER_MOBILE_NOT_EXISTS);
+        }
 
         // 绑定社交用户
         String openid = socialUserApi.bindSocialUser(new SocialUserBindReqDTO(user.getId(), getUserType().getValue(),

@@ -45,11 +45,6 @@ public class CourierUserDO extends TenantBaseDO {
     private String avatar;
 
     /**
-     * 微信openid
-     */
-    private String openid;
-
-    /**
      * 帐号状态
      *
      * 枚举 {@link CommonStatusEnum}

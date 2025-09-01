@@ -21,6 +21,13 @@ public interface CourierUserService {
     CourierUserDO getUser(Long id);
 
     /**
+     * 通过手机号获取用户
+     * @param mobile 手机号
+     * @return 用户对象信息
+     */
+    CourierUserDO getByMobile(String mobile);
+
+    /**
      * 基于手机号创建用户。
      * 如果用户已经存在，则直接进行返回
      *
