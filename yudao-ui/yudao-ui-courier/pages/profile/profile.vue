@@ -1,264 +1,348 @@
 <template>
-  <view class="profile-page">
+  <view class="profile-container">
     <!-- 用户信息卡片 -->
-    <view class="user-profile-card">
-      <view class="user-info-section">
-        <image class="user-avatar" :src="userProfile.logo || '/static/logo.jpg'" mode="aspectFill" />
-        <view class="user-details">
-          <view class="user-name">{{ userProfile.name || '立即登录' }}</view>
-          <view class="user-badge">
-            <uni-icons type="vip" size="14" color="#FFD700"></uni-icons>
-            <text>{{ authStatusText }}</text>
-          </view>
+    <view class="user-card">
+      <view class="avatar-section">
+        <image 
+          :src="userInfo.avatar || '/static/default-avatar.png'" 
+          class="avatar"
+          @click="changeAvatar"
+        />
+        <view class="user-info">
+          <text class="nickname">{{ userInfo.nickname || '配送员' }}</text>
+          <text class="mobile">{{ userInfo.mobile || '未绑定手机号' }}</text>
         </view>
       </view>
-      <!-- 配送统计数据 -->
-      <view class="delivery-stats-section">
-        <view class="stat-item">
-          <view class="stat-number">{{ deliveryStats.deliveringCount }}</view>
-          <view class="stat-label">配送中</view>
-        </view>
-        <view class="stat-item">
-          <view class="stat-number">{{ deliveryStats.completedCount }}</view>
-          <view class="stat-label">已完成</view>
-        </view>
-        <view class="stat-item">
-          <view class="stat-number">{{ deliveryStats.totalEarnings }}</view>
-          <view class="stat-label">总收入</view>
-        </view>
+      
+      <!-- 工作状态切换 -->
+      <view class="work-status">
+        <text class="status-label">工作状态</text>
+        <switch 
+          :checked="userInfo.workStatus === 1" 
+          @change="toggleWorkStatus"
+          color="#6B8DE3"
+        />
+        <text class="status-text">{{ userInfo.workStatus === 1 ? '在线' : '离线' }}</text>
       </view>
     </view>
-    <!-- 个人信息陈列（卡片外） -->
-    <view class="profile-info-list">
-      <view class="profile-info-row">
-        <text class="label">工号</text>
-        <text class="value">{{ userProfile.code }}</text>
+
+    <!-- 功能菜单 -->
+    <view class="menu-list">
+      <view class="menu-item" @click="goToOrders">
+        <view class="menu-left">
+          <text class="menu-icon">📦</text>
+          <text class="menu-text">我的订单</text>
+        </view>
+        <text class="menu-arrow">></text>
       </view>
-      <view class="divider"></view>
-      <view class="profile-info-row">
-        <text class="label">用户名</text>
-        <text class="value">{{ userProfile.username }}</text>
+      
+      <view class="menu-item" @click="goToSettings">
+        <view class="menu-left">
+          <text class="menu-icon">⚙️</text>
+          <text class="menu-text">设置</text>
+        </view>
+        <text class="menu-arrow">></text>
       </view>
-      <view class="divider"></view>
-      <view class="profile-info-row">
-        <text class="label">手机号</text>
-        <text class="value">{{ userProfile.mobile }}</text>
+      
+      <view class="menu-item" @click="goToHelp">
+        <view class="menu-left">
+          <text class="menu-icon">❓</text>
+          <text class="menu-text">帮助中心</text>
+        </view>
+        <text class="menu-arrow">></text>
+      </view>
+      
+      <view class="menu-item" @click="goToAbout">
+        <view class="menu-left">
+          <text class="menu-icon">ℹ️</text>
+          <text class="menu-text">关于我们</text>
+        </view>
+        <text class="menu-arrow">></text>
       </view>
     </view>
+
     <!-- 退出登录按钮 -->
     <view class="logout-section">
-      <button class="logout-btn" @click="confirmLogout">退出登录</button>
+      <button class="logout-btn" @click="handleLogout">退出登录</button>
     </view>
   </view>
 </template>
 
 <script>
-import { getCourierProfile } from '@/api/courier.js';
-import { checkLogin } from '@/utils/auth.js';
-import { logout } from '@/api/login.js';
+import { checkPageAuth, getCurrentUser, updateWorkStatus } from '@/utils/middleware.js';
+import { getUserInfo, updateWorkStatus as updateWorkStatusApi, logout } from '@/api/login.js';
+import store from '@/utils/store.js';
 
 export default {
-  name: 'ProfilePage',
   data() {
     return {
-      userProfile: {
-        logo: '/static/logo.jpg',
-        name: '',
-        code: '',
-        username: '',
-        mobile: '',
-        status: null
-      },
-      deliveryStats: {
-        deliveringCount: 2,
-        completedCount: 156,
-        totalEarnings: '¥2,580'
-      },
-      isAuthed: false
+      userInfo: {},
+      loading: false
     }
   },
-  computed: {
-    authStatusText() {
-      if (this.userProfile.status === 0) {
-        return '已认证';
-      } else if (this.userProfile.status != null) {
-        return '未认证';
-      } else {
-        return '';
-      }
-    }
-  },
+  
   async onLoad() {
-    if (!checkLogin()) return;
-    await this.fetchProfile();
+    try {
+      // 检查页面认证状态
+      await checkPageAuth();
+      
+      // 获取用户信息
+      await this.loadUserInfo();
+    } catch (error) {
+      console.error('页面加载失败:', error);
+    }
   },
+  
+  onShow() {
+    // 每次显示时刷新用户信息
+    this.loadUserInfo();
+  },
+  
   methods: {
-    async fetchProfile() {
+    // 加载用户信息
+    async loadUserInfo() {
       try {
-        const res = await getCourierProfile();
-        if (res.code === 0 && res.data) {
-          this.userProfile = res.data;
-          this.isAuthed = res.data.status === 0;
-        } else {
-          this.isAuthed = false;
+        this.loading = true;
+        
+        // 先从本地获取
+        const localUserInfo = getCurrentUser();
+        if (localUserInfo) {
+          this.userInfo = localUserInfo;
         }
-      } catch (e) {
-        this.isAuthed = false;
+        
+        // 从服务器获取最新信息
+        const response = await getUserInfo();
+        if (response.code === 0 && response.data) {
+          this.userInfo = response.data;
+          // 更新本地存储和全局状态
+          store.setUserInfo(response.data);
+        }
+      } catch (error) {
+        console.error('获取用户信息失败:', error);
+        uni.showToast({ title: '获取用户信息失败', icon: 'none' });
+      } finally {
+        this.loading = false;
       }
     },
-    confirmLogout() {
-      uni.showModal({
-        title: '确认退出',
-        content: '确定要退出登录吗？',
-        confirmText: '退出',
-        confirmColor: '#ff4d4f',
-        cancelText: '取消',
+    
+    // 切换工作状态
+    async toggleWorkStatus(e) {
+      try {
+        const newStatus = e.detail.value ? 1 : 2;
+        const response = await updateWorkStatusApi({ status: newStatus });
+        
+        if (response.code === 0) {
+          // 更新本地状态
+          this.userInfo.workStatus = newStatus;
+          updateWorkStatus(newStatus);
+          
+          uni.showToast({ 
+            title: newStatus === 1 ? '已切换为在线' : '已切换为离线', 
+            icon: 'success' 
+          });
+        } else {
+          uni.showToast({ title: response.msg || '状态更新失败', icon: 'none' });
+        }
+      } catch (error) {
+        console.error('更新工作状态失败:', error);
+        uni.showToast({ title: '状态更新失败', icon: 'none' });
+      }
+    },
+    
+    // 更换头像
+    changeAvatar() {
+      uni.chooseImage({
+        count: 1,
+        sizeType: ['compressed'],
+        sourceType: ['album', 'camera'],
         success: async (res) => {
-          if (res.confirm) {
-            await this.handleLogout();
+          try {
+            const tempFilePath = res.tempFilePaths[0];
+            // 这里可以上传图片到服务器，然后更新头像
+            // const uploadResult = await uploadImage(tempFilePath);
+            // await updateAvatar(uploadResult.url);
+            
+            uni.showToast({ title: '头像更新成功', icon: 'success' });
+          } catch (error) {
+            console.error('头像更新失败:', error);
+            uni.showToast({ title: '头像更新失败', icon: 'none' });
           }
         }
       });
     },
+    
+    // 跳转到订单页面
+    goToOrders() {
+      uni.switchTab({ url: '/pages/order/order' });
+    },
+    
+    // 跳转到设置页面
+    goToSettings() {
+      uni.navigateTo({ url: '/pages/profile/settings' });
+    },
+    
+    // 跳转到帮助页面
+    goToHelp() {
+      uni.navigateTo({ url: '/pages/profile/help' });
+    },
+    
+    // 跳转到关于页面
+    goToAbout() {
+      uni.navigateTo({ url: '/pages/profile/about' });
+    },
+    
+    // 退出登录
     async handleLogout() {
-      try {
-        await logout();
-      } catch (e) {}
-      uni.removeStorageSync('token');
-      uni.removeStorageSync('refreshToken');
-      uni.redirectTo({ url: '/pages/profile/login' });
+      uni.showModal({
+        title: '确认退出',
+        content: '确定要退出登录吗？',
+        success: async (res) => {
+          if (res.confirm) {
+            try {
+              // 调用后端登出接口
+              await logout();
+              
+              // 清除本地状态
+              store.reset();
+              
+              uni.showToast({ title: '已退出登录', icon: 'success' });
+              
+              // 跳转到登录页
+              setTimeout(() => {
+                uni.reLaunch({ url: '/pages/profile/login' });
+              }, 1000);
+              
+            } catch (error) {
+              console.error('退出登录失败:', error);
+              // 即使后端调用失败，也要清除本地状态
+              store.reset();
+              uni.reLaunch({ url: '/pages/profile/login' });
+            }
+          }
+        }
+      });
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-@import '@/uni.scss';
-
-.profile-page {
+.profile-container {
   min-height: 100vh;
-  background-color: $bg-page;
-  padding: $spacing-md;
+  background: #f5f6fa;
+  padding: 20rpx;
 }
 
-.user-profile-card {
-  background: $gradient-primary;
-  border-radius: $radius-xl;
-  padding: $spacing-xl;
-  color: $bg-primary;
-  margin-bottom: $spacing-lg;
-  box-shadow: $shadow-medium;
+.user-card {
+  background: $bg-primary;
+  border-radius: 20rpx;
+  padding: 40rpx;
+  margin-bottom: 30rpx;
+  box-shadow: $shadow-light;
   
-  .user-info-section {
+  .avatar-section {
     display: flex;
     align-items: center;
-    margin-bottom: $spacing-xl;
+    margin-bottom: 40rpx;
     
-    .user-avatar {
-      width: 130rpx;
-      height: 130rpx;
-      border-radius: 50%;
-      border: 4rpx solid rgba(255,255,255,0.3);
-      box-shadow: $shadow-light;
+    .avatar {
+      width: 120rpx;
+      height: 120rpx;
+      border-radius: 60rpx;
+      margin-right: 30rpx;
+      border: 4rpx solid #e6eaf0;
     }
     
-    .user-details {
+    .user-info {
       flex: 1;
-      margin-left: $spacing-lg;
       
-      .user-name {
-        font-size: $font-size-xxl;
+      .nickname {
+        display: block;
+        font-size: 36rpx;
         font-weight: 600;
-        margin-bottom: $spacing-sm;
-        text-shadow: 0 2rpx 4rpx rgba(0, 0, 0, 0.1);
+        color: $text-primary;
+        margin-bottom: 10rpx;
       }
       
-      .user-badge {
-        display: flex;
-        align-items: center;
-        background: rgba(255,255,255,0.2);
-        padding: 4rpx $spacing-sm;
-        border-radius: $radius-xl;
-        width: fit-content;
-        
-        text {
-          font-size: $font-size-sm;
-          margin-left: $spacing-xs;
-          font-weight: 500;
-        }
+      .mobile {
+        font-size: 28rpx;
+        color: $text-secondary;
       }
     }
   }
-  .delivery-stats-section {
-    display: flex;
-    justify-content: space-around;
-    
-    .stat-item {
-      text-align: center;
-      
-      .stat-number {
-        font-size: $font-size-xxl;
-        font-weight: 600;
-        margin-bottom: $spacing-xs;
-        text-shadow: 0 2rpx 4rpx rgba(0, 0, 0, 0.1);
-      }
-      
-      .stat-label {
-        font-size: $font-size-sm;
-        opacity: 0.9;
-        font-weight: 500;
-      }
-    }
-  }
-}
-
-.profile-info-list {
-  margin-bottom: $spacing-lg;
-  background: $bg-primary;
-  border-radius: $radius-large;
-  box-shadow: $shadow-light;
-  padding: $spacing-lg $spacing-xl;
-  .profile-info-row {
+  
+  .work-status {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    font-size: $font-size-lg;
-    color: $text-primary;
-    padding: 18rpx 0;
-    .label {
-      color: $primary-blue;
-      font-weight: 600;
-      font-size: $font-size-md;
-      margin-right: 12rpx;
-      letter-spacing: 1rpx;
+    
+    .status-label {
+      font-size: 30rpx;
+      color: $text-primary;
     }
-    .value {
+    
+    .status-text {
+      font-size: 28rpx;
       color: $text-secondary;
-      font-size: $font-size-md;
+      margin-left: 20rpx;
     }
   }
-  .divider {
-    height: 1rpx;
-    background: $border-light;
-    margin: 0 0;
-    opacity: 0.5;
+}
+
+.menu-list {
+  background: $bg-primary;
+  border-radius: 20rpx;
+  margin-bottom: 30rpx;
+  box-shadow: $shadow-light;
+  
+  .menu-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 30rpx 40rpx;
+    border-bottom: 1rpx solid #f0f0f0;
+    
+    &:last-child {
+      border-bottom: none;
+    }
+    
+    .menu-left {
+      display: flex;
+      align-items: center;
+      
+      .menu-icon {
+        font-size: 40rpx;
+        margin-right: 20rpx;
+      }
+      
+      .menu-text {
+        font-size: 30rpx;
+        color: $text-primary;
+      }
+    }
+    
+    .menu-arrow {
+      font-size: 30rpx;
+      color: #ccc;
+    }
   }
 }
 
 .logout-section {
-  margin-top: 60rpx;
-  display: flex;
-  justify-content: center;
-}
-.logout-btn {
-  width: 80vw;
-  height: 80rpx;
-  background: linear-gradient(90deg, #ff4d4f, #ff7875);
-  color: #fff;
-  font-size: 32rpx;
-  border: none;
-  border-radius: 40rpx;
-  font-weight: 600;
-  margin: 0 auto;
+  padding: 40rpx 0;
+  
+  .logout-btn {
+    width: 100%;
+    height: 80rpx;
+    border-radius: 40rpx;
+    background: #ff4d4f;
+    color: #fff;
+    font-size: 30rpx;
+    border: none;
+    
+    &:active {
+      opacity: 0.8;
+    }
+  }
 }
 </style>

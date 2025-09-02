@@ -4,18 +4,10 @@ import cn.iocoder.yudao.module.courier.enums.CourierWorkStatusEnum;
 import cn.iocoder.yudao.framework.common.validation.InEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
-import org.hibernate.validator.constraints.URL;
 
 @Schema(description = "用户 App - 会员用户更新 Request VO")
 @Data
 public class AppCourierUserUpdateReqVO {
-
-    @Schema(description = "用户昵称", requiredMode = Schema.RequiredMode.REQUIRED, example = "李四")
-    private String nickname;
-
-    @Schema(description = "头像", requiredMode = Schema.RequiredMode.REQUIRED, example = "https://www.iocoder.cn/x.png")
-    @URL(message = "头像必须是 URL 格式")
-    private String avatar;
 
     @Schema(description = "工作状态", requiredMode = Schema.RequiredMode.REQUIRED, example = "1")
     @InEnum(CourierWorkStatusEnum.class)

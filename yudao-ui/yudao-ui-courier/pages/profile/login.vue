@@ -2,10 +2,20 @@
   <view class="login-container">
     <view class="header-decoration"></view>
     <view class="form-box">
-		<view class="btn-group">
-		  <button class="submit-btn" open-type="getPhoneNumber" @getphonenumber="handleSubmit">微信一键登录</button>
-		</view>
-		
+      <view class="title">配送员登录</view>
+      
+      <view class="btn-group">
+        <button 
+          class="submit-btn" 
+          open-type="getPhoneNumber" 
+          @getphonenumber="handleSubmit"
+          :disabled="loading"
+          :loading="loading"
+        >
+          {{ loading ? '登录中...' : '微信一键登录' }}
+        </button>
+      </view>
+      
       <view class="input-group">
         <view class="privacy-box">
           <checkbox-group @change="handlePrivacyChange">
@@ -16,60 +26,131 @@
         </view>
       </view>
       
+      <!-- 错误提示 -->
+      <view v-if="errorMsg" class="error-tip">
+        {{ errorMsg }}
+      </view>
     </view>
   </view>
 </template>
 
 <script>
 import { weixinLogin } from '@/api/login.js';
+import { setToken, setUserInfo } from '@/utils/auth.js';
+
 export default {
   data() {
     return {
-      loginType: 'sms', // 'sms' or 'pwd'
-      counting: false,
-      counter: 60,
+      loading: false,
+      errorMsg: '',
       form: {
-        phone: '',
-        code: '',
-        username: '',
-        password: '',
         agreePrivacy: false
       }
     }
   },
+  
+  onLoad(options) {
+    // 检查是否有重定向参数
+    if (options.redirect) {
+      this.redirectUrl = decodeURIComponent(options.redirect);
+    }
+  },
+  
   methods: {
     handlePrivacyChange(e) {
-      this.form.agreePrivacy = e.detail.value.length > 0
+      this.form.agreePrivacy = e.detail.value.length > 0;
+      this.clearError();
     },
+    
     showPrivacyPolicy() {
-      uni.showModal({ title: '隐私政策', content: '这里是隐私政策内容...', showCancel: false })
+      uni.showModal({ 
+        title: '隐私政策', 
+        content: '我们承诺保护您的个人信息安全，不会向第三方泄露您的隐私信息。', 
+        showCancel: false 
+      });
     },
-	//获取手机号
-	getPhoneNumber(e){	
-		console.log(e);
-	},
+    
+    clearError() {
+      this.errorMsg = '';
+    },
+    
     async handleSubmit(e) {
-		if(e.detail.code == null){
-			uni.showToast({ title: '请允许授权手机号', icon: 'none' }); return;
-		}
-		if (!this.form.agreePrivacy) {
-		  uni.showToast({ title: '请同意隐私政策', icon: 'none' }); return;
-		}
-		uni.login({
-			provider: 'weixin', //使用微信登录
-			success: function (loginRes) {
-				const res = weixinLogin({ loginCode: loginRes.code, phoneCode: e.detail.code, state: '123' });
-				if (res.code === 0) {
-					uni.setStorageSync('token', res.data.accessToken);
-					uni.setStorageSync('refreshToken', res.data.refreshToken);
-					uni.showToast({ title: '登录成功', icon: 'success' });
-					setTimeout(() => { uni.switchTab({ url: '/pages/index/index' }); }, 500);
-				}
-			},
-			fail:function(err){
-				uni.showToast({ title: '登录失败', icon: 'none' }); return;
-			}
-		});	
+      // 清除之前的错误信息
+      this.clearError();
+      
+      // 验证授权
+      if (e.detail.code == null) {
+        this.errorMsg = '请允许授权手机号';
+        return;
+      }
+      
+      // 验证隐私政策
+      if (!this.form.agreePrivacy) {
+        this.errorMsg = '请同意隐私政策';
+        return;
+      }
+      
+      this.loading = true;
+      
+      try {
+        // 获取微信登录code
+        const loginResult = await this.getWeixinLoginCode();
+        
+        // 调用后端登录接口
+        const loginResponse = await weixinLogin({ 
+          loginCode: loginResult.code, 
+          phoneCode: e.detail.code, 
+          state: 'courier-login' 
+        });
+        
+        if (loginResponse.code === 0 && loginResponse.data) {
+          const { accessToken, refreshToken, expiresTime, user } = loginResponse.data;
+          
+          // 保存token和用户信息
+          setToken(accessToken, refreshToken, expiresTime);
+          if (user) {
+            setUserInfo(user);
+          }
+          
+          uni.showToast({ title: '登录成功', icon: 'success' });
+          
+          // 延迟跳转，让用户看到成功提示
+          setTimeout(() => {
+            if (this.redirectUrl) {
+              // 跳转到重定向页面
+              uni.redirectTo({ url: this.redirectUrl });
+            } else {
+              // 跳转到首页
+              uni.switchTab({ url: '/pages/index/index' });
+            }
+          }, 1000);
+          
+        } else {
+          this.errorMsg = loginResponse.msg || '登录失败，请重试';
+        }
+        
+      } catch (error) {
+        console.error('Login error:', error);
+        this.errorMsg = '登录失败，请检查网络连接后重试';
+      } finally {
+        this.loading = false;
+      }
+    },
+    
+    // 获取微信登录code
+    getWeixinLoginCode() {
+      return new Promise((resolve, reject) => {
+        uni.login({
+          provider: 'weixin',
+          success: (loginRes) => {
+            resolve(loginRes);
+          },
+          fail: (err) => {
+            console.error('Weixin login failed:', err);
+            reject(new Error('微信登录失败'));
+          }
+        });
+      });
     }
   }
 }
@@ -84,6 +165,7 @@ export default {
   display: flex;
   flex-direction: column;
 }
+
 .header-decoration {
   height: 420rpx;
   background: linear-gradient(135deg, #6B8DE3, #7C5CBF);
@@ -101,6 +183,7 @@ export default {
     transform: scaleX(1.5);
   }
 }
+
 .form-box {
   margin-top: -180rpx;
   background: $bg-primary;
@@ -109,6 +192,7 @@ export default {
   box-shadow: $shadow-medium;
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.9);
+  
   .title {
     font-size: 40rpx;
     font-weight: 600;
@@ -117,61 +201,19 @@ export default {
     color: $text-primary;
     letter-spacing: 2rpx;
   }
-  .tab-group {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 40rpx;
-    text {
-      font-size: 32rpx;
-      margin: 0 30rpx;
-      color: #888;
-      padding-bottom: 8rpx;
-      border-bottom: 4rpx solid transparent;
-      transition: all 0.2s;
-      &.active {
-        color: $primary-blue;
-        border-bottom: 4rpx solid $primary-blue;
-        font-weight: 600;
-      }
-    }
-  }
 }
-.input-group .input-box {
-  display: flex;
-  align-items: center;
-  background: rgba(255, 255, 255, 0.98);
-  border-radius: 16rpx;
-  margin-bottom: 32rpx;
-  padding: 24rpx 40rpx;
-  box-shadow: 0 2rpx 8rpx rgba(114, 130, 183, 0.06);
-  border: 1px solid #e6eaf0;
-  input {
-    flex: 1;
-    font-size: 32rpx;
-    background: transparent;
-    border: none;
-    outline: none;
-    color: $text-primary;
-  }
-  .code-btn {
-    margin-left: 20rpx;
-    color: $primary-blue;
-    font-size: 28rpx;
-    font-weight: 500;
-    &.disabled {
-      color: #ccc;
-    }
-  }
-}
+
 .privacy-box {
   display: flex;
   align-items: center;
   margin-bottom: 30rpx;
+  
   .privacy-text {
     font-size: 24rpx;
     color: #888;
     margin-left: 10rpx;
   }
+  
   .privacy-link {
     font-size: 24rpx;
     color: $primary-blue;
@@ -179,6 +221,7 @@ export default {
     text-decoration: underline;
   }
 }
+
 .btn-group {
   .submit-btn {
     width: 100%;
@@ -191,17 +234,22 @@ export default {
     margin-bottom: 20rpx;
     box-shadow: 0 4rpx 16rpx rgba(107, 141, 227, 0.12);
     letter-spacing: 2rpx;
-  }
-  .action-links {
-    display: flex;
-    justify-content: flex-end;
-    .forget-pwd {
-      color: $primary-blue;
-      font-size: 26rpx;
-      text-decoration: underline;
-      margin-left: 20rpx;
-      font-weight: 500;
+    
+    &:disabled {
+      opacity: 0.6;
+      background: #ccc;
     }
   }
+}
+
+.error-tip {
+  background: #fff2f0;
+  border: 1px solid #ffccc7;
+  border-radius: 8rpx;
+  padding: 20rpx;
+  margin-top: 20rpx;
+  color: #ff4d4f;
+  font-size: 26rpx;
+  text-align: center;
 }
 </style>
