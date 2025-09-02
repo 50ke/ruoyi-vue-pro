@@ -1,6 +1,7 @@
 package cn.iocoder.yudao.module.courier.service.auth;
 
 import cn.hutool.core.lang.Assert;
+import cn.iocoder.yudao.framework.common.enums.CommonStatusEnum;
 import cn.iocoder.yudao.framework.common.exception.util.ServiceExceptionUtil;
 import cn.iocoder.yudao.module.courier.controller.app.auth.vo.AppAuthLoginRespVO;
 import cn.iocoder.yudao.module.courier.controller.app.auth.vo.AppAuthWeixinMiniAppLoginReqVO;
@@ -11,7 +12,6 @@ import cn.iocoder.yudao.module.courier.service.user.CourierUserService;
 import cn.iocoder.yudao.framework.common.biz.system.oauth2.OAuth2TokenCommonApi;
 import cn.iocoder.yudao.framework.common.biz.system.oauth2.dto.OAuth2AccessTokenCreateReqDTO;
 import cn.iocoder.yudao.framework.common.biz.system.oauth2.dto.OAuth2AccessTokenRespDTO;
-import cn.iocoder.yudao.framework.common.enums.TerminalEnum;
 import cn.iocoder.yudao.framework.common.enums.UserTypeEnum;
 import cn.iocoder.yudao.framework.common.util.monitor.TracerUtils;
 import cn.iocoder.yudao.framework.common.util.servlet.ServletUtils;
@@ -65,7 +65,11 @@ public class CourierAuthServiceImpl implements CourierAuthService {
         if (user == null){
             throw ServiceExceptionUtil.exception(ErrorCodeConstants.USER_MOBILE_NOT_EXISTS);
         }
-
+        // 校验是否禁用
+        if (CommonStatusEnum.isDisable(user.getStatus())) {
+            createLoginLog(user.getId(), user.getMobile(), LoginLogTypeEnum.LOGIN_SOCIAL, LoginResultEnum.USER_DISABLED);
+            throw ServiceExceptionUtil.exception(ErrorCodeConstants.AUTH_LOGIN_USER_DISABLED);
+        }
         // 绑定社交用户
         String openid = socialUserApi.bindSocialUser(new SocialUserBindReqDTO(user.getId(), getUserType().getValue(),
                 SocialTypeEnum.WECHAT_MINI_PROGRAM.getType(), reqVO.getLoginCode(), reqVO.getState()));
