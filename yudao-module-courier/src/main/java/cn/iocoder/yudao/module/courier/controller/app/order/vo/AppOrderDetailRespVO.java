@@ -32,7 +32,7 @@ public class AppOrderDetailRespVO {
     @Schema(description = "用户备注")
     private String userRemark;
     @Schema(description = "商品明细")
-    private List<OrderItem> items;
+    private List<OrderItem> orderItems;
 
     @Schema(description = "配送订单 App - 订单项")
     @Data

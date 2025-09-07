@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Schema(description = "配送员 - 配送订单 Response VO")
 @Data
@@ -22,8 +23,12 @@ public class AppOrderRespVO {
     private String receiverDetailAddress;
     @Schema(description = "配送状态")
     private Integer deliveryStatus;
-    @Schema(description = "下单时间")
-    private LocalDateTime createTime;
+    @Schema(description = "支付时间")
+    private LocalDateTime payTime;
+    @Schema(description = "取货时间")
+    private LocalDateTime pickupTime;
+    @Schema(description = "送达时间")
+    private LocalDateTime deliveryTime;
     @Schema(description = "商品图片")
-    private String pic;
+    private List<String> pics;
 }

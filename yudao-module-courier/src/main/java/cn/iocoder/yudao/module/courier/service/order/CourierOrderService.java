@@ -33,7 +33,6 @@ public interface CourierOrderService {
     /**
      * 修改订单状态
      * @param reqVO 订单信息
-     * @return 更新结果
      */
-    Boolean updateOrder(@Valid AppOrderUpdateReqVO reqVO);
+    void updateOrder(@Valid AppOrderUpdateReqVO reqVO);
 }

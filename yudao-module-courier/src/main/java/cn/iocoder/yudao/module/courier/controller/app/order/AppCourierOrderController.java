@@ -44,6 +44,7 @@ public class AppCourierOrderController {
     @PostMapping("/update")
     @Operation(summary = "更新配送订单")
     public CommonResult<Boolean> updateOrder(@Valid @RequestBody AppOrderUpdateReqVO reqVO) {
-        return success(courierOrderService.updateOrder(reqVO));
+        courierOrderService.updateOrder(reqVO);
+        return success(true);
     }
 }

@@ -72,7 +72,7 @@ public interface TradeOrderConvert {
     })
     TradeOrderDO convert(Long userId, AppTradeOrderCreateReqVO createReqVO, TradePriceCalculateRespBO calculateRespBO);
 
-    TradeOrderRespDTO convert(TradeOrderDO orderDO);
+    TradeOrderRespDTO convert01(TradeOrderDO orderDO, List<TradeOrderItemDO> orderItems);
 
     default List<TradeOrderItemDO> convertList(TradeOrderDO tradeOrderDO, TradePriceCalculateRespBO calculateRespBO) {
         return CollectionUtils.convertList(calculateRespBO.getItems(), item -> {
@@ -274,7 +274,10 @@ public interface TradeOrderConvert {
     }
 
     @Named("convertList04")
-    List<TradeOrderRespDTO> convertList04(List<TradeOrderDO> list);
+    default List<TradeOrderRespDTO> convertList04(List<TradeOrderDO> list, List<TradeOrderItemDO> orderItems){
+        Map<Long, List<TradeOrderItemDO>> orderItemMap = convertMultiMap(orderItems, TradeOrderItemDO::getOrderId);
+        return list.stream().map(order -> convert01(order, orderItemMap.get(order.getId()))).toList();
+    }
 
     @Mappings({
             @Mapping(target = "activityId", source = "order.combinationActivityId"),

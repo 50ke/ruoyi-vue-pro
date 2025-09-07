@@ -2,6 +2,7 @@ package cn.iocoder.yudao.module.trade.api.order;
 
 import cn.iocoder.yudao.module.trade.api.order.dto.TradeOrderRespDTO;
 import cn.iocoder.yudao.module.trade.convert.order.TradeOrderConvert;
+import cn.iocoder.yudao.module.trade.dal.dataobject.order.TradeOrderItemDO;
 import cn.iocoder.yudao.module.trade.service.order.TradeOrderQueryService;
 import cn.iocoder.yudao.module.trade.service.order.TradeOrderUpdateService;
 import jakarta.annotation.Resource;
@@ -27,12 +28,14 @@ public class TradeOrderApiImpl implements TradeOrderApi {
 
     @Override
     public List<TradeOrderRespDTO> getOrderList(Collection<Long> ids) {
-        return TradeOrderConvert.INSTANCE.convertList04(tradeOrderQueryService.getOrderList(ids));
+        List<TradeOrderItemDO> orderItemDOList = tradeOrderQueryService.getOrderItemListByOrderId(ids);
+        return TradeOrderConvert.INSTANCE.convertList04(tradeOrderQueryService.getOrderList(ids), orderItemDOList);
     }
 
     @Override
     public TradeOrderRespDTO getOrder(Long id) {
-        return TradeOrderConvert.INSTANCE.convert(tradeOrderQueryService.getOrder(id));
+        List<TradeOrderItemDO> orderItemDOList = tradeOrderQueryService.getOrderItemListByOrderId(id);
+        return TradeOrderConvert.INSTANCE.convert01(tradeOrderQueryService.getOrder(id), orderItemDOList);
     }
 
     @Override
