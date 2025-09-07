@@ -8,11 +8,9 @@ import cn.iocoder.yudao.module.courier.api.user.dto.CourierUserRespDTO;
 import cn.iocoder.yudao.module.merchant.controller.app.user.vo.AppMerchantCourierCreateReqVO;
 import cn.iocoder.yudao.module.merchant.controller.app.user.vo.AppMerchantCourierRespVO;
 import cn.iocoder.yudao.module.merchant.controller.app.user.vo.AppMerchantStoreRespVO;
-import cn.iocoder.yudao.module.merchant.controller.app.user.vo.AppMerchantUserUpdateReqVO;
 import cn.iocoder.yudao.module.merchant.convert.store.MerchantStoreConvert;
 import cn.iocoder.yudao.module.merchant.dal.dataobject.user.MerchantUserDO;
 import cn.iocoder.yudao.module.merchant.dal.mysql.user.MerchantUserMapper;
-import cn.iocoder.yudao.framework.common.util.object.BeanUtils;
 import cn.iocoder.yudao.module.merchant.enums.ErrorCodeConstants;
 import cn.iocoder.yudao.module.trade.api.delivery.TradeDeliveryApi;
 import cn.iocoder.yudao.module.trade.api.delivery.dto.TradeDeliveryPickUpStoreRespDTO;
@@ -51,12 +49,6 @@ public class MerchantUserServiceImpl implements MerchantUserService {
     @Override
     public MerchantUserDO getByMobile(String mobile) {
         return merchantUserMapper.selectByMobile(mobile);
-    }
-
-    @Override
-    public void updateUser(Long userId, AppMerchantUserUpdateReqVO reqVO) {
-        MerchantUserDO updateObj = BeanUtils.toBean(reqVO, MerchantUserDO.class).setId(userId);
-        merchantUserMapper.updateById(updateObj);
     }
 
     @Override

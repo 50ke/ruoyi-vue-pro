@@ -3,7 +3,6 @@ package cn.iocoder.yudao.module.merchant.service.user;
 import cn.iocoder.yudao.module.merchant.controller.app.user.vo.AppMerchantCourierCreateReqVO;
 import cn.iocoder.yudao.module.merchant.controller.app.user.vo.AppMerchantCourierRespVO;
 import cn.iocoder.yudao.module.merchant.controller.app.user.vo.AppMerchantStoreRespVO;
-import cn.iocoder.yudao.module.merchant.controller.app.user.vo.AppMerchantUserUpdateReqVO;
 import cn.iocoder.yudao.module.merchant.dal.dataobject.user.MerchantUserDO;
 import jakarta.validation.Valid;
 
@@ -30,14 +29,6 @@ public interface MerchantUserService {
      * @return 用户对象信息
      */
     MerchantUserDO getByMobile(String mobile);
-
-    /**
-     * 【商户】修改基本信息
-     *
-     * @param userId 用户编号
-     * @param reqVO  基本信息
-     */
-    void updateUser(Long userId, AppMerchantUserUpdateReqVO reqVO);
 
     /**
      * 【商户】查询门店

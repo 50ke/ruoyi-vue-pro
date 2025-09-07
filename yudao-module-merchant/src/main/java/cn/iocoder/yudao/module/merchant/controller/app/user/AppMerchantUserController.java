@@ -61,11 +61,4 @@ public class AppMerchantUserController {
         List<AppMerchantCourierRespVO> couriers = userService.getStoreCouriers(getLoginUserId(), storeId);
         return success(couriers);
     }
-
-    @PutMapping("/update")
-    @Operation(summary = "修改基本信息")
-    public CommonResult<Boolean> updateUser(@RequestBody @Valid AppMerchantUserUpdateReqVO reqVO) {
-        userService.updateUser(getLoginUserId(), reqVO);
-        return success(true);
-    }
 }
