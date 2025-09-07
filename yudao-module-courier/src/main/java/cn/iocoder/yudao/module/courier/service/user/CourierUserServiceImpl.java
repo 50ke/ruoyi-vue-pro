@@ -9,6 +9,8 @@ import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * 配送员 User Service 实现类
  *
@@ -37,4 +39,15 @@ public class CourierUserServiceImpl implements CourierUserService {
         CourierUserDO updateObj = BeanUtils.toBean(reqVO, CourierUserDO.class).setId(userId);
         courierUserMapper.updateById(updateObj);
     }
+
+    @Override
+    public List<CourierUserDO> getListByMerchantStoreId(Long merchantId, Long pickUpStoreId) {
+        return courierUserMapper.selectList(CourierUserDO::getMerchantId, merchantId, CourierUserDO::getStoreId, pickUpStoreId);
+    }
+
+    @Override
+    public List<CourierUserDO> getListByMerchantId(Long merchantId) {
+        return courierUserMapper.selectList(CourierUserDO::getMerchantId, merchantId);
+    }
+
 }

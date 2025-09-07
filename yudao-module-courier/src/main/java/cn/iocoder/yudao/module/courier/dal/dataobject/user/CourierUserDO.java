@@ -46,7 +46,6 @@ public class CourierUserDO extends TenantBaseDO {
 
     /**
      * 帐号状态
-     *
      * 枚举 {@link CommonStatusEnum}
      */
     private Integer status;
@@ -55,6 +54,11 @@ public class CourierUserDO extends TenantBaseDO {
      * 商户ID
      */
     private Long merchantId;
+
+    /**
+     * 门店ID
+     */
+    private Long storeId;
 
     /**
      * 工作状态

@@ -1,5 +1,7 @@
 package cn.iocoder.yudao.module.merchant.controller.app.user;
 
+import cn.iocoder.yudao.module.merchant.controller.app.user.vo.AppMerchantCourierRespVO;
+import cn.iocoder.yudao.module.merchant.controller.app.user.vo.AppMerchantStoreRespVO;
 import cn.iocoder.yudao.module.merchant.controller.app.user.vo.AppMerchantUserInfoRespVO;
 import cn.iocoder.yudao.module.merchant.controller.app.user.vo.AppMerchantUserUpdateReqVO;
 import cn.iocoder.yudao.module.merchant.convert.user.MerchantUserConvert;
@@ -13,6 +15,8 @@ import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 import static cn.iocoder.yudao.framework.common.pojo.CommonResult.success;
 import static cn.iocoder.yudao.framework.security.core.util.SecurityFrameworkUtils.getLoginUserId;
@@ -32,6 +36,27 @@ public class AppMerchantUserController {
     public CommonResult<AppMerchantUserInfoRespVO> getUserInfo() {
         MerchantUserDO user = userService.getUser(getLoginUserId());
         return success(MerchantUserConvert.INSTANCE.convert(user));
+    }
+
+    @GetMapping("/get/store")
+    @Operation(summary = "获取门店信息")
+    public CommonResult<List<AppMerchantStoreRespVO>> getStores() {
+        List<AppMerchantStoreRespVO> stores = userService.getStores(getLoginUserId());
+        return success(stores);
+    }
+
+    @GetMapping("/get/courier")
+    @Operation(summary = "获取商户配送员信息")
+    public CommonResult<List<AppMerchantCourierRespVO>> getCouriers() {
+        List<AppMerchantCourierRespVO> couriers = userService.getCouriers(getLoginUserId());
+        return success(couriers);
+    }
+
+    @GetMapping("/get/courier/{storeId}")
+    @Operation(summary = "获取门店配送员信息")
+    public CommonResult<List<AppMerchantCourierRespVO>> getStoreCouriers(@PathVariable Long storeId) {
+        List<AppMerchantCourierRespVO> couriers = userService.getStoreCouriers(getLoginUserId(), storeId);
+        return success(couriers);
     }
 
     @PutMapping("/update")

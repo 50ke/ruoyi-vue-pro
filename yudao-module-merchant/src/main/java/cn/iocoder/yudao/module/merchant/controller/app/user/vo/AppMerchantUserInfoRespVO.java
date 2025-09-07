@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Schema(description = "用户 APP - 用户个人信息 Response VO")
+@Schema(description = "商户 APP - 用户个人信息 Response VO")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -25,7 +25,4 @@ public class AppMerchantUserInfoRespVO {
 
     @Schema(description = "微信openid", requiredMode = Schema.RequiredMode.REQUIRED, example = "15601691300")
     private String openid;
-
-    @Schema(description = "工作状态", requiredMode = Schema.RequiredMode.REQUIRED, example = "1")
-    private Integer workStatus;
 }
