@@ -349,4 +349,12 @@ public class CollectionUtils {
         return (LinkedHashSet<T>) toCollection(LinkedHashSet.class, elementType, value);
     }
 
+    public static  <T> Boolean isNotSub(Collection<T> source, Collection<T> sub){
+        for (T t : sub) {
+            if (source.contains(t)){
+                return true;
+            }
+        }
+        return false;
+    }
 }

@@ -1,8 +1,11 @@
 package cn.iocoder.yudao.module.merchant.service.user;
 
 import cn.iocoder.yudao.framework.common.exception.util.ServiceExceptionUtil;
+import cn.iocoder.yudao.framework.common.util.collection.CollectionUtils;
 import cn.iocoder.yudao.module.courier.api.user.CourierUserApi;
+import cn.iocoder.yudao.module.courier.api.user.dto.CourierUserCreateReqDTO;
 import cn.iocoder.yudao.module.courier.api.user.dto.CourierUserRespDTO;
+import cn.iocoder.yudao.module.merchant.controller.app.user.vo.AppMerchantCourierCreateReqVO;
 import cn.iocoder.yudao.module.merchant.controller.app.user.vo.AppMerchantCourierRespVO;
 import cn.iocoder.yudao.module.merchant.controller.app.user.vo.AppMerchantStoreRespVO;
 import cn.iocoder.yudao.module.merchant.controller.app.user.vo.AppMerchantUserUpdateReqVO;
@@ -17,6 +20,7 @@ import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -87,5 +91,24 @@ public class MerchantUserServiceImpl implements MerchantUserService {
         }
         List<CourierUserRespDTO> courierUserRespDTOList = courierUserApi.getCourierListByMerchantId(loginUserId);
         return MerchantStoreConvert.INSTANCE.convertList1(courierUserRespDTOList);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public Long createCourier(Long loginUserId, AppMerchantCourierCreateReqVO reqVO) {
+        MerchantUserDO merchantUserDO = merchantUserMapper.selectById(loginUserId);
+        if (merchantUserDO == null){
+            throw ServiceExceptionUtil.exception(ErrorCodeConstants.USER_NOT_EXISTS);
+        }
+        if (CollectionUtils.isNotSub(merchantUserDO.getStoreIds(), reqVO.getStoreIds())){
+            throw ServiceExceptionUtil.exception(ErrorCodeConstants.STORE_NOT_EXISTS);
+        }
+        CourierUserCreateReqDTO reqDTO = new CourierUserCreateReqDTO();
+        reqDTO.setMerchantId(loginUserId);
+        reqDTO.setStoreId(reqVO.getStoreIds());
+        reqDTO.setNickname(reqVO.getNickname());
+        reqDTO.setMobile(reqVO.getMobile());
+        reqDTO.setAvatar(reqVO.getAvatar());
+        return courierUserApi.createCourier(reqDTO);
     }
 }

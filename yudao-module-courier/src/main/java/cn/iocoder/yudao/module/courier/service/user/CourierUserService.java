@@ -49,4 +49,11 @@ public interface CourierUserService {
      * @return 配送员列表
      */
     List<CourierUserDO> getListByMerchantId(Long merchantId);
+
+    /**
+     * 新增配送员
+     * @param courierUserDO 配送员信息
+     * @return 配送员ID
+     */
+    Long save(CourierUserDO courierUserDO);
 }

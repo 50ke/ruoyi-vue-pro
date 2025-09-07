@@ -1,9 +1,6 @@
 package cn.iocoder.yudao.module.merchant.controller.app.user;
 
-import cn.iocoder.yudao.module.merchant.controller.app.user.vo.AppMerchantCourierRespVO;
-import cn.iocoder.yudao.module.merchant.controller.app.user.vo.AppMerchantStoreRespVO;
-import cn.iocoder.yudao.module.merchant.controller.app.user.vo.AppMerchantUserInfoRespVO;
-import cn.iocoder.yudao.module.merchant.controller.app.user.vo.AppMerchantUserUpdateReqVO;
+import cn.iocoder.yudao.module.merchant.controller.app.user.vo.*;
 import cn.iocoder.yudao.module.merchant.convert.user.MerchantUserConvert;
 import cn.iocoder.yudao.module.merchant.dal.dataobject.user.MerchantUserDO;
 import cn.iocoder.yudao.module.merchant.service.user.MerchantUserService;
@@ -43,6 +40,12 @@ public class AppMerchantUserController {
     public CommonResult<List<AppMerchantStoreRespVO>> getStores() {
         List<AppMerchantStoreRespVO> stores = userService.getStores(getLoginUserId());
         return success(stores);
+    }
+
+    @PostMapping("/create/courier")
+    @Operation(summary = "创建配送员")
+    public CommonResult<Long> createCourier(@Valid @RequestBody AppMerchantCourierCreateReqVO reqVO) {
+        return success(userService.createCourier(getLoginUserId(), reqVO));
     }
 
     @GetMapping("/get/courier")

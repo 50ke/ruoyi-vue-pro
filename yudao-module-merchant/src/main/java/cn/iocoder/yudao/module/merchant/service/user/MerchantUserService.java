@@ -1,9 +1,11 @@
 package cn.iocoder.yudao.module.merchant.service.user;
 
+import cn.iocoder.yudao.module.merchant.controller.app.user.vo.AppMerchantCourierCreateReqVO;
 import cn.iocoder.yudao.module.merchant.controller.app.user.vo.AppMerchantCourierRespVO;
 import cn.iocoder.yudao.module.merchant.controller.app.user.vo.AppMerchantStoreRespVO;
 import cn.iocoder.yudao.module.merchant.controller.app.user.vo.AppMerchantUserUpdateReqVO;
 import cn.iocoder.yudao.module.merchant.dal.dataobject.user.MerchantUserDO;
+import jakarta.validation.Valid;
 
 import java.util.List;
 
@@ -58,4 +60,12 @@ public interface MerchantUserService {
      * @return 配送员列表
      */
     List<AppMerchantCourierRespVO> getCouriers(Long loginUserId);
+
+    /**
+     * 创建配送员
+     * @param loginUserId 商户ID
+     * @param reqVO 配送员信息
+     * @return 配送员ID
+     */
+    Long createCourier(Long loginUserId, @Valid AppMerchantCourierCreateReqVO reqVO);
 }
