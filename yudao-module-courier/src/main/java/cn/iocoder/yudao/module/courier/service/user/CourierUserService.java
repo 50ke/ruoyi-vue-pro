@@ -4,7 +4,7 @@ import cn.iocoder.yudao.module.courier.controller.app.user.vo.AppCourierUserUpda
 import cn.iocoder.yudao.module.courier.dal.dataobject.user.CourierUserDO;
 
 /**
- * 会员用户 Service 接口
+ * 配送员用户 Service 接口
  *
  * @author 芋道源码
  */

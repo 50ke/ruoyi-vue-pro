@@ -5,7 +5,7 @@ import cn.iocoder.yudao.framework.common.validation.InEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
-@Schema(description = "用户 App - 会员用户更新 Request VO")
+@Schema(description = "用户 App - 配送员用户更新 Request VO")
 @Data
 public class AppCourierUserUpdateReqVO {
 
