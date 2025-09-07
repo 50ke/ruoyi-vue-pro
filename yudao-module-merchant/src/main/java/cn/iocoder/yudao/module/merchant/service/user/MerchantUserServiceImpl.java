@@ -111,4 +111,9 @@ public class MerchantUserServiceImpl implements MerchantUserService {
         reqDTO.setAvatar(reqVO.getAvatar());
         return courierUserApi.createCourier(reqDTO);
     }
+
+    @Override
+    public void updateUserById(MerchantUserDO merchantUserDO) {
+        merchantUserMapper.updateById(merchantUserDO);
+    }
 }

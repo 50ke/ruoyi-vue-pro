@@ -68,4 +68,10 @@ public interface MerchantUserService {
      * @return 配送员ID
      */
     Long createCourier(Long loginUserId, @Valid AppMerchantCourierCreateReqVO reqVO);
+
+    /**
+     * 根据id更新商户信息
+     * @param merchantUserDO 商户信息
+     */
+    void updateUserById(MerchantUserDO merchantUserDO);
 }
