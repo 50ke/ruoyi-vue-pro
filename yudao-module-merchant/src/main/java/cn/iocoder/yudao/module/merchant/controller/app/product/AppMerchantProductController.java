@@ -2,9 +2,9 @@ package cn.iocoder.yudao.module.merchant.controller.app.product;
 
 import cn.iocoder.yudao.framework.common.pojo.CommonResult;
 import cn.iocoder.yudao.framework.common.pojo.PageResult;
-import cn.iocoder.yudao.module.merchant.controller.app.product.vo.ProductPageReqVO;
-import cn.iocoder.yudao.module.merchant.controller.app.product.vo.ProductRespVO;
-import cn.iocoder.yudao.module.merchant.controller.app.product.vo.ProductSaveReqVO;
+import cn.iocoder.yudao.module.merchant.controller.app.product.vo.AppMerchantProductPageReqVO;
+import cn.iocoder.yudao.module.merchant.controller.app.product.vo.AppMerchantProductRespVO;
+import cn.iocoder.yudao.module.merchant.controller.app.product.vo.AppMerchantProductSaveReqVO;
 import cn.iocoder.yudao.module.merchant.service.product.MerchantProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -29,13 +29,13 @@ public class AppMerchantProductController {
 
     @PostMapping("/create")
     @Operation(summary = "创建商品")
-    public CommonResult<Long> createProduct(@Valid @RequestBody ProductSaveReqVO createReqVO) {
+    public CommonResult<Long> createProduct(@Valid @RequestBody AppMerchantProductSaveReqVO createReqVO) {
         return success(merchantProductService.createProduct(getLoginUserId(), createReqVO));
     }
 
     @PutMapping("/update")
     @Operation(summary = "更新商品")
-    public CommonResult<Boolean> updateProduct(@Valid @RequestBody ProductSaveReqVO updateReqVO) {
+    public CommonResult<Boolean> updateProduct(@Valid @RequestBody AppMerchantProductSaveReqVO updateReqVO) {
         merchantProductService.updateProduct(getLoginUserId(), updateReqVO);
         return success(true);
     }
@@ -47,9 +47,9 @@ public class AppMerchantProductController {
         return success(true);
     }
 
-    @GetMapping("/page")
+    @PostMapping("/page")
     @Operation(summary = "获得商品分页")
-    public CommonResult<PageResult<ProductRespVO>> getProductPage(@Valid ProductPageReqVO pageVO) {
+    public CommonResult<PageResult<AppMerchantProductRespVO>> getProductPage(@Valid @RequestBody AppMerchantProductPageReqVO pageVO) {
         return success(merchantProductService.getProductPage(getLoginUserId(), pageVO));
     }
 }

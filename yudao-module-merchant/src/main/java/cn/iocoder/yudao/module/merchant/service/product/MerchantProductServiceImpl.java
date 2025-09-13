@@ -2,9 +2,9 @@ package cn.iocoder.yudao.module.merchant.service.product;
 
 import cn.iocoder.yudao.framework.common.pojo.PageResult;
 import cn.iocoder.yudao.framework.common.util.object.BeanUtils;
-import cn.iocoder.yudao.module.merchant.controller.app.product.vo.ProductPageReqVO;
-import cn.iocoder.yudao.module.merchant.controller.app.product.vo.ProductRespVO;
-import cn.iocoder.yudao.module.merchant.controller.app.product.vo.ProductSaveReqVO;
+import cn.iocoder.yudao.module.merchant.controller.app.product.vo.AppMerchantProductPageReqVO;
+import cn.iocoder.yudao.module.merchant.controller.app.product.vo.AppMerchantProductRespVO;
+import cn.iocoder.yudao.module.merchant.controller.app.product.vo.AppMerchantProductSaveReqVO;
 import cn.iocoder.yudao.module.merchant.dal.dataobject.product.MerchantProductSpuDO;
 import cn.iocoder.yudao.module.merchant.dal.mysql.product.MerchantProductSpuMapper;
 import cn.iocoder.yudao.module.product.api.spu.ProductSpuApi;
@@ -31,7 +31,7 @@ public class MerchantProductServiceImpl implements MerchantProductService{
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public Long createProduct(Long loginUserId, ProductSaveReqVO createReqVO) {
+    public Long createProduct(Long loginUserId, AppMerchantProductSaveReqVO createReqVO) {
         ProductSpuSaveReqDTO reqDTO = BeanUtils.toBean(createReqVO, ProductSpuSaveReqDTO.class);
         Long spuId = productSpuApi.createSpu(reqDTO);
         merchantProductSpuMapper.insert(MerchantProductSpuDO.builder().merchantId(loginUserId).spuId(spuId).build());
@@ -39,7 +39,7 @@ public class MerchantProductServiceImpl implements MerchantProductService{
     }
 
     @Override
-    public void updateProduct(Long loginUserId, ProductSaveReqVO updateReqVO) {
+    public void updateProduct(Long loginUserId, AppMerchantProductSaveReqVO updateReqVO) {
         ProductSpuSaveReqDTO reqDTO = BeanUtils.toBean(updateReqVO, ProductSpuSaveReqDTO.class);
         productSpuApi.updateSpu(reqDTO);
     }
@@ -50,9 +50,9 @@ public class MerchantProductServiceImpl implements MerchantProductService{
     }
 
     @Override
-    public PageResult<ProductRespVO> getProductPage(Long loginUserId, ProductPageReqVO pageVO) {
+    public PageResult<AppMerchantProductRespVO> getProductPage(Long loginUserId, AppMerchantProductPageReqVO pageVO) {
         ProductSpuPageReqDTO pageReqDTO = BeanUtils.toBean(pageVO, ProductSpuPageReqDTO.class);
         PageResult<ProductSpuPageRespDTO> pageRespDTO = productSpuApi.getSpuPage(pageReqDTO);
-        return BeanUtils.toBean(pageRespDTO, ProductRespVO.class);
+        return BeanUtils.toBean(pageRespDTO, AppMerchantProductRespVO.class);
     }
 }

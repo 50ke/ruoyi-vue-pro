@@ -19,7 +19,7 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class MerchantProductSpuDO extends TenantBaseDO {
+public class ProductSpuMerchantDO extends TenantBaseDO {
 
     /**
      * 主键ID

@@ -3,8 +3,8 @@ package cn.iocoder.yudao.module.merchant.service.auth;
 import cn.hutool.core.lang.Assert;
 import cn.iocoder.yudao.framework.common.enums.CommonStatusEnum;
 import cn.iocoder.yudao.framework.common.exception.util.ServiceExceptionUtil;
-import cn.iocoder.yudao.module.merchant.controller.app.auth.vo.AppAuthLoginRespVO;
-import cn.iocoder.yudao.module.merchant.controller.app.auth.vo.AppAuthWeixinMiniAppLoginReqVO;
+import cn.iocoder.yudao.module.merchant.controller.app.auth.vo.AppMerchantAuthLoginRespVO;
+import cn.iocoder.yudao.module.merchant.controller.app.auth.vo.AppMerchantAuthWeixinMiniAppLoginReqVO;
 import cn.iocoder.yudao.module.merchant.convert.auth.AuthConvert;
 import cn.iocoder.yudao.module.merchant.dal.dataobject.user.MerchantUserDO;
 import cn.iocoder.yudao.module.merchant.enums.ErrorCodeConstants;
@@ -54,7 +54,7 @@ public class MerchantAuthServiceImpl implements MerchantAuthService {
     private SocialUserApi socialUserApi;
 
     @Override
-    public AppAuthLoginRespVO weixinMiniAppLogin(AppAuthWeixinMiniAppLoginReqVO reqVO) {
+    public AppMerchantAuthLoginRespVO weixinMiniAppLogin(AppMerchantAuthWeixinMiniAppLoginReqVO reqVO) {
         // 获得对应的手机号信息
         SocialWxPhoneNumberInfoRespDTO phoneNumberInfo = socialClientApi.getWxMaPhoneNumberInfo(
                 UserTypeEnum.MERCHANT.getValue(), reqVO.getPhoneCode());
@@ -90,14 +90,14 @@ public class MerchantAuthServiceImpl implements MerchantAuthService {
     }
 
     @Override
-    public AppAuthLoginRespVO refreshToken(String refreshToken) {
+    public AppMerchantAuthLoginRespVO refreshToken(String refreshToken) {
         OAuth2AccessTokenRespDTO accessTokenDO = oauth2TokenApi.refreshAccessToken(refreshToken,
                 OAuth2ClientConstants.CLIENT_ID_DEFAULT);
         return AuthConvert.INSTANCE.convert(accessTokenDO, null);
     }
 
-    private AppAuthLoginRespVO createTokenAfterLoginSuccess(MerchantUserDO user, String mobile,
-                                                            LoginLogTypeEnum logType, String openid) {
+    private AppMerchantAuthLoginRespVO createTokenAfterLoginSuccess(MerchantUserDO user, String mobile,
+                                                                    LoginLogTypeEnum logType, String openid) {
         // 插入登陆日志
         createLoginLog(user.getId(), mobile, logType, LoginResultEnum.SUCCESS);
         // 创建 Token 令牌

@@ -12,7 +12,7 @@ import java.util.List;
 
 @Schema(description = "商户 APP - 商品 新增/更新 Request VO")
 @Data
-public class ProductSaveReqVO {
+public class AppMerchantProductSaveReqVO {
 
     @Schema(description = "商品编号", example = "1")
     private Long id;

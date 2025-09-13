@@ -1,8 +1,8 @@
 package cn.iocoder.yudao.module.merchant.controller.app.auth;
 
 import cn.hutool.core.util.StrUtil;
-import cn.iocoder.yudao.module.merchant.controller.app.auth.vo.AppAuthLoginRespVO;
-import cn.iocoder.yudao.module.merchant.controller.app.auth.vo.AppAuthWeixinMiniAppLoginReqVO;
+import cn.iocoder.yudao.module.merchant.controller.app.auth.vo.AppMerchantAuthLoginRespVO;
+import cn.iocoder.yudao.module.merchant.controller.app.auth.vo.AppMerchantAuthWeixinMiniAppLoginReqVO;
 import cn.iocoder.yudao.module.merchant.service.auth.MerchantAuthService;
 import cn.iocoder.yudao.framework.common.pojo.CommonResult;
 import cn.iocoder.yudao.framework.security.config.SecurityProperties;
@@ -36,7 +36,7 @@ public class AppMerchantAuthController {
     @PostMapping("/weixin-mini-app-login")
     @Operation(summary = "微信小程序的一键登录")
     @PermitAll
-    public CommonResult<AppAuthLoginRespVO> weixinMiniAppLogin(@RequestBody @Valid AppAuthWeixinMiniAppLoginReqVO reqVO) {
+    public CommonResult<AppMerchantAuthLoginRespVO> weixinMiniAppLogin(@RequestBody @Valid AppMerchantAuthWeixinMiniAppLoginReqVO reqVO) {
         return success(authService.weixinMiniAppLogin(reqVO));
     }
 
@@ -55,7 +55,7 @@ public class AppMerchantAuthController {
     @Operation(summary = "刷新令牌")
     @Parameter(name = "refreshToken", description = "刷新令牌", required = true)
     @PermitAll
-    public CommonResult<AppAuthLoginRespVO> refreshToken(@RequestParam("refreshToken") String refreshToken) {
+    public CommonResult<AppMerchantAuthLoginRespVO> refreshToken(@RequestParam("refreshToken") String refreshToken) {
         return success(authService.refreshToken(refreshToken));
     }
 }

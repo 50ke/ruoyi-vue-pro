@@ -1,7 +1,7 @@
 package cn.iocoder.yudao.module.merchant.service.auth;
 
-import cn.iocoder.yudao.module.merchant.controller.app.auth.vo.AppAuthLoginRespVO;
-import cn.iocoder.yudao.module.merchant.controller.app.auth.vo.AppAuthWeixinMiniAppLoginReqVO;
+import cn.iocoder.yudao.module.merchant.controller.app.auth.vo.AppMerchantAuthLoginRespVO;
+import cn.iocoder.yudao.module.merchant.controller.app.auth.vo.AppMerchantAuthWeixinMiniAppLoginReqVO;
 import jakarta.validation.Valid;
 
 /**
@@ -17,7 +17,7 @@ public interface MerchantAuthService {
      * @param reqVO 登录信息
      * @return 登录结果
      */
-    AppAuthLoginRespVO weixinMiniAppLogin(@Valid AppAuthWeixinMiniAppLoginReqVO reqVO);
+    AppMerchantAuthLoginRespVO weixinMiniAppLogin(@Valid AppMerchantAuthWeixinMiniAppLoginReqVO reqVO);
 
     /**
      * 基于 token 退出登录
@@ -33,5 +33,5 @@ public interface MerchantAuthService {
      * @param refreshToken 刷新令牌
      * @return 登录结果
      */
-    AppAuthLoginRespVO refreshToken(String refreshToken);
+    AppMerchantAuthLoginRespVO refreshToken(String refreshToken);
 }

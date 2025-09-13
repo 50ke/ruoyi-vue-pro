@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class AppAuthWeixinMiniAppLoginReqVO {
+public class AppMerchantAuthWeixinMiniAppLoginReqVO {
 
     @Schema(description = "手机 code，小程序通过 wx.getPhoneNumber 方法获得", requiredMode = Schema.RequiredMode.REQUIRED, example = "hello")
     @NotEmpty(message = "手机 code 不能为空")
