@@ -52,4 +52,10 @@ public class AppMerchantProductController {
     public CommonResult<PageResult<AppMerchantProductRespVO>> getProductPage(@Valid @RequestBody AppMerchantProductPageReqVO pageVO) {
         return success(merchantProductService.getProductPage(getLoginUserId(), pageVO));
     }
+
+    @GetMapping("/get-detail/{spuId}")
+    @Operation(summary = "获得商品详情")
+    public CommonResult<AppMerchantProductRespVO> getProductDetail(@PathVariable Long spuId) {
+        return success(merchantProductService.getProductDetail(getLoginUserId(), spuId));
+    }
 }

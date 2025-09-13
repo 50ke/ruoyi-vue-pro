@@ -2,8 +2,8 @@ package cn.iocoder.yudao.module.product.api.spu;
 
 import cn.iocoder.yudao.framework.common.pojo.PageResult;
 import cn.iocoder.yudao.framework.common.util.object.BeanUtils;
+import cn.iocoder.yudao.module.product.api.spu.dto.ProductSpuDetailRespDTO;
 import cn.iocoder.yudao.module.product.api.spu.dto.ProductSpuPageReqDTO;
-import cn.iocoder.yudao.module.product.api.spu.dto.ProductSpuPageRespDTO;
 import cn.iocoder.yudao.module.product.api.spu.dto.ProductSpuRespDTO;
 import cn.iocoder.yudao.module.product.api.spu.dto.ProductSpuSaveReqDTO;
 import cn.iocoder.yudao.module.product.controller.admin.spu.vo.ProductSpuPageReqVO;
@@ -71,10 +71,16 @@ public class ProductSpuApiImpl implements ProductSpuApi {
     }
 
     @Override
-    public PageResult<ProductSpuPageRespDTO> getSpuPage(ProductSpuPageReqDTO pageReqDTO) {
+    public PageResult<ProductSpuPageReqDTO> getSpuPage(ProductSpuPageReqDTO pageReqDTO) {
         ProductSpuPageReqVO reqVO = BeanUtils.toBean(pageReqDTO, ProductSpuPageReqVO.class);
         PageResult<ProductSpuDO> spuPage = spuService.getSpuPage(reqVO);
-        return BeanUtils.toBean(spuPage, ProductSpuPageRespDTO.class);
+        return BeanUtils.toBean(spuPage, ProductSpuPageReqDTO.class);
+    }
+
+    @Override
+    public ProductSpuDetailRespDTO getSpuDetail(Long spuId) {
+        ProductSpuDO spu = spuService.getSpu(spuId);
+        return BeanUtils.toBean(spu, ProductSpuDetailRespDTO.class);
     }
 
 }

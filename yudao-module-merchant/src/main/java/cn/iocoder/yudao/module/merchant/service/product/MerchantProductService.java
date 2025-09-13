@@ -14,4 +14,6 @@ public interface MerchantProductService {
     void disableProduct(Long loginUserId, Long id);
 
     PageResult<AppMerchantProductRespVO> getProductPage(Long loginUserId, @Valid AppMerchantProductPageReqVO pageVO);
+
+    AppMerchantProductRespVO getProductDetail(Long loginUserId, Long spuId);
 }

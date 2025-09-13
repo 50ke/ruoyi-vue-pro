@@ -1,8 +1,8 @@
 package cn.iocoder.yudao.module.product.api.spu;
 
 import cn.iocoder.yudao.framework.common.pojo.PageResult;
+import cn.iocoder.yudao.module.product.api.spu.dto.ProductSpuDetailRespDTO;
 import cn.iocoder.yudao.module.product.api.spu.dto.ProductSpuPageReqDTO;
-import cn.iocoder.yudao.module.product.api.spu.dto.ProductSpuPageRespDTO;
 import cn.iocoder.yudao.module.product.api.spu.dto.ProductSpuRespDTO;
 import cn.iocoder.yudao.module.product.api.spu.dto.ProductSpuSaveReqDTO;
 import cn.iocoder.yudao.module.product.enums.spu.ProductSpuStatusEnum;
@@ -83,5 +83,12 @@ public interface ProductSpuApi {
      * @param pageReqDTO 查询条件
      * @return 查询结果
      */
-    PageResult<ProductSpuPageRespDTO> getSpuPage(ProductSpuPageReqDTO pageReqDTO);
+    PageResult<ProductSpuPageReqDTO> getSpuPage(ProductSpuPageReqDTO pageReqDTO);
+
+    /**
+     * 获取SPU详情
+     * @param spuId SPU ID
+     * @return SPU详情
+     */
+    ProductSpuDetailRespDTO getSpuDetail(Long spuId);
 }
