@@ -1,6 +1,11 @@
 package cn.iocoder.yudao.module.product.api.spu;
 
+import cn.iocoder.yudao.framework.common.pojo.PageResult;
+import cn.iocoder.yudao.module.product.api.spu.dto.ProductSpuPageReqDTO;
+import cn.iocoder.yudao.module.product.api.spu.dto.ProductSpuPageRespDTO;
 import cn.iocoder.yudao.module.product.api.spu.dto.ProductSpuRespDTO;
+import cn.iocoder.yudao.module.product.api.spu.dto.ProductSpuSaveReqDTO;
+import cn.iocoder.yudao.module.product.enums.spu.ProductSpuStatusEnum;
 
 import java.util.Collection;
 import java.util.List;
@@ -53,4 +58,30 @@ public interface ProductSpuApi {
      */
     ProductSpuRespDTO getSpu(Long id);
 
+    /**
+     * 创建SPU
+     * @param reqDTO 商品信息
+     * @return 商品ID
+     */
+    Long createSpu(ProductSpuSaveReqDTO reqDTO);
+
+    /**
+     * 更新SPU
+     * @param reqDTO 商品信息
+     */
+    void updateSpu(ProductSpuSaveReqDTO reqDTO);
+
+    /**
+     * 更新SPU状态
+     * @param id SPU ID
+     * @param productSpuStatusEnum SPU 状态
+     */
+    void updateSpuStatus(Long id, ProductSpuStatusEnum productSpuStatusEnum);
+
+    /**
+     * 分页查询SPU
+     * @param pageReqDTO 查询条件
+     * @return 查询结果
+     */
+    PageResult<ProductSpuPageRespDTO> getSpuPage(ProductSpuPageReqDTO pageReqDTO);
 }

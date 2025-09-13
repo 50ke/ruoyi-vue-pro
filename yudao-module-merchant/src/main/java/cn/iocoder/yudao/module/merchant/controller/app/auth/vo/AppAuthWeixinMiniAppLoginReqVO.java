@@ -7,7 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Schema(description = "用户 APP - 微信小程序手机登录 Request VO")
+@Schema(description = "商户 APP - 微信小程序手机登录 Request VO")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
