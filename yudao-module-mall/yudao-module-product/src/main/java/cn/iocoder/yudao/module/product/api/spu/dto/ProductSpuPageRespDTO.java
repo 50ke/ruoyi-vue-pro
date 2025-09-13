@@ -1,4 +1,8 @@
 package cn.iocoder.yudao.module.product.api.spu.dto;
 
-public class ProductSpuPageRespDTO {
+import cn.iocoder.yudao.framework.common.pojo.PageParam;
+import lombok.Data;
+
+@Data
+public class ProductSpuPageRespDTO extends PageParam {
 }

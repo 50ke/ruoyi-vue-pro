@@ -108,4 +108,10 @@ public class MerchantUserServiceImpl implements MerchantUserService {
     public void updateUserById(MerchantUserDO merchantUserDO) {
         merchantUserMapper.updateById(merchantUserDO);
     }
+
+    @Override
+    public Boolean existCourier(Long merchantId, Long courierId) {
+        List<CourierUserRespDTO> courierUserRespDTOList = courierUserApi.getCourierListByMerchantId(merchantId);
+        return courierUserRespDTOList.stream().anyMatch(e -> e.getId().equals(courierId));
+    }
 }

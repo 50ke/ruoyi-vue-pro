@@ -7,9 +7,15 @@ import jakarta.validation.Valid;
 public interface MerchantTradeService {
     PageResult<AppMerchantTradeOrderRespVO> getTradeOrderPage(Long loginUserId, @Valid AppMerchantTradeOrderPageReqVO pageReqVO);
 
-    AppMerchantTradeOrderSummayRespVO getTradeOrderSummary(Long loginUserId);
-
-    void updateTradeOrder(Long loginUserId, @Valid AppMerchantTradeOrderUpdateReqVO reqVO);
+    AppMerchantTradeOrderSummaryRespVO getTradeOrderSummary(Long loginUserId);
 
     AppMerchantTradeOrderDetailRespVO getTradeOrderDetail(Long loginUserId, Long orderId);
+
+    void updateTradeOrderRemark(Long loginUserId, @Valid AppMerchantTradeOrderUpdateReqVO reqVO);
+
+    void deliveryTradeOrder(Long loginUserId, @Valid AppMerchantTradeOrderUpdateReqVO reqVO);
+
+    void pickUpTradeOrder(Long loginUserId, @Valid AppMerchantTradeOrderUpdateReqVO reqVO);
+
+
 }

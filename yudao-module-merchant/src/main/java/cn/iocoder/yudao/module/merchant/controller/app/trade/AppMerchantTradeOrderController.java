@@ -33,14 +33,28 @@ public class AppMerchantTradeOrderController {
 
     @GetMapping("/summary")
     @Operation(summary = "获得交易订单统计")
-    public CommonResult<AppMerchantTradeOrderSummayRespVO> getTradeOrderSummary() {
+    public CommonResult<AppMerchantTradeOrderSummaryRespVO> getTradeOrderSummary() {
         return success(merchantTradeService.getTradeOrderSummary(getLoginUserId()));
     }
 
-    @PutMapping("/update")
-    @Operation(summary = "修改交易订单")
-    public CommonResult<Boolean> updateTradeOrder(@Valid @RequestBody AppMerchantTradeOrderUpdateReqVO reqVO) {
-        merchantTradeService.updateTradeOrder(getLoginUserId(), reqVO);
+    @PutMapping("/update-remark")
+    @Operation(summary = "订单备注")
+    public CommonResult<Boolean> updateTradeOrderRemark(@Valid @RequestBody AppMerchantTradeOrderUpdateReqVO reqVO) {
+        merchantTradeService.updateTradeOrderRemark(getLoginUserId(), reqVO);
+        return success(true);
+    }
+
+    @PutMapping("/delivery")
+    @Operation(summary = "订单发货")
+    public CommonResult<Boolean> deliveryTradeOrder(@Valid @RequestBody AppMerchantTradeOrderUpdateReqVO reqVO) {
+        merchantTradeService.deliveryTradeOrder(getLoginUserId(), reqVO);
+        return success(true);
+    }
+
+    @PutMapping("/pick-up-by-verify-code")
+    @Operation(summary = "订单核销")
+    public CommonResult<Boolean> pickUpTradeOrder(@Valid @RequestBody AppMerchantTradeOrderUpdateReqVO reqVO) {
+        merchantTradeService.pickUpTradeOrder(getLoginUserId(), reqVO);
         return success(true);
     }
 

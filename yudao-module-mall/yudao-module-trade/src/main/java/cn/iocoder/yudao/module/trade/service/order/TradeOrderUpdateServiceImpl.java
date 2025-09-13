@@ -772,6 +772,14 @@ public class TradeOrderUpdateServiceImpl implements TradeOrderUpdateService {
         return tradeOrderMapper.selectOneByPickUpVerifyCode(pickUpVerifyCode);
     }
 
+    @Override
+    public void pickUpOrder(Long userId, Long orderId, String pickUpVerifyCode) {
+        TradeOrderDO tradeOrderDO = tradeOrderMapper.selectById(orderId);
+        if (pickUpVerifyCode.equals(tradeOrderDO.getPickUpVerifyCode())){
+            getSelf().pickUpOrder(userId, tradeOrderDO);
+        }
+    }
+
     @Transactional(rollbackFor = Exception.class)
     public void pickUpOrder(Long userId, TradeOrderDO order) {
         if (order == null) {

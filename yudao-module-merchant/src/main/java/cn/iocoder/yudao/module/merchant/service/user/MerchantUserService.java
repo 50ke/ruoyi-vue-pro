@@ -65,4 +65,12 @@ public interface MerchantUserService {
      * @param merchantUserDO 商户信息
      */
     void updateUserById(MerchantUserDO merchantUserDO);
+
+    /**
+     * 配送员是否属于商户
+     * @param merchantId 商户ID
+     * @param courierId 配送员ID
+     * @return 是否属于商户
+     */
+    Boolean existCourier(Long merchantId, Long courierId);
 }

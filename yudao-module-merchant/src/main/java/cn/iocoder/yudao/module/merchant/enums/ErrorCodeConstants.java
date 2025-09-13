@@ -14,4 +14,6 @@ public interface ErrorCodeConstants {
     ErrorCode USER_NOT_EXISTS = new ErrorCode(1_024_002_001, "用户不存在");
 
     ErrorCode STORE_NOT_EXISTS = new ErrorCode(1_024_003_000, "门店不存在");
+
+    ErrorCode TRADER_ORDER_NOT_EXISTS = new ErrorCode(1_024_004_000, "交易订单不存在");
 }

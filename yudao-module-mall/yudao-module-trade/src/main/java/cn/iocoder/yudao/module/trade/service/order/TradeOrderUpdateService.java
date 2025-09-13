@@ -149,6 +149,13 @@ public interface TradeOrderUpdateService {
      */
     TradeOrderDO getByPickUpVerifyCode(String pickUpVerifyCode);
 
+    /**
+     * 核销订单
+     * @param userId 用户ID
+     * @param orderId 订单
+     */
+    void pickUpOrder(Long userId, Long orderId, String pickUpVerifyCode);
+
     // =================== Order Item ===================
 
     /**

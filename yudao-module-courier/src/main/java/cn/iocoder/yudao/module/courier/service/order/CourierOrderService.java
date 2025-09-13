@@ -35,4 +35,11 @@ public interface CourierOrderService {
      * @param reqVO 订单信息
      */
     void updateOrder(@Valid AppOrderUpdateReqVO reqVO);
+
+    /**
+     * 创建配送订单
+     * @param courierId 配送员ID
+     * @param orderId 订单ID
+     */
+    Long createOrder(Long courierId, Long orderId);
 }
