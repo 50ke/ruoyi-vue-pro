@@ -349,9 +349,15 @@ public class CollectionUtils {
         return (LinkedHashSet<T>) toCollection(LinkedHashSet.class, elementType, value);
     }
 
+    /**
+     * sub 不是 source的子集
+     * @param source 全集
+     * @param sub 子集
+     * @return true-sub不是子集
+     */
     public static  <T> Boolean isNotSub(Collection<T> source, Collection<T> sub){
         for (T t : sub) {
-            if (source.contains(t)){
+            if (!source.contains(t)){
                 return true;
             }
         }

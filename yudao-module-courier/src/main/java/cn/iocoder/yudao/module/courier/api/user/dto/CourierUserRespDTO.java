@@ -34,16 +34,6 @@ public class CourierUserRespDTO {
     private Integer status;
 
     /**
-     * 商户ID
-     */
-    private Long merchantId;
-
-    /**
-     * 门店ID
-     */
-    private Long storeId;
-
-    /**
      * 工作状态
      * 枚举 {@link CourierWorkStatusEnum}
      */
