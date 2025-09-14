@@ -2,6 +2,7 @@ package cn.iocoder.yudao.module.merchant.service.user;
 
 import cn.iocoder.yudao.framework.common.exception.util.ServiceExceptionUtil;
 import cn.iocoder.yudao.framework.common.util.collection.CollectionUtils;
+import cn.iocoder.yudao.framework.ip.core.utils.AreaUtils;
 import cn.iocoder.yudao.module.courier.api.user.CourierUserApi;
 import cn.iocoder.yudao.module.courier.api.user.dto.CourierUserCreateReqDTO;
 import cn.iocoder.yudao.module.courier.api.user.dto.CourierUserRespDTO;
@@ -58,7 +59,11 @@ public class MerchantUserServiceImpl implements MerchantUserService {
             throw ServiceExceptionUtil.exception(ErrorCodeConstants.USER_NOT_EXISTS);
         }
         List<TradeDeliveryPickUpStoreRespDTO> pickUpStoreList = tradeDeliveryApi.getPickUpStoreList(merchantUserDO.getStoreIds());
-        return MerchantStoreConvert.INSTANCE.convertList(pickUpStoreList);
+        List<AppMerchantStoreRespVO> respVOS = MerchantStoreConvert.INSTANCE.convertList(pickUpStoreList);
+        respVOS.forEach(e -> {
+            e.setAreaName(AreaUtils.format(e.getAreaId()));
+        });
+        return respVOS;
     }
 
     @Override
