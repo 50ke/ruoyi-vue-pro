@@ -7,6 +7,7 @@ import cn.iocoder.yudao.framework.common.pojo.CommonResult;
 import cn.iocoder.yudao.framework.web.config.WebProperties;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.http.HttpServletRequest;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -25,6 +26,7 @@ public class WebFrameworkUtils {
 
     public static final String HEADER_TENANT_ID = "tenant-id";
     public static final String HEADER_VISIT_TENANT_ID = "visit-tenant-id";
+    public static final String HEADER_USER_TYPE = "user-type";
 
     /**
      * 终端的 Header
@@ -107,7 +109,12 @@ public class WebFrameworkUtils {
         if (userType != null) {
             return userType;
         }
-        // 2. 其次，基于 URL 前缀的约定
+        // 2. 其次，从Header中获取
+        String loginUserType = request.getHeader(HEADER_USER_TYPE);
+        if (StringUtils.isNotBlank(loginUserType)){
+            return Integer.valueOf(loginUserType);
+        }
+        // 3. 其次，基于 URL 前缀的约定
         if (request.getServletPath().startsWith(properties.getAdminApi().getPrefix())) {
             return UserTypeEnum.ADMIN.getValue();
         }

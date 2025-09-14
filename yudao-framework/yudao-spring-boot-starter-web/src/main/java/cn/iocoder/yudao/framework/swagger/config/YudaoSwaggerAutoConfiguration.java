@@ -33,6 +33,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import static cn.iocoder.yudao.framework.web.core.util.WebFrameworkUtils.HEADER_TENANT_ID;
+import static cn.iocoder.yudao.framework.web.core.util.WebFrameworkUtils.HEADER_USER_TYPE;
 
 /**
  * Swagger 自动配置类，基于 OpenAPI + Springdoc 实现。
@@ -125,9 +126,18 @@ public class YudaoSwaggerAutoConfiguration {
                 .group(group)
                 .pathsToMatch("/admin-api/" + path + "/**", "/app-api/" + path + "/**")
                 .addOperationCustomizer((operation, handlerMethod) -> operation
+                        .addParametersItem(buildUserTypeHeaderParameter())
                         .addParametersItem(buildTenantHeaderParameter())
                         .addParametersItem(buildSecurityHeaderParameter()))
                 .build();
+    }
+
+    private static Parameter buildUserTypeHeaderParameter() {
+        return new Parameter()
+                .name(HEADER_USER_TYPE) // header 名
+                .description("用户类型") // 描述
+                .in(String.valueOf(SecurityScheme.In.HEADER)) // 请求 header
+                .schema(new IntegerSchema()._default(1L).name(HEADER_USER_TYPE).description("用户类型")); // 默认：用户类型为1
     }
 
     /**
