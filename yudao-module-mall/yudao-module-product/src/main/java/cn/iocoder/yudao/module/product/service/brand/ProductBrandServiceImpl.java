@@ -89,6 +89,11 @@ public class ProductBrandServiceImpl implements ProductBrandService {
     }
 
     @Override
+    public List<ProductBrandDO> getBrandList() {
+        return brandMapper.selectList();
+    }
+
+    @Override
     public List<ProductBrandDO> getBrandList(Collection<Long> ids) {
         return brandMapper.selectByIds(ids);
     }

@@ -37,10 +37,6 @@ public class AppMerchantProductSaveReqVO {
     @NotNull(message = "商品分类不能为空")
     private Long categoryId;
 
-    @Schema(description = "商品品牌编号", requiredMode = Schema.RequiredMode.REQUIRED, example = "1")
-    @NotNull(message = "商品品牌不能为空")
-    private Long brandId;
-
     @Schema(description = "商品封面图", requiredMode = Schema.RequiredMode.REQUIRED, example = "https://www.iocoder.cn/xx.png")
     @NotEmpty(message = "商品封面图不能为空")
     private String picUrl;
@@ -55,18 +51,9 @@ public class AppMerchantProductSaveReqVO {
 
     // ========== SKU 相关字段 =========
 
-    @Schema(description = "规格类型", requiredMode = Schema.RequiredMode.REQUIRED, example = "true")
-    @NotNull(message = "商品规格类型不能为空")
-    private Boolean specType;
-
-    // ========== 物流相关字段 =========
-
-    @Schema(description = "配送方式数组", requiredMode = Schema.RequiredMode.REQUIRED, example = "1")
-    @NotEmpty(message = "配送方式不能为空")
-    private List<Integer> deliveryTypes;
-
-    @Schema(description = "物流配置模板编号", requiredMode = Schema.RequiredMode.REQUIRED, example = "111")
-    private Long deliveryTemplateId;
+//    @Schema(description = "规格类型", requiredMode = Schema.RequiredMode.REQUIRED, example = "true")
+//    @NotNull(message = "商品规格类型不能为空")
+//    private Boolean specType;
 
     // ========== SKU 相关字段 =========
 

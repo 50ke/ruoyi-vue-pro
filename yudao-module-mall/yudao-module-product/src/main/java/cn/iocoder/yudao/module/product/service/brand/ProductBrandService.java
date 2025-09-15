@@ -45,6 +45,8 @@ public interface ProductBrandService {
      */
     ProductBrandDO getBrand(Long id);
 
+    List<ProductBrandDO> getBrandList();
+
     /**
      * 获得品牌列表
      *

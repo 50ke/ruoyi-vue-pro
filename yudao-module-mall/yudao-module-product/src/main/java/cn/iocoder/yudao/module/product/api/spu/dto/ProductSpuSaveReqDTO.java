@@ -30,7 +30,7 @@ public class ProductSpuSaveReqDTO {
 
     // ========== SKU 相关字段 =========
 
-    private Boolean specType;
+    private Boolean specType = Boolean.FALSE;
 
     // ========== 物流相关字段 =========
 
@@ -40,9 +40,9 @@ public class ProductSpuSaveReqDTO {
 
     // ========== 营销相关字段 =========
 
-    private Integer giveIntegral;
+    private Integer giveIntegral = 0;
 
-    private Boolean subCommissionType;
+    private Boolean subCommissionType = Boolean.FALSE;
 
     // ========== 统计相关字段 =========
 

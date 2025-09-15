@@ -9,16 +9,22 @@ import cn.iocoder.yudao.module.merchant.controller.app.product.vo.AppMerchantPro
 import cn.iocoder.yudao.module.merchant.controller.app.product.vo.AppMerchantProductSaveReqVO;
 import cn.iocoder.yudao.module.merchant.dal.dataobject.product.MerchantProductSpuDO;
 import cn.iocoder.yudao.module.merchant.dal.mysql.product.MerchantProductSpuMapper;
+import cn.iocoder.yudao.module.product.api.brand.ProductBrandApi;
+import cn.iocoder.yudao.module.product.api.brand.dto.ProductBrandRespDTO;
 import cn.iocoder.yudao.module.product.api.spu.ProductSpuApi;
 import cn.iocoder.yudao.module.product.api.spu.dto.ProductSpuDetailRespDTO;
 import cn.iocoder.yudao.module.product.api.spu.dto.ProductSpuPageReqDTO;
 import cn.iocoder.yudao.module.product.api.spu.dto.ProductSpuSaveReqDTO;
 import cn.iocoder.yudao.module.product.enums.spu.ProductSpuStatusEnum;
+import cn.iocoder.yudao.module.trade.enums.delivery.DeliveryTypeEnum;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
+
+import java.util.Arrays;
+import java.util.Collections;
 
 import static cn.iocoder.yudao.module.merchant.enums.ErrorCodeConstants.*;
 
@@ -31,12 +37,16 @@ public class MerchantProductServiceImpl implements MerchantProductService{
     private ProductSpuApi productSpuApi;
 
     @Resource
+    private ProductBrandApi productBrandApi;
+
+    @Resource
     private MerchantProductSpuMapper merchantProductSpuMapper;
 
     @Transactional(rollbackFor = Exception.class)
     @Override
     public Long createProduct(Long loginUserId, AppMerchantProductSaveReqVO createReqVO) {
         ProductSpuSaveReqDTO reqDTO = BeanUtils.toBean(createReqVO, ProductSpuSaveReqDTO.class);
+        setProductDefaultValue(reqDTO);
         Long spuId = productSpuApi.createSpu(reqDTO);
         merchantProductSpuMapper.insert(MerchantProductSpuDO.builder().merchantId(loginUserId).spuId(spuId).build());
         return spuId;
@@ -76,5 +86,15 @@ public class MerchantProductServiceImpl implements MerchantProductService{
         if (!exists){
             throw ServiceExceptionUtil.exception(PRODUCT_NOT_EXISTS);
         }
+    }
+
+    private void setProductDefaultValue(ProductSpuSaveReqDTO reqDTO){
+        ProductBrandRespDTO defaultBrand = productBrandApi.getDefaultBrand();
+        if (defaultBrand == null){
+            throw ServiceExceptionUtil.exception(PRODUCT_BRAND_NOT_EXISTS);
+        }
+        reqDTO.setBrandId(defaultBrand.getId());
+        reqDTO.setDeliveryTypes(Arrays.stream(DeliveryTypeEnum.ARRAYS).toList());
+        reqDTO.setDeliveryTemplateId(null);
     }
 }
