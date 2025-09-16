@@ -56,6 +56,7 @@ public class MerchantProductServiceImpl implements MerchantProductService{
     public void updateProduct(Long loginUserId, AppMerchantProductSaveReqVO updateReqVO) {
         validateMerchantProductExists(loginUserId, updateReqVO.getId());
         ProductSpuSaveReqDTO reqDTO = BeanUtils.toBean(updateReqVO, ProductSpuSaveReqDTO.class);
+        setProductDefaultValue(reqDTO);
         productSpuApi.updateSpu(reqDTO);
     }
 
