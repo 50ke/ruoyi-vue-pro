@@ -7,10 +7,13 @@ import cn.iocoder.yudao.framework.mybatis.core.query.LambdaQueryWrapperX;
 import cn.iocoder.yudao.module.merchant.controller.app.product.vo.AppMerchantProductPageReqVO;
 import cn.iocoder.yudao.module.merchant.controller.app.product.vo.AppMerchantProductRespVO;
 import cn.iocoder.yudao.module.merchant.controller.app.product.vo.AppMerchantProductSaveReqVO;
+import cn.iocoder.yudao.module.merchant.convert.product.MerchantProductConvert;
 import cn.iocoder.yudao.module.merchant.dal.dataobject.product.MerchantProductSpuDO;
 import cn.iocoder.yudao.module.merchant.dal.mysql.product.MerchantProductSpuMapper;
 import cn.iocoder.yudao.module.product.api.brand.ProductBrandApi;
 import cn.iocoder.yudao.module.product.api.brand.dto.ProductBrandRespDTO;
+import cn.iocoder.yudao.module.product.api.sku.ProductSkuApi;
+import cn.iocoder.yudao.module.product.api.sku.dto.ProductSkuRespDTO;
 import cn.iocoder.yudao.module.product.api.spu.ProductSpuApi;
 import cn.iocoder.yudao.module.product.api.spu.dto.ProductSpuDetailRespDTO;
 import cn.iocoder.yudao.module.product.api.spu.dto.ProductSpuPageReqDTO;
@@ -25,6 +28,7 @@ import org.springframework.validation.annotation.Validated;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 import static cn.iocoder.yudao.module.merchant.enums.ErrorCodeConstants.*;
 
@@ -35,6 +39,9 @@ public class MerchantProductServiceImpl implements MerchantProductService{
 
     @Resource
     private ProductSpuApi productSpuApi;
+
+    @Resource
+    private ProductSkuApi productSkuApi;
 
     @Resource
     private ProductBrandApi productBrandApi;
@@ -77,7 +84,8 @@ public class MerchantProductServiceImpl implements MerchantProductService{
     public AppMerchantProductRespVO getProductDetail(Long loginUserId, Long spuId) {
         validateMerchantProductExists(loginUserId, spuId);
         ProductSpuDetailRespDTO spuDetailRespDTO = productSpuApi.getSpuDetail(spuId);
-        return BeanUtils.toBean(spuDetailRespDTO, AppMerchantProductRespVO.class);
+        List<ProductSkuRespDTO> skuRespDTOS = productSkuApi.getSkuListBySpuId(Collections.singletonList(spuId));
+        return MerchantProductConvert.INSTANCE.convert(spuDetailRespDTO, skuRespDTOS);
     }
 
     private void validateMerchantProductExists(Long merchantId, Long spuId){

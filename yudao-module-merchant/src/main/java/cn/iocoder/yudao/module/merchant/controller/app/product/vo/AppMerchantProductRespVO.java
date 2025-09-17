@@ -30,9 +30,6 @@ public class AppMerchantProductRespVO {
     @Schema(description = "商品分类编号", requiredMode = Schema.RequiredMode.REQUIRED, example = "1")
     private Long categoryId;
 
-    @Schema(description = "商品品牌编号", requiredMode = Schema.RequiredMode.REQUIRED, example = "1")
-    private Long brandId;
-
     @Schema(description = "商品封面图", requiredMode = Schema.RequiredMode.REQUIRED, example = "https://www.iocoder.cn/xx.png")
     private String picUrl;
 
@@ -50,39 +47,11 @@ public class AppMerchantProductRespVO {
 
     // ========== SKU 相关字段 =========
 
-    @Schema(description = "规格类型", requiredMode = Schema.RequiredMode.REQUIRED, example = "true")
-    private Boolean specType;
-
-    @Schema(description = "商品价格", requiredMode = Schema.RequiredMode.REQUIRED, example = "1999")
-    private Integer price;
-
-    @Schema(description = "市场价，单位使用：分", requiredMode = Schema.RequiredMode.REQUIRED, example = "199")
-    private Integer marketPrice;
-
-    @Schema(description = "成本价，单位使用：分", requiredMode = Schema.RequiredMode.REQUIRED, example = "19")
-    private Integer costPrice;
-
     @Schema(description = "商品库存", requiredMode = Schema.RequiredMode.REQUIRED, example = "10000")
     private Integer stock;
 
     @Schema(description = "SKU 数组")
     private List<ProductSku> skus;
-
-    // ========== 物流相关字段 =========
-
-    @Schema(description = "配送方式数组", requiredMode = Schema.RequiredMode.REQUIRED, example = "1")
-    private List<Integer> deliveryTypes;
-
-    @Schema(description = "物流配置模板编号", requiredMode = Schema.RequiredMode.REQUIRED, example = "111")
-    private Long deliveryTemplateId;
-
-    // ========== 营销相关字段 =========
-
-    @Schema(description = "赠送积分", requiredMode = Schema.RequiredMode.REQUIRED, example = "111")
-    private Integer giveIntegral;
-
-    @Schema(description = "分销类型", requiredMode = Schema.RequiredMode.REQUIRED, example = "true")
-    private Boolean subCommissionType;
 
     // ========== 统计相关字段 =========
 
@@ -128,12 +97,6 @@ public class AppMerchantProductRespVO {
 
         @Schema(description = "商品体积,单位：m^3 平米", example = "2.5")
         private Double volume;
-
-        @Schema(description = "一级分销的佣金，单位：分", example = "199")
-        private Integer firstBrokeragePrice;
-
-        @Schema(description = "二级分销的佣金，单位：分", example = "19")
-        private Integer secondBrokeragePrice;
 
         @Schema(description = "属性数组")
         private List<Property> properties;
