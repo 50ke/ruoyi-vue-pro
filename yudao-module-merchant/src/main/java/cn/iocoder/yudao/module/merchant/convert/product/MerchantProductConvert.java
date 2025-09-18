@@ -14,10 +14,11 @@ public interface MerchantProductConvert {
 
     MerchantProductConvert INSTANCE = Mappers.getMapper(MerchantProductConvert.class);
 
-    default AppMerchantProductRespVO convert(ProductSpuDetailRespDTO respDTO, List<ProductSkuRespDTO> skus){
+    default AppMerchantProductRespVO convert(ProductSpuDetailRespDTO respDTO, List<ProductSkuRespDTO> skus, List<Long> storeIdList){
         AppMerchantProductRespVO respVO = BeanUtils.toBean(respDTO, AppMerchantProductRespVO.class);
         List<AppMerchantProductRespVO.ProductSku> skuList = BeanUtils.toBean(skus, AppMerchantProductRespVO.ProductSku.class);
         respVO.setSkus(skuList);
+        respVO.setStoreId(storeIdList);
         return respVO;
     }
 }

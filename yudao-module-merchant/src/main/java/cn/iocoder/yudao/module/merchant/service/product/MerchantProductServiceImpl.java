@@ -96,7 +96,8 @@ public class MerchantProductServiceImpl implements MerchantProductService{
         validateMerchantProductExists(loginUserId, spuId);
         ProductSpuDetailRespDTO spuDetailRespDTO = productSpuApi.getSpuDetail(spuId);
         List<ProductSkuRespDTO> skuRespDTOS = productSkuApi.getSkuListBySpuId(Collections.singletonList(spuId));
-        return MerchantProductConvert.INSTANCE.convert(spuDetailRespDTO, skuRespDTOS);
+        List<MerchantStoreProductSpuDO> merchantStoreProductSpuDOList = merchantStoreProductSpuMapper.selectList(new LambdaQueryWrapperX<MerchantStoreProductSpuDO>().eq(MerchantStoreProductSpuDO::getMerchantId, loginUserId).eq(MerchantStoreProductSpuDO::getSpuId, spuId));
+        return MerchantProductConvert.INSTANCE.convert(spuDetailRespDTO, skuRespDTOS, merchantStoreProductSpuDOList.stream().map(MerchantStoreProductSpuDO::getStoreId).toList());
     }
 
     private void validateMerchantProductExists(Long merchantId, Long spuId){

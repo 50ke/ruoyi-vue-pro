@@ -30,6 +30,9 @@ public class AppMerchantProductRespVO {
     @Schema(description = "商品分类编号", requiredMode = Schema.RequiredMode.REQUIRED, example = "1")
     private Long categoryId;
 
+    @Schema(description = "门店ID", requiredMode = Schema.RequiredMode.REQUIRED, example = "1")
+    private List<Long> storeId;
+
     @Schema(description = "商品封面图", requiredMode = Schema.RequiredMode.REQUIRED, example = "https://www.iocoder.cn/xx.png")
     private String picUrl;
 
