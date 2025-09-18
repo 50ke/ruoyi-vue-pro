@@ -7,7 +7,7 @@ import cn.iocoder.yudao.framework.mybatis.core.query.LambdaQueryWrapperX;
 import cn.iocoder.yudao.framework.mybatis.core.query.MPJLambdaWrapperX;
 import cn.iocoder.yudao.module.product.controller.admin.spu.vo.ProductSpuPageReqVO;
 import cn.iocoder.yudao.module.product.controller.app.spu.vo.AppProductSpuPageReqVO;
-import cn.iocoder.yudao.module.product.dal.dataobject.spu.ProductSpuMerchantDO;
+import cn.iocoder.yudao.module.product.dal.dataobject.spu.ProductSpuMerchantStoreDO;
 import cn.iocoder.yudao.module.product.dal.dataobject.spu.ProductSpuDO;
 import cn.iocoder.yudao.module.product.enums.ProductConstants;
 import cn.iocoder.yudao.module.product.enums.spu.ProductSpuStatusEnum;
@@ -39,8 +39,9 @@ public interface ProductSpuMapper extends BaseMapperX<ProductSpuDO> {
                     .likeIfPresent(ProductSpuDO::getName, reqVO.getName())
                     .eqIfPresent(ProductSpuDO::getCategoryId, reqVO.getCategoryId())
                     .betweenIfPresent(ProductSpuDO::getCreateTime, reqVO.getCreateTime())
-                    .leftJoin(ProductSpuMerchantDO.class, ProductSpuMerchantDO::getSpuId, ProductSpuDO::getId)
-                    .eq(ProductSpuMerchantDO::getMerchantId, reqVO.getMerchantId())
+                    .leftJoin(ProductSpuDO.class, ProductSpuDO::getId, ProductSpuMerchantStoreDO::getSpuId)
+                    .eqIfPresent(ProductSpuMerchantStoreDO::getMerchantId, reqVO.getMerchantId())
+                    .eqIfPresent(ProductSpuMerchantStoreDO::getStoreId, reqVO.getStoreId())
                     .orderByDesc(ProductSpuDO::getSort)
                     .orderByDesc(ProductSpuDO::getId);
             appendTabQuery(tabType, queryWrapper);

@@ -11,15 +11,15 @@ import lombok.*;
  *
  * @author 芋道源码
  */
-@TableName("merchant_product_spu")
-@KeySequence("merchant_product_spu_seq") // 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
+@TableName("merchant_store_product_spu")
+@KeySequence("merchant_store_product_spu_seq") // 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductSpuMerchantDO extends TenantBaseDO {
+public class ProductSpuMerchantStoreDO extends TenantBaseDO {
 
     /**
      * 主键ID
@@ -31,6 +31,11 @@ public class ProductSpuMerchantDO extends TenantBaseDO {
      * 商户ID
      */
     private Long merchantId;
+
+    /**
+     * 门店ID
+     */
+    private Long storeId;
 
     /**
      * 商品SPU ID
