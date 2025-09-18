@@ -37,6 +37,10 @@ public class AppMerchantProductSaveReqVO {
     @NotNull(message = "商品分类不能为空")
     private Long categoryId;
 
+    @Schema(description = "门店ID", requiredMode = Schema.RequiredMode.REQUIRED, example = "1")
+    @NotNull(message = "门店不能为空")
+    private List<Long> storeId;
+
     @Schema(description = "商品封面图", requiredMode = Schema.RequiredMode.REQUIRED, example = "https://www.iocoder.cn/xx.png")
     @NotEmpty(message = "商品封面图不能为空")
     private String picUrl;

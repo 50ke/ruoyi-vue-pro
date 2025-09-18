@@ -41,8 +41,8 @@ public class AppMerchantProductPageReqVO extends PageParam {
      */
     public static final Integer RECYCLE_BIN = 4;
 
-    @Schema(description = "商户ID", example = "1")
-    private Long merchantId;
+    @Schema(description = "门店ID", example = "1")
+    private Long storeId;
 
     @Schema(description = "商品名称", example = "清凉小短袖")
     private String name;

@@ -7,7 +7,6 @@ import cn.iocoder.yudao.framework.mybatis.core.query.LambdaQueryWrapperX;
 import cn.iocoder.yudao.module.courier.api.order.CourierOrderApi;
 import cn.iocoder.yudao.module.merchant.controller.app.trade.vo.*;
 import cn.iocoder.yudao.module.merchant.dal.dataobject.trade.MerchantTradeOrderDO;
-import cn.iocoder.yudao.module.merchant.dal.mysql.product.MerchantProductSpuMapper;
 import cn.iocoder.yudao.module.merchant.dal.mysql.trade.MerchantTradeOrderMapper;
 import cn.iocoder.yudao.module.merchant.service.user.MerchantUserService;
 import cn.iocoder.yudao.module.trade.api.order.TradeOrderApi;
@@ -34,9 +33,6 @@ public class MerchantTradeServiceImpl implements MerchantTradeService{
 
     @Resource
     private MerchantUserService merchantUserService;
-
-    @Resource
-    private MerchantProductSpuMapper merchantProductSpuMapper;
 
     @Resource
     private MerchantTradeOrderMapper merchantTradeOrderMapper;

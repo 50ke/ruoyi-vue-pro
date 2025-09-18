@@ -34,6 +34,8 @@ public class ProductSpuPageReqDTO extends PageParam {
 
     private Long merchantId;
 
+    private Long storeId;
+
     private String name;
 
     private Integer tabType;

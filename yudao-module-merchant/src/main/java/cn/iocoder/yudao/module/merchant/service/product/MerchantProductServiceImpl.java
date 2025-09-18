@@ -1,5 +1,6 @@
 package cn.iocoder.yudao.module.merchant.service.product;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.iocoder.yudao.framework.common.exception.util.ServiceExceptionUtil;
 import cn.iocoder.yudao.framework.common.pojo.PageResult;
 import cn.iocoder.yudao.framework.common.util.object.BeanUtils;
@@ -8,8 +9,10 @@ import cn.iocoder.yudao.module.merchant.controller.app.product.vo.AppMerchantPro
 import cn.iocoder.yudao.module.merchant.controller.app.product.vo.AppMerchantProductRespVO;
 import cn.iocoder.yudao.module.merchant.controller.app.product.vo.AppMerchantProductSaveReqVO;
 import cn.iocoder.yudao.module.merchant.convert.product.MerchantProductConvert;
-import cn.iocoder.yudao.module.merchant.dal.dataobject.product.MerchantProductSpuDO;
-import cn.iocoder.yudao.module.merchant.dal.mysql.product.MerchantProductSpuMapper;
+import cn.iocoder.yudao.module.merchant.dal.dataobject.product.MerchantStoreProductSpuDO;
+import cn.iocoder.yudao.module.merchant.dal.dataobject.user.MerchantUserDO;
+import cn.iocoder.yudao.module.merchant.dal.mysql.product.MerchantStoreProductSpuMapper;
+import cn.iocoder.yudao.module.merchant.service.user.MerchantUserService;
 import cn.iocoder.yudao.module.product.api.brand.ProductBrandApi;
 import cn.iocoder.yudao.module.product.api.brand.dto.ProductBrandRespDTO;
 import cn.iocoder.yudao.module.product.api.sku.ProductSkuApi;
@@ -47,15 +50,22 @@ public class MerchantProductServiceImpl implements MerchantProductService{
     private ProductBrandApi productBrandApi;
 
     @Resource
-    private MerchantProductSpuMapper merchantProductSpuMapper;
+    private MerchantUserService merchantUserService;
+
+    @Resource
+    private MerchantStoreProductSpuMapper merchantStoreProductSpuMapper;
 
     @Transactional(rollbackFor = Exception.class)
     @Override
     public Long createProduct(Long loginUserId, AppMerchantProductSaveReqVO createReqVO) {
+        validateMerchantStore(loginUserId, createReqVO.getStoreId());
+
         ProductSpuSaveReqDTO reqDTO = BeanUtils.toBean(createReqVO, ProductSpuSaveReqDTO.class);
         setProductDefaultValue(reqDTO);
         Long spuId = productSpuApi.createSpu(reqDTO);
-        merchantProductSpuMapper.insert(MerchantProductSpuDO.builder().merchantId(loginUserId).spuId(spuId).build());
+
+        List<MerchantStoreProductSpuDO> merchantStoreProductSpuDOList = createReqVO.getStoreId().stream().map(e -> MerchantStoreProductSpuDO.builder().merchantId(loginUserId).storeId(e).spuId(spuId).build()).toList();
+        merchantStoreProductSpuMapper.insertBatch(merchantStoreProductSpuDOList);
         return spuId;
     }
 
@@ -76,6 +86,7 @@ public class MerchantProductServiceImpl implements MerchantProductService{
     @Override
     public PageResult<AppMerchantProductRespVO> getProductPage(Long loginUserId, AppMerchantProductPageReqVO pageVO) {
         ProductSpuPageReqDTO pageReqDTO = BeanUtils.toBean(pageVO, ProductSpuPageReqDTO.class);
+        pageReqDTO.setMerchantId(loginUserId);
         PageResult<ProductSpuPageReqDTO> pageRespDTO = productSpuApi.getSpuPage(pageReqDTO);
         return BeanUtils.toBean(pageRespDTO, AppMerchantProductRespVO.class);
     }
@@ -89,11 +100,21 @@ public class MerchantProductServiceImpl implements MerchantProductService{
     }
 
     private void validateMerchantProductExists(Long merchantId, Long spuId){
-        boolean exists = merchantProductSpuMapper.exists(new LambdaQueryWrapperX<MerchantProductSpuDO>()
-                .eq(MerchantProductSpuDO::getMerchantId, merchantId)
-                .eq(MerchantProductSpuDO::getSpuId, spuId));
+        boolean exists = merchantStoreProductSpuMapper.exists(new LambdaQueryWrapperX<MerchantStoreProductSpuDO>()
+                .eq(MerchantStoreProductSpuDO::getMerchantId, merchantId)
+                .eq(MerchantStoreProductSpuDO::getSpuId, spuId));
         if (!exists){
             throw ServiceExceptionUtil.exception(PRODUCT_NOT_EXISTS);
+        }
+    }
+
+    private void validateMerchantStore(Long merchantId, List<Long> storeIdList){
+        MerchantUserDO user = merchantUserService.getUser(merchantId);
+        if (user == null){
+            throw ServiceExceptionUtil.exception(USER_NOT_EXISTS);
+        }
+        if (!CollUtil.containsAll(user.getStoreIds(), storeIdList)){
+            throw ServiceExceptionUtil.exception(STORE_NOT_EXISTS);
         }
     }
 
