@@ -39,7 +39,7 @@ public interface ProductSpuMapper extends BaseMapperX<ProductSpuDO> {
                     .likeIfPresent(ProductSpuDO::getName, reqVO.getName())
                     .eqIfPresent(ProductSpuDO::getCategoryId, reqVO.getCategoryId())
                     .betweenIfPresent(ProductSpuDO::getCreateTime, reqVO.getCreateTime())
-                    .leftJoin(ProductSpuDO.class, ProductSpuDO::getId, ProductSpuMerchantStoreDO::getSpuId)
+                    .leftJoin(ProductSpuMerchantStoreDO.class, ProductSpuMerchantStoreDO::getSpuId, ProductSpuDO::getId)
                     .eqIfPresent(ProductSpuMerchantStoreDO::getMerchantId, reqVO.getMerchantId())
                     .eqIfPresent(ProductSpuMerchantStoreDO::getStoreId, reqVO.getStoreId())
                     .orderByDesc(ProductSpuDO::getSort)

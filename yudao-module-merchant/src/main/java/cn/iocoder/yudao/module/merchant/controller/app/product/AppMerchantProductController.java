@@ -47,9 +47,9 @@ public class AppMerchantProductController {
         return success(true);
     }
 
-    @PostMapping("/page")
+    @GetMapping("/page")
     @Operation(summary = "获得商品分页")
-    public CommonResult<PageResult<AppMerchantProductRespVO>> getProductPage(@Valid @RequestBody AppMerchantProductPageReqVO pageVO) {
+    public CommonResult<PageResult<AppMerchantProductRespVO>> getProductPage(@Valid AppMerchantProductPageReqVO pageVO) {
         return success(merchantProductService.getProductPage(getLoginUserId(), pageVO));
     }
 

@@ -20,6 +20,7 @@ import cn.iocoder.yudao.module.product.api.sku.dto.ProductSkuRespDTO;
 import cn.iocoder.yudao.module.product.api.spu.ProductSpuApi;
 import cn.iocoder.yudao.module.product.api.spu.dto.ProductSpuDetailRespDTO;
 import cn.iocoder.yudao.module.product.api.spu.dto.ProductSpuPageReqDTO;
+import cn.iocoder.yudao.module.product.api.spu.dto.ProductSpuPageRespDTO;
 import cn.iocoder.yudao.module.product.api.spu.dto.ProductSpuSaveReqDTO;
 import cn.iocoder.yudao.module.product.enums.spu.ProductSpuStatusEnum;
 import cn.iocoder.yudao.module.trade.enums.delivery.DeliveryTypeEnum;
@@ -87,7 +88,7 @@ public class MerchantProductServiceImpl implements MerchantProductService{
     public PageResult<AppMerchantProductRespVO> getProductPage(Long loginUserId, AppMerchantProductPageReqVO pageVO) {
         ProductSpuPageReqDTO pageReqDTO = BeanUtils.toBean(pageVO, ProductSpuPageReqDTO.class);
         pageReqDTO.setMerchantId(loginUserId);
-        PageResult<ProductSpuPageReqDTO> pageRespDTO = productSpuApi.getSpuPage(pageReqDTO);
+        PageResult<ProductSpuPageRespDTO> pageRespDTO = productSpuApi.getSpuPage(pageReqDTO);
         return BeanUtils.toBean(pageRespDTO, AppMerchantProductRespVO.class);
     }
 
