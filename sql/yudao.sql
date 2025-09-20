@@ -688,6 +688,8 @@ CREATE TABLE `pay_order`  (
   `channel_fee_price` bigint(0) NULL DEFAULT 0 COMMENT '渠道手续金额，单位：分',
   `status` tinyint(0) NOT NULL COMMENT '支付状态',
   `user_ip` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '用户 IP',
+  `user_id`              bigint(20)             DEFAULT NULL,
+  `user_type`            tinyint(4)             DEFAULT NULL,
   `expire_time` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '订单失效时间',
   `success_time` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '订单支付成功时间',
   `extension_id` bigint(0) NULL DEFAULT NULL COMMENT '支付成功的订单拓展单编号',
