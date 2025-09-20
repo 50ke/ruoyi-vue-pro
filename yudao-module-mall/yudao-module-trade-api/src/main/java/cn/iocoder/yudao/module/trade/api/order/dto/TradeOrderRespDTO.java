@@ -65,6 +65,10 @@ public class TradeOrderRespDTO {
      */
     private LocalDateTime finishTime;
     /**
+     * 下单时间
+     */
+    private LocalDateTime createTime;
+    /**
      * 订单取消时间
      */
     private LocalDateTime cancelTime;

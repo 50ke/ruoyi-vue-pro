@@ -25,9 +25,9 @@ public class AppMerchantTradeOrderController {
     @Resource
     private MerchantTradeService merchantTradeService;
 
-    @PostMapping("/page")
+    @GetMapping("/page")
     @Operation(summary = "获得交易订单分页")
-    public CommonResult<PageResult<AppMerchantTradeOrderRespVO>> getTradeOrderPage(@Valid @RequestBody AppMerchantTradeOrderPageReqVO pageReqVO) {
+    public CommonResult<PageResult<AppMerchantTradeOrderRespVO>> getTradeOrderPage(@Valid AppMerchantTradeOrderPageReqVO pageReqVO) {
         return success(merchantTradeService.getTradeOrderPage(getLoginUserId(), pageReqVO));
     }
 

@@ -7,6 +7,7 @@ import cn.iocoder.yudao.framework.mybatis.core.query.MPJLambdaWrapperX;
 import cn.iocoder.yudao.module.trade.controller.admin.order.vo.TradeOrderPageReqVO;
 import cn.iocoder.yudao.module.trade.controller.app.order.vo.AppTradeOrderPageReqVO;
 import cn.iocoder.yudao.module.trade.dal.dataobject.order.TradeOrderDO;
+import cn.iocoder.yudao.module.trade.dal.dataobject.order.TradeOrderMerchantDO;
 import cn.iocoder.yudao.module.trade.enums.order.TradeOrderTypeEnum;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import org.apache.ibatis.annotations.Mapper;
@@ -29,20 +30,41 @@ public interface TradeOrderMapper extends BaseMapperX<TradeOrderDO> {
     }
 
     default PageResult<TradeOrderDO> selectPage(TradeOrderPageReqVO reqVO, Set<Long> userIds) {
-        return selectPage(reqVO, new LambdaQueryWrapperX<TradeOrderDO>()
-                .likeIfPresent(TradeOrderDO::getNo, reqVO.getNo())
-                .eqIfPresent(TradeOrderDO::getUserId, reqVO.getUserId())
-                .eqIfPresent(TradeOrderDO::getDeliveryType, reqVO.getDeliveryType())
-                .inIfPresent(TradeOrderDO::getUserId, userIds)
-                .eqIfPresent(TradeOrderDO::getType, reqVO.getType())
-                .eqIfPresent(TradeOrderDO::getStatus, reqVO.getStatus())
-                .eqIfPresent(TradeOrderDO::getPayChannelCode, reqVO.getPayChannelCode())
-                .eqIfPresent(TradeOrderDO::getTerminal, reqVO.getTerminal())
-                .eqIfPresent(TradeOrderDO::getLogisticsId, reqVO.getLogisticsId())
-                .inIfPresent(TradeOrderDO::getPickUpStoreId, reqVO.getPickUpStoreIds())
-                .likeIfPresent(TradeOrderDO::getPickUpVerifyCode, reqVO.getPickUpVerifyCode())
-                .betweenIfPresent(TradeOrderDO::getCreateTime, reqVO.getCreateTime())
-                .orderByDesc(TradeOrderDO::getId));
+        if (reqVO.getMerchantId() != null){
+            MPJLambdaWrapperX<TradeOrderDO> queryWrapper = new MPJLambdaWrapperX<TradeOrderDO>()
+                    .selectAll(TradeOrderDO.class)
+                    .leftJoin(TradeOrderMerchantDO.class, TradeOrderMerchantDO::getOrderId, TradeOrderDO::getId)
+                    .eqIfPresent(TradeOrderMerchantDO::getMerchantId, reqVO.getMerchantId())
+                    .likeIfPresent(TradeOrderDO::getNo, reqVO.getNo())
+                    .eqIfPresent(TradeOrderDO::getUserId, reqVO.getUserId())
+                    .eqIfPresent(TradeOrderDO::getDeliveryType, reqVO.getDeliveryType())
+                    .inIfPresent(TradeOrderDO::getUserId, userIds)
+                    .eqIfPresent(TradeOrderDO::getType, reqVO.getType())
+                    .eqIfPresent(TradeOrderDO::getStatus, reqVO.getStatus())
+                    .eqIfPresent(TradeOrderDO::getPayChannelCode, reqVO.getPayChannelCode())
+                    .eqIfPresent(TradeOrderDO::getTerminal, reqVO.getTerminal())
+                    .eqIfPresent(TradeOrderDO::getLogisticsId, reqVO.getLogisticsId())
+                    .inIfPresent(TradeOrderDO::getPickUpStoreId, reqVO.getPickUpStoreIds())
+                    .likeIfPresent(TradeOrderDO::getPickUpVerifyCode, reqVO.getPickUpVerifyCode())
+                    .betweenIfPresent(TradeOrderDO::getCreateTime, reqVO.getCreateTime())
+                    .orderByDesc(TradeOrderDO::getCreateTime);
+            return selectJoinPage(reqVO, TradeOrderDO.class, queryWrapper);
+        }else {
+            return selectPage(reqVO, new LambdaQueryWrapperX<TradeOrderDO>()
+                    .likeIfPresent(TradeOrderDO::getNo, reqVO.getNo())
+                    .eqIfPresent(TradeOrderDO::getUserId, reqVO.getUserId())
+                    .eqIfPresent(TradeOrderDO::getDeliveryType, reqVO.getDeliveryType())
+                    .inIfPresent(TradeOrderDO::getUserId, userIds)
+                    .eqIfPresent(TradeOrderDO::getType, reqVO.getType())
+                    .eqIfPresent(TradeOrderDO::getStatus, reqVO.getStatus())
+                    .eqIfPresent(TradeOrderDO::getPayChannelCode, reqVO.getPayChannelCode())
+                    .eqIfPresent(TradeOrderDO::getTerminal, reqVO.getTerminal())
+                    .eqIfPresent(TradeOrderDO::getLogisticsId, reqVO.getLogisticsId())
+                    .inIfPresent(TradeOrderDO::getPickUpStoreId, reqVO.getPickUpStoreIds())
+                    .likeIfPresent(TradeOrderDO::getPickUpVerifyCode, reqVO.getPickUpVerifyCode())
+                    .betweenIfPresent(TradeOrderDO::getCreateTime, reqVO.getCreateTime())
+                    .orderByDesc(TradeOrderDO::getId));
+        }
     }
 
     // TODO @疯狂：如果用 map 返回，要不这里直接用 TradeOrderSummaryRespVO 返回？也算合理，就当  sql 查询出这么个玩意~~
