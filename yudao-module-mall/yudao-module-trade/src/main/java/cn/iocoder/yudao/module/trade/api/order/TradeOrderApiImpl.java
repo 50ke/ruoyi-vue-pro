@@ -2,14 +2,19 @@ package cn.iocoder.yudao.module.trade.api.order;
 
 import cn.iocoder.yudao.framework.common.pojo.PageResult;
 import cn.iocoder.yudao.framework.common.util.object.BeanUtils;
+import cn.iocoder.yudao.module.member.api.user.MemberUserApi;
+import cn.iocoder.yudao.module.member.api.user.dto.MemberUserRespDTO;
 import cn.iocoder.yudao.module.trade.api.order.dto.TradeOrderPageReqDTO;
 import cn.iocoder.yudao.module.trade.api.order.dto.TradeOrderRespDTO;
 import cn.iocoder.yudao.module.trade.controller.admin.order.vo.TradeOrderDeliveryReqVO;
+import cn.iocoder.yudao.module.trade.controller.admin.order.vo.TradeOrderDetailRespVO;
 import cn.iocoder.yudao.module.trade.controller.admin.order.vo.TradeOrderPageReqVO;
 import cn.iocoder.yudao.module.trade.controller.admin.order.vo.TradeOrderRemarkReqVO;
 import cn.iocoder.yudao.module.trade.convert.order.TradeOrderConvert;
 import cn.iocoder.yudao.module.trade.dal.dataobject.order.TradeOrderDO;
 import cn.iocoder.yudao.module.trade.dal.dataobject.order.TradeOrderItemDO;
+import cn.iocoder.yudao.module.trade.dal.dataobject.order.TradeOrderLogDO;
+import cn.iocoder.yudao.module.trade.service.order.TradeOrderLogService;
 import cn.iocoder.yudao.module.trade.service.order.TradeOrderQueryService;
 import cn.iocoder.yudao.module.trade.service.order.TradeOrderUpdateService;
 import jakarta.annotation.Resource;
@@ -32,6 +37,10 @@ public class TradeOrderApiImpl implements TradeOrderApi {
     private TradeOrderUpdateService tradeOrderUpdateService;
     @Resource
     private TradeOrderQueryService tradeOrderQueryService;
+    @Resource
+    private MemberUserApi memberUserApi;
+    @Resource
+    private TradeOrderLogService tradeOrderLogService;
 
     @Override
     public List<TradeOrderRespDTO> getOrderList(Collection<Long> ids) {
@@ -41,8 +50,23 @@ public class TradeOrderApiImpl implements TradeOrderApi {
 
     @Override
     public TradeOrderRespDTO getOrder(Long id) {
-        List<TradeOrderItemDO> orderItemDOList = tradeOrderQueryService.getOrderItemListByOrderId(id);
-        return TradeOrderConvert.INSTANCE.convert01(tradeOrderQueryService.getOrder(id), orderItemDOList);
+        // 查询订单
+        TradeOrderDO order = tradeOrderQueryService.getOrder(id);
+        if (order == null) {
+            return null;
+        }
+        // 查询订单项
+        List<TradeOrderItemDO> orderItems = tradeOrderQueryService.getOrderItemListByOrderId(id);
+
+        // 拼接数据
+        MemberUserRespDTO user = memberUserApi.getUser(order.getUserId());
+        MemberUserRespDTO brokerageUser = order.getBrokerageUserId() != null ?
+                memberUserApi.getUser(order.getBrokerageUserId()) : null;
+        List<TradeOrderLogDO> orderLogs = tradeOrderLogService.getOrderLogListByOrderId(id);
+        TradeOrderDetailRespVO respVO = TradeOrderConvert.INSTANCE.convert(order, orderItems, orderLogs, user, brokerageUser);
+        return BeanUtils.toBean(respVO, TradeOrderRespDTO.class);
+//        List<TradeOrderItemDO> orderItemDOList = tradeOrderQueryService.getOrderItemListByOrderId(id);
+//        return TradeOrderConvert.INSTANCE.convert01(tradeOrderQueryService.getOrder(id), orderItemDOList);
     }
 
     @Override

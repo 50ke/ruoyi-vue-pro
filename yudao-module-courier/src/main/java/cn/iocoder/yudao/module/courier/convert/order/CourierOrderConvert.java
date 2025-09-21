@@ -32,7 +32,7 @@ public interface CourierOrderConvert {
             AppOrderRespVO respVO = new AppOrderRespVO();
             respVO.setId(courierOrder.getId());
             respVO.setNo(xOrder.getNo());
-            respVO.setPics(xOrder.getOrderItems().stream().map(TradeOrderRespDTO.OrderItem::getPicUrl).toList());
+            respVO.setPics(xOrder.getItems().stream().map(TradeOrderRespDTO.Item::getPicUrl).toList());
             respVO.setDeliveryStatus(courierOrder.getDeliveryStatus());
             respVO.setPayTime(xOrder.getPayTime());
             respVO.setPickupTime(courierOrder.getPickupTime());

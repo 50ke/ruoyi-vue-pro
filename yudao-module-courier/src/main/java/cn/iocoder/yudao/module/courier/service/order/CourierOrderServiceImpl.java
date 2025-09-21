@@ -72,21 +72,21 @@ public class CourierOrderServiceImpl implements CourierOrderService {
         }
         if (Objects.equals(reqVO.getDeliveryStatus(), CourierDeliveryStatusEnum.DELIVERING.getStatus())){
             if (Objects.equals(courierOrderDO.getDeliveryStatus(), CourierDeliveryStatusEnum.PENDING.getStatus())){
-                courierOrderDO.setStatus(reqVO.getDeliveryStatus());
+                courierOrderDO.setDeliveryStatus(reqVO.getDeliveryStatus());
                 courierOrderDO.setPickupTime(LocalDateTime.now());
             }else {
                 throw ServiceExceptionUtil.exception(DELIVERY_ORDER_STATUS_ERROR);
             }
         } else if (Objects.equals(reqVO.getDeliveryStatus(), CourierDeliveryStatusEnum.DELIVERED.getStatus())) {
             if (Objects.equals(courierOrderDO.getDeliveryStatus(), CourierDeliveryStatusEnum.DELIVERING.getStatus())){
-                courierOrderDO.setStatus(reqVO.getDeliveryStatus());
+                courierOrderDO.setDeliveryStatus(reqVO.getDeliveryStatus());
                 courierOrderDO.setDeliveryTime(LocalDateTime.now());
             }else {
                 throw ServiceExceptionUtil.exception(DELIVERY_ORDER_STATUS_ERROR);
             }
         } else if (Objects.equals(reqVO.getDeliveryStatus(), CourierDeliveryStatusEnum.CANCELLED.getStatus())) {
             if (Objects.equals(courierOrderDO.getDeliveryStatus(), CourierDeliveryStatusEnum.DELIVERING.getStatus())){
-                courierOrderDO.setStatus(reqVO.getDeliveryStatus());
+                courierOrderDO.setDeliveryStatus(reqVO.getDeliveryStatus());
             }else {
                 throw ServiceExceptionUtil.exception(DELIVERY_ORDER_STATUS_ERROR);
             }
