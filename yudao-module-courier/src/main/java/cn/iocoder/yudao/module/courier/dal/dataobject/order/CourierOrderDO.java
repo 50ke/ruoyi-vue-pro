@@ -42,13 +42,6 @@ public class CourierOrderDO extends TenantBaseDO {
     private Long orderId;
 
     /**
-     * 状态
-     *
-     * 枚举 {@link CommonStatusEnum}
-     */
-    private Integer status;
-
-    /**
      * 配送状态
      * 枚举 {@link CourierDeliveryStatusEnum}
      */

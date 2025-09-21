@@ -797,8 +797,7 @@ public class TradeOrderUpdateServiceImpl implements TradeOrderUpdateService {
             }
         }
         DeliveryPickUpStoreDO deliveryPickUpStore = pickUpStoreService.getDeliveryPickUpStore(order.getPickUpStoreId());
-        if (deliveryPickUpStore == null
-                || !CollUtil.contains(deliveryPickUpStore.getVerifyUserIds(), userId)) {
+        if (deliveryPickUpStore == null) {
             throw exception(ORDER_PICK_UP_FAIL_NOT_VERIFY_USER);
         }
 

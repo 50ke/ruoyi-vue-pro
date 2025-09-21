@@ -35,7 +35,6 @@ CREATE TABLE `courier_order` (
   `id` bigint NOT NULL AUTO_INCREMENT COMMENT '配送订单编号',
   `courier_id` bigint NOT NULL COMMENT '配送员编号',
   `order_id` bigint NOT NULL COMMENT '订单编号',
-  `status` tinyint NOT NULL COMMENT '状态',
   `delivery_status` tinyint NOT NULL DEFAULT '1' COMMENT '配送状态(1:待配送 2:配送中 3:已送达 4:已取消)',
   `pickup_time` datetime DEFAULT NULL COMMENT '取货时间',
   `delivery_time` datetime DEFAULT NULL COMMENT '送达时间',
