@@ -1,0 +1,2820 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "芋道快速开发平台",
+    "description": "提供管理后台、用户 App 的所有功能",
+    "contact": {
+      "url": "http://dashboard.yudao.iocoder.cn",
+      "email": "xingyu4j@vip.qq.com"
+    },
+    "license": {
+      "name": "MIT",
+      "url": "https://gitee.com/zhijiantianya/ruoyi-vue-pro/blob/master/LICENSE"
+    },
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://127.0.0.1:48080",
+      "description": "Generated server url"
+    }
+  ],
+  "security": [
+    {
+      "Authorization": []
+    },
+    {
+      "Authorization": []
+    }
+  ],
+  "paths": {
+    "/app-api/merchant/trade/order/update-remark": {
+      "put": {
+        "tags": [
+          "商户 APP - 交易订单管理"
+        ],
+        "summary": "订单备注",
+        "operationId": "updateTradeOrderRemark",
+        "parameters": [
+          {
+            "name": "user-type",
+            "in": "header",
+            "description": "用户类型",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1,
+              "description": "用户类型"
+            }
+          },
+          {
+            "name": "tenant-id",
+            "in": "header",
+            "description": "租户编号",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1,
+              "description": "租户编号"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "认证 Token",
+            "schema": {
+              "type": "string",
+              "default": "Bearer test1",
+              "description": "认证 Token"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AppMerchantTradeOrderUpdateReqVO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResultBoolean"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/app-api/merchant/trade/order/pick-up-by-verify-code": {
+      "put": {
+        "tags": [
+          "商户 APP - 交易订单管理"
+        ],
+        "summary": "订单核销",
+        "operationId": "pickUpTradeOrder",
+        "parameters": [
+          {
+            "name": "user-type",
+            "in": "header",
+            "description": "用户类型",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1,
+              "description": "用户类型"
+            }
+          },
+          {
+            "name": "tenant-id",
+            "in": "header",
+            "description": "租户编号",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1,
+              "description": "租户编号"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "认证 Token",
+            "schema": {
+              "type": "string",
+              "default": "Bearer test1",
+              "description": "认证 Token"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AppMerchantTradeOrderUpdateReqVO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResultBoolean"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/app-api/merchant/trade/order/delivery": {
+      "put": {
+        "tags": [
+          "商户 APP - 交易订单管理"
+        ],
+        "summary": "订单发货",
+        "operationId": "deliveryTradeOrder",
+        "parameters": [
+          {
+            "name": "user-type",
+            "in": "header",
+            "description": "用户类型",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1,
+              "description": "用户类型"
+            }
+          },
+          {
+            "name": "tenant-id",
+            "in": "header",
+            "description": "租户编号",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1,
+              "description": "租户编号"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "认证 Token",
+            "schema": {
+              "type": "string",
+              "default": "Bearer test1",
+              "description": "认证 Token"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AppMerchantTradeOrderUpdateReqVO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResultBoolean"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/app-api/merchant/product/update": {
+      "put": {
+        "tags": [
+          "商户 APP - 商品管理"
+        ],
+        "summary": "更新商品",
+        "operationId": "updateProduct",
+        "parameters": [
+          {
+            "name": "user-type",
+            "in": "header",
+            "description": "用户类型",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1,
+              "description": "用户类型"
+            }
+          },
+          {
+            "name": "tenant-id",
+            "in": "header",
+            "description": "租户编号",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1,
+              "description": "租户编号"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "认证 Token",
+            "schema": {
+              "type": "string",
+              "default": "Bearer test1",
+              "description": "认证 Token"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AppMerchantProductSaveReqVO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResultBoolean"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/app-api/merchant/product/disable/{id}": {
+      "put": {
+        "tags": [
+          "商户 APP - 商品管理"
+        ],
+        "summary": "下架商品",
+        "operationId": "disableProduct",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "user-type",
+            "in": "header",
+            "description": "用户类型",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1,
+              "description": "用户类型"
+            }
+          },
+          {
+            "name": "tenant-id",
+            "in": "header",
+            "description": "租户编号",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1,
+              "description": "租户编号"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "认证 Token",
+            "schema": {
+              "type": "string",
+              "default": "Bearer test1",
+              "description": "认证 Token"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResultBoolean"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/app-api/merchant/user/create/courier": {
+      "post": {
+        "tags": [
+          "商户 APP - 用户个人中心"
+        ],
+        "summary": "创建配送员",
+        "operationId": "createCourier",
+        "parameters": [
+          {
+            "name": "user-type",
+            "in": "header",
+            "description": "用户类型",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1,
+              "description": "用户类型"
+            }
+          },
+          {
+            "name": "tenant-id",
+            "in": "header",
+            "description": "租户编号",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1,
+              "description": "租户编号"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "认证 Token",
+            "schema": {
+              "type": "string",
+              "default": "Bearer test1",
+              "description": "认证 Token"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AppMerchantCourierCreateReqVO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResultLong"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/app-api/merchant/product/create": {
+      "post": {
+        "tags": [
+          "商户 APP - 商品管理"
+        ],
+        "summary": "创建商品",
+        "operationId": "createProduct",
+        "parameters": [
+          {
+            "name": "user-type",
+            "in": "header",
+            "description": "用户类型",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1,
+              "description": "用户类型"
+            }
+          },
+          {
+            "name": "tenant-id",
+            "in": "header",
+            "description": "租户编号",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1,
+              "description": "租户编号"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "认证 Token",
+            "schema": {
+              "type": "string",
+              "default": "Bearer test1",
+              "description": "认证 Token"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AppMerchantProductSaveReqVO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResultLong"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/app-api/merchant/auth/weixin-mini-app-login": {
+      "post": {
+        "tags": [
+          "商户 APP - 认证"
+        ],
+        "summary": "微信小程序的一键登录",
+        "operationId": "weixinMiniAppLogin",
+        "parameters": [
+          {
+            "name": "user-type",
+            "in": "header",
+            "description": "用户类型",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1,
+              "description": "用户类型"
+            }
+          },
+          {
+            "name": "tenant-id",
+            "in": "header",
+            "description": "租户编号",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1,
+              "description": "租户编号"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "认证 Token",
+            "schema": {
+              "type": "string",
+              "default": "Bearer test1",
+              "description": "认证 Token"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AppMerchantAuthWeixinMiniAppLoginReqVO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResultAppMerchantAuthLoginRespVO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/app-api/merchant/auth/refresh-token": {
+      "post": {
+        "tags": [
+          "商户 APP - 认证"
+        ],
+        "summary": "刷新令牌",
+        "operationId": "refreshToken",
+        "parameters": [
+          {
+            "name": "refreshToken",
+            "in": "query",
+            "description": "刷新令牌",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "user-type",
+            "in": "header",
+            "description": "用户类型",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1,
+              "description": "用户类型"
+            }
+          },
+          {
+            "name": "tenant-id",
+            "in": "header",
+            "description": "租户编号",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1,
+              "description": "租户编号"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "认证 Token",
+            "schema": {
+              "type": "string",
+              "default": "Bearer test1",
+              "description": "认证 Token"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResultAppMerchantAuthLoginRespVO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/app-api/merchant/auth/logout": {
+      "post": {
+        "tags": [
+          "商户 APP - 认证"
+        ],
+        "summary": "登出系统",
+        "operationId": "logout",
+        "parameters": [
+          {
+            "name": "user-type",
+            "in": "header",
+            "description": "用户类型",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1,
+              "description": "用户类型"
+            }
+          },
+          {
+            "name": "tenant-id",
+            "in": "header",
+            "description": "租户编号",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1,
+              "description": "租户编号"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "认证 Token",
+            "schema": {
+              "type": "string",
+              "default": "Bearer test1",
+              "description": "认证 Token"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResultBoolean"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/app-api/merchant/user/get": {
+      "get": {
+        "tags": [
+          "商户 APP - 用户个人中心"
+        ],
+        "summary": "获得基本信息",
+        "operationId": "getUserInfo",
+        "parameters": [
+          {
+            "name": "user-type",
+            "in": "header",
+            "description": "用户类型",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1,
+              "description": "用户类型"
+            }
+          },
+          {
+            "name": "tenant-id",
+            "in": "header",
+            "description": "租户编号",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1,
+              "description": "租户编号"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "认证 Token",
+            "schema": {
+              "type": "string",
+              "default": "Bearer test1",
+              "description": "认证 Token"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResultAppMerchantUserInfoRespVO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/app-api/merchant/user/get/store": {
+      "get": {
+        "tags": [
+          "商户 APP - 用户个人中心"
+        ],
+        "summary": "获取门店信息",
+        "operationId": "getStores",
+        "parameters": [
+          {
+            "name": "user-type",
+            "in": "header",
+            "description": "用户类型",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1,
+              "description": "用户类型"
+            }
+          },
+          {
+            "name": "tenant-id",
+            "in": "header",
+            "description": "租户编号",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1,
+              "description": "租户编号"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "认证 Token",
+            "schema": {
+              "type": "string",
+              "default": "Bearer test1",
+              "description": "认证 Token"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResultListAppMerchantStoreRespVO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/app-api/merchant/user/get/courier": {
+      "get": {
+        "tags": [
+          "商户 APP - 用户个人中心"
+        ],
+        "summary": "获取商户配送员信息",
+        "operationId": "getCouriers",
+        "parameters": [
+          {
+            "name": "user-type",
+            "in": "header",
+            "description": "用户类型",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1,
+              "description": "用户类型"
+            }
+          },
+          {
+            "name": "tenant-id",
+            "in": "header",
+            "description": "租户编号",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1,
+              "description": "租户编号"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "认证 Token",
+            "schema": {
+              "type": "string",
+              "default": "Bearer test1",
+              "description": "认证 Token"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResultListAppMerchantCourierRespVO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/app-api/merchant/user/get/courier/{storeId}": {
+      "get": {
+        "tags": [
+          "商户 APP - 用户个人中心"
+        ],
+        "summary": "获取门店配送员信息",
+        "operationId": "getStoreCouriers",
+        "parameters": [
+          {
+            "name": "storeId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "user-type",
+            "in": "header",
+            "description": "用户类型",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1,
+              "description": "用户类型"
+            }
+          },
+          {
+            "name": "tenant-id",
+            "in": "header",
+            "description": "租户编号",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1,
+              "description": "租户编号"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "认证 Token",
+            "schema": {
+              "type": "string",
+              "default": "Bearer test1",
+              "description": "认证 Token"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResultListAppMerchantCourierRespVO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/app-api/merchant/trade/order/summary": {
+      "get": {
+        "tags": [
+          "商户 APP - 交易订单管理"
+        ],
+        "summary": "获得交易订单统计",
+        "operationId": "getTradeOrderSummary",
+        "parameters": [
+          {
+            "name": "user-type",
+            "in": "header",
+            "description": "用户类型",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1,
+              "description": "用户类型"
+            }
+          },
+          {
+            "name": "tenant-id",
+            "in": "header",
+            "description": "租户编号",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1,
+              "description": "租户编号"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "认证 Token",
+            "schema": {
+              "type": "string",
+              "default": "Bearer test1",
+              "description": "认证 Token"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResultAppMerchantTradeOrderSummaryRespVO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/app-api/merchant/trade/order/page": {
+      "get": {
+        "tags": [
+          "商户 APP - 交易订单管理"
+        ],
+        "summary": "获得交易订单分页",
+        "operationId": "getTradeOrderPage",
+        "parameters": [
+          {
+            "name": "no",
+            "in": "query",
+            "description": "订单号",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "订单号",
+              "example": 88888888
+            },
+            "example": 88888888
+          },
+          {
+            "name": "userMobile",
+            "in": "query",
+            "description": "用户手机号",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "用户手机号",
+              "example": "小王"
+            },
+            "example": "小王"
+          },
+          {
+            "name": "pickUpStoreIds",
+            "in": "query",
+            "description": "自提门店编号",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "description": "自提门店编号",
+              "example": [
+                1,
+                2
+              ],
+              "items": {
+                "type": "integer",
+                "format": "int64",
+                "description": "自提门店编号",
+                "example": [
+                  1,
+                  2
+                ]
+              }
+            },
+            "example": [
+              1,
+              2
+            ]
+          },
+          {
+            "name": "pickUpVerifyCode",
+            "in": "query",
+            "description": "自提核销码",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "自提核销码",
+              "example": 12345678
+            },
+            "example": 12345678
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "订单状态",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "description": "订单状态",
+              "example": 1
+            },
+            "example": 1
+          },
+          {
+            "name": "createTime",
+            "in": "query",
+            "description": "创建时间",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "description": "创建时间",
+              "example": "2025-09-01 00:00:00,2025-10-01 00:00:00",
+              "items": {
+                "type": "string",
+                "format": "date-time",
+                "description": "创建时间",
+                "example": "2025-09-01 00:00:00,2025-10-01 00:00:00"
+              }
+            },
+            "example": "2025-09-01 00:00:00,2025-10-01 00:00:00"
+          },
+          {
+            "name": "pageNo",
+            "in": "query",
+            "description": "页码，从 1 开始",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "description": "页码，从 1 开始",
+              "example": 1,
+              "minimum": 1
+            },
+            "example": 1
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "每页条数，最大值为 100",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "description": "每页条数，最大值为 100",
+              "example": 10,
+              "maximum": 100,
+              "minimum": 1
+            },
+            "example": 10
+          },
+          {
+            "name": "user-type",
+            "in": "header",
+            "description": "用户类型",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1,
+              "description": "用户类型"
+            }
+          },
+          {
+            "name": "tenant-id",
+            "in": "header",
+            "description": "租户编号",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1,
+              "description": "租户编号"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "认证 Token",
+            "schema": {
+              "type": "string",
+              "default": "Bearer test1",
+              "description": "认证 Token"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResultPageResultAppMerchantTradeOrderRespVO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/app-api/merchant/trade/order/get-detail/{orderId}": {
+      "get": {
+        "tags": [
+          "商户 APP - 交易订单管理"
+        ],
+        "summary": "获得交易订单详情",
+        "operationId": "getTradeOrderDetail",
+        "parameters": [
+          {
+            "name": "orderId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "user-type",
+            "in": "header",
+            "description": "用户类型",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1,
+              "description": "用户类型"
+            }
+          },
+          {
+            "name": "tenant-id",
+            "in": "header",
+            "description": "租户编号",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1,
+              "description": "租户编号"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "认证 Token",
+            "schema": {
+              "type": "string",
+              "default": "Bearer test1",
+              "description": "认证 Token"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResultAppMerchantTradeOrderDetailRespVO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/app-api/merchant/product/page": {
+      "get": {
+        "tags": [
+          "商户 APP - 商品管理"
+        ],
+        "summary": "获得商品分页",
+        "operationId": "getProductPage",
+        "parameters": [
+          {
+            "name": "storeId",
+            "in": "query",
+            "description": "门店ID",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "description": "门店ID",
+              "example": 1
+            },
+            "example": 1
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "description": "商品名称",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "商品名称",
+              "example": "清凉小短袖"
+            },
+            "example": "清凉小短袖"
+          },
+          {
+            "name": "tabType",
+            "in": "query",
+            "description": "前端请求的tab类型",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "description": "前端请求的tab类型",
+              "example": 1
+            },
+            "example": 1
+          },
+          {
+            "name": "categoryId",
+            "in": "query",
+            "description": "商品分类编号",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "description": "商品分类编号",
+              "example": 1
+            },
+            "example": 1
+          },
+          {
+            "name": "createTime",
+            "in": "query",
+            "description": "创建时间",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "description": "创建时间",
+              "example": "2025-09-01 00:00:00,2025-10-01 00:00:00",
+              "items": {
+                "type": "string",
+                "format": "date-time",
+                "description": "创建时间",
+                "example": "2025-09-01 00:00:00,2025-10-01 00:00:00"
+              }
+            },
+            "example": "2025-09-01 00:00:00,2025-10-01 00:00:00"
+          },
+          {
+            "name": "pageNo",
+            "in": "query",
+            "description": "页码，从 1 开始",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "description": "页码，从 1 开始",
+              "example": 1,
+              "minimum": 1
+            },
+            "example": 1
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "每页条数，最大值为 100",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "description": "每页条数，最大值为 100",
+              "example": 10,
+              "maximum": 100,
+              "minimum": 1
+            },
+            "example": 10
+          },
+          {
+            "name": "user-type",
+            "in": "header",
+            "description": "用户类型",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1,
+              "description": "用户类型"
+            }
+          },
+          {
+            "name": "tenant-id",
+            "in": "header",
+            "description": "租户编号",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1,
+              "description": "租户编号"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "认证 Token",
+            "schema": {
+              "type": "string",
+              "default": "Bearer test1",
+              "description": "认证 Token"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResultPageResultAppMerchantProductRespVO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/app-api/merchant/product/get-detail/{spuId}": {
+      "get": {
+        "tags": [
+          "商户 APP - 商品管理"
+        ],
+        "summary": "获得商品详情",
+        "operationId": "getProductDetail",
+        "parameters": [
+          {
+            "name": "spuId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "user-type",
+            "in": "header",
+            "description": "用户类型",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1,
+              "description": "用户类型"
+            }
+          },
+          {
+            "name": "tenant-id",
+            "in": "header",
+            "description": "租户编号",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1,
+              "description": "租户编号"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "认证 Token",
+            "schema": {
+              "type": "string",
+              "default": "Bearer test1",
+              "description": "认证 Token"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResultAppMerchantProductRespVO"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AppMerchantTradeOrderUpdateReqVO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "description": "订单编号",
+            "example": 1024
+          },
+          "remark": {
+            "type": "string",
+            "description": "商家备注",
+            "example": "你猜一下"
+          },
+          "pickUpVerifyCode": {
+            "type": "string",
+            "description": "自提核销码",
+            "example": 123456
+          },
+          "courierId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "配送员ID",
+            "example": 1
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "CommonResultBoolean": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "msg": {
+            "type": "string"
+          },
+          "data": {
+            "type": "boolean"
+          }
+        }
+      },
+      "AppMerchantProductSaveReqVO": {
+        "type": "object",
+        "description": "商户 APP - 商品 新增/更新 Request VO",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "description": "商品编号",
+            "example": 1
+          },
+          "name": {
+            "type": "string",
+            "description": "商品名称",
+            "example": "清凉小短袖",
+            "minLength": 1
+          },
+          "keyword": {
+            "type": "string",
+            "description": "关键字",
+            "example": "清凉丝滑不出汗",
+            "minLength": 1
+          },
+          "introduction": {
+            "type": "string",
+            "description": "商品简介",
+            "example": "清凉小短袖简介",
+            "minLength": 1
+          },
+          "description": {
+            "type": "string",
+            "description": "商品详情",
+            "example": "清凉小短袖详情",
+            "minLength": 1
+          },
+          "categoryId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "商品分类编号",
+            "example": 1
+          },
+          "storeId": {
+            "type": "array",
+            "description": "门店ID",
+            "example": 1,
+            "items": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          "picUrl": {
+            "type": "string",
+            "description": "商品封面图",
+            "example": "https://www.iocoder.cn/xx.png",
+            "minLength": 1
+          },
+          "sliderPicUrls": {
+            "type": "array",
+            "description": "商品轮播图",
+            "example": "[https://www.iocoder.cn/xx.png, https://www.iocoder.cn/xxx.png]",
+            "items": {
+              "type": "string"
+            }
+          },
+          "sort": {
+            "type": "integer",
+            "format": "int32",
+            "description": "排序字段",
+            "example": 1
+          },
+          "skus": {
+            "type": "array",
+            "description": "SKU 数组",
+            "items": {
+              "$ref": "#/components/schemas/ProductSku"
+            }
+          }
+        },
+        "required": [
+          "categoryId",
+          "description",
+          "introduction",
+          "keyword",
+          "name",
+          "picUrl",
+          "sliderPicUrls",
+          "sort",
+          "storeId"
+        ]
+      },
+      "ProductSku": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "商品 SKU 名字",
+            "example": "清凉小短袖",
+            "minLength": 1
+          },
+          "price": {
+            "type": "integer",
+            "format": "int32",
+            "description": "销售价格，单位：分",
+            "example": 1999
+          },
+          "marketPrice": {
+            "type": "integer",
+            "format": "int32",
+            "description": "市场价",
+            "example": 2999
+          },
+          "costPrice": {
+            "type": "integer",
+            "format": "int32",
+            "description": "成本价",
+            "example": 19
+          },
+          "barCode": {
+            "type": "string",
+            "description": "条形码",
+            "example": 15156165456
+          },
+          "picUrl": {
+            "type": "string",
+            "description": "图片地址",
+            "example": "https://www.iocoder.cn/xx.png"
+          },
+          "stock": {
+            "type": "integer",
+            "format": "int32",
+            "description": "库存",
+            "example": 200
+          },
+          "weight": {
+            "type": "number",
+            "format": "double",
+            "description": "商品重量,单位：kg 千克",
+            "example": 1.2
+          },
+          "volume": {
+            "type": "number",
+            "format": "double",
+            "description": "商品体积,单位：m^3 平米",
+            "example": 2.5
+          },
+          "properties": {
+            "type": "array",
+            "description": "属性数组",
+            "items": {
+              "$ref": "#/components/schemas/Property"
+            }
+          }
+        },
+        "required": [
+          "name",
+          "picUrl",
+          "price",
+          "stock"
+        ]
+      },
+      "Property": {
+        "type": "object",
+        "properties": {
+          "propertyId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "属性编号",
+            "example": 10
+          },
+          "propertyName": {
+            "type": "string",
+            "description": "属性名字",
+            "example": "颜色"
+          },
+          "valueId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "属性值编号",
+            "example": 10
+          },
+          "valueName": {
+            "type": "string",
+            "description": "属性值名字",
+            "example": "红色"
+          }
+        }
+      },
+      "AppMerchantCourierCreateReqVO": {
+        "type": "object",
+        "description": "商户 APP - 配送员创建 Request VO",
+        "properties": {
+          "nickname": {
+            "type": "string",
+            "description": "配送员昵称",
+            "example": "芋艿",
+            "minLength": 1
+          },
+          "avatar": {
+            "type": "string",
+            "description": "配送员头像",
+            "example": "https://www.iocoder.cn/xxx.png",
+            "minLength": 1
+          },
+          "mobile": {
+            "type": "string",
+            "description": "配送员手机号",
+            "example": 15601691300,
+            "minLength": 1
+          },
+          "storeIds": {
+            "type": "array",
+            "description": "门店ID集合",
+            "example": 15601691300,
+            "items": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        },
+        "required": [
+          "avatar",
+          "mobile",
+          "nickname",
+          "storeIds"
+        ]
+      },
+      "CommonResultLong": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "msg": {
+            "type": "string"
+          },
+          "data": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "AppMerchantAuthWeixinMiniAppLoginReqVO": {
+        "type": "object",
+        "description": "商户 APP - 微信小程序手机登录 Request VO",
+        "properties": {
+          "phoneCode": {
+            "type": "string",
+            "description": "手机 code，小程序通过 wx.getPhoneNumber 方法获得",
+            "example": "hello",
+            "minLength": 1
+          },
+          "loginCode": {
+            "type": "string",
+            "description": "登录 code，小程序通过 wx.login 方法获得",
+            "example": "word",
+            "minLength": 1
+          },
+          "state": {
+            "type": "string",
+            "description": "state",
+            "example": "9b2ffbc1-7425-4155-9894-9d5c08541d62",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "loginCode",
+          "phoneCode",
+          "state"
+        ]
+      },
+      "AppMerchantAuthLoginRespVO": {
+        "type": "object",
+        "description": "商户 APP - 登录 Response VO",
+        "properties": {
+          "userId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "用户编号",
+            "example": 1024
+          },
+          "accessToken": {
+            "type": "string",
+            "description": "访问令牌",
+            "example": "happy"
+          },
+          "refreshToken": {
+            "type": "string",
+            "description": "刷新令牌",
+            "example": "nice"
+          },
+          "expiresTime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "过期时间"
+          }
+        },
+        "required": [
+          "accessToken",
+          "expiresTime",
+          "refreshToken",
+          "userId"
+        ]
+      },
+      "CommonResultAppMerchantAuthLoginRespVO": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "msg": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/AppMerchantAuthLoginRespVO"
+          }
+        }
+      },
+      "AppMerchantUserInfoRespVO": {
+        "type": "object",
+        "description": "商户 APP - 用户个人信息 Response VO",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "description": "用户编号",
+            "example": 1
+          },
+          "nickname": {
+            "type": "string",
+            "description": "用户昵称",
+            "example": "芋艿"
+          },
+          "avatar": {
+            "type": "string",
+            "description": "用户头像",
+            "example": "https://www.iocoder.cn/xxx.png"
+          },
+          "mobile": {
+            "type": "string",
+            "description": "用户手机号",
+            "example": 15601691300
+          },
+          "openid": {
+            "type": "string",
+            "description": "微信openid",
+            "example": 15601691300
+          }
+        },
+        "required": [
+          "avatar",
+          "id",
+          "mobile",
+          "nickname",
+          "openid"
+        ]
+      },
+      "CommonResultAppMerchantUserInfoRespVO": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "msg": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/AppMerchantUserInfoRespVO"
+          }
+        }
+      },
+      "AppMerchantStoreRespVO": {
+        "type": "object",
+        "description": "商户 APP - 门店信息 Response VO",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "description": "门店编号",
+            "example": 1
+          },
+          "name": {
+            "type": "string",
+            "description": "门店名称",
+            "example": 1
+          },
+          "introduction": {
+            "type": "string",
+            "description": "门店简介",
+            "example": 1
+          },
+          "phone": {
+            "type": "string",
+            "description": "门店手机",
+            "example": 1
+          },
+          "areaId": {
+            "type": "integer",
+            "format": "int32",
+            "description": "门店区域编号",
+            "example": 18733
+          },
+          "areaName": {
+            "type": "string",
+            "description": "门店地区名字",
+            "example": "上海上海市普陀区"
+          },
+          "detailAddress": {
+            "type": "string",
+            "description": "门店详细地址",
+            "example": 1
+          },
+          "logo": {
+            "type": "string",
+            "description": "门店logo",
+            "example": 1
+          },
+          "openingTime": {
+            "type": "string",
+            "description": "营业开始时间"
+          },
+          "closingTime": {
+            "type": "string",
+            "description": "营业结束时间"
+          },
+          "latitude": {
+            "type": "number",
+            "format": "double",
+            "description": "纬度",
+            "example": 5.88
+          },
+          "longitude": {
+            "type": "number",
+            "format": "double",
+            "description": "经度",
+            "example": 6.99
+          }
+        },
+        "required": [
+          "areaId",
+          "areaName",
+          "closingTime",
+          "detailAddress",
+          "id",
+          "introduction",
+          "latitude",
+          "logo",
+          "longitude",
+          "name",
+          "openingTime",
+          "phone"
+        ]
+      },
+      "CommonResultListAppMerchantStoreRespVO": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "msg": {
+            "type": "string"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AppMerchantStoreRespVO"
+            }
+          }
+        }
+      },
+      "AppMerchantCourierRespVO": {
+        "type": "object",
+        "description": "商户 APP - 配送员信息 Response VO",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "description": "配送员编号",
+            "example": 1
+          },
+          "nickname": {
+            "type": "string",
+            "description": "配送员昵称",
+            "example": "芋艿"
+          },
+          "avatar": {
+            "type": "string",
+            "description": "配送员头像",
+            "example": "https://www.iocoder.cn/xxx.png"
+          },
+          "mobile": {
+            "type": "string",
+            "description": "配送员手机号",
+            "example": 15601691300
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32",
+            "description": "帐号状态",
+            "example": 1
+          },
+          "workStatus": {
+            "type": "integer",
+            "format": "int32",
+            "description": "配送员工作状态",
+            "example": 1
+          }
+        },
+        "required": [
+          "avatar",
+          "id",
+          "mobile",
+          "nickname",
+          "status",
+          "workStatus"
+        ]
+      },
+      "CommonResultListAppMerchantCourierRespVO": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "msg": {
+            "type": "string"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AppMerchantCourierRespVO"
+            }
+          }
+        }
+      },
+      "AppMerchantTradeOrderSummaryRespVO": {
+        "type": "object",
+        "properties": {
+          "orderPrice": {
+            "type": "integer",
+            "format": "int64",
+            "description": "订单金额",
+            "example": 1024
+          },
+          "orderCount": {
+            "type": "integer",
+            "format": "int64",
+            "description": "订单数量",
+            "example": 1024
+          },
+          "productCount": {
+            "type": "integer",
+            "format": "int64",
+            "description": "商品数量",
+            "example": 1024
+          }
+        },
+        "required": [
+          "orderCount",
+          "orderPrice",
+          "productCount"
+        ]
+      },
+      "CommonResultAppMerchantTradeOrderSummaryRespVO": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "msg": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/AppMerchantTradeOrderSummaryRespVO"
+          }
+        }
+      },
+      "AppMerchantTradeOrderRespVO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "description": "订单编号",
+            "example": 1024
+          },
+          "no": {
+            "type": "string",
+            "description": "订单流水号",
+            "example": 1146347329394184195
+          },
+          "createTime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "下单时间"
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32",
+            "description": "订单状态",
+            "example": 1
+          },
+          "payTime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "付款时间"
+          },
+          "receiverName": {
+            "type": "string",
+            "description": "收件人名称",
+            "example": "张三"
+          },
+          "receiverMobile": {
+            "type": "string",
+            "description": "收件人手机",
+            "example": 13800138000
+          },
+          "receiverDetailAddress": {
+            "type": "string",
+            "description": "收件人详细地址",
+            "example": "中关村大街 1 号"
+          }
+        },
+        "required": [
+          "createTime",
+          "id",
+          "no",
+          "receiverDetailAddress",
+          "receiverMobile",
+          "receiverName",
+          "status"
+        ]
+      },
+      "CommonResultPageResultAppMerchantTradeOrderRespVO": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "msg": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/PageResultAppMerchantTradeOrderRespVO"
+          }
+        }
+      },
+      "PageResultAppMerchantTradeOrderRespVO": {
+        "type": "object",
+        "description": "分页结果",
+        "properties": {
+          "total": {
+            "type": "integer",
+            "format": "int64",
+            "description": "总量"
+          },
+          "list": {
+            "type": "array",
+            "description": "数据",
+            "items": {
+              "$ref": "#/components/schemas/AppMerchantTradeOrderRespVO"
+            }
+          }
+        },
+        "required": [
+          "list",
+          "total"
+        ]
+      },
+      "AppMerchantTradeOrderDetailRespVO": {
+        "type": "object",
+        "description": "商户 APP - 交易订单详情 Response VO",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "description": "订单编号",
+            "example": 1024
+          },
+          "no": {
+            "type": "string",
+            "description": "订单流水号",
+            "example": 1146347329394184195
+          },
+          "createTime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "下单时间"
+          },
+          "type": {
+            "type": "integer",
+            "format": "int32",
+            "description": "订单类型",
+            "example": 1
+          },
+          "terminal": {
+            "type": "integer",
+            "format": "int32",
+            "description": "订单来源",
+            "example": 1
+          },
+          "userId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "用户编号",
+            "example": 2048
+          },
+          "userIp": {
+            "type": "string",
+            "description": "用户 IP",
+            "example": "127.0.0.1"
+          },
+          "userRemark": {
+            "type": "string",
+            "description": "用户备注",
+            "example": "你猜"
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32",
+            "description": "订单状态",
+            "example": 1
+          },
+          "productCount": {
+            "type": "integer",
+            "format": "int32",
+            "description": "购买的商品数量",
+            "example": 10
+          },
+          "finishTime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "订单完成时间"
+          },
+          "cancelTime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "订单取消时间"
+          },
+          "cancelType": {
+            "type": "integer",
+            "format": "int32",
+            "description": "取消类型",
+            "example": 10
+          },
+          "remark": {
+            "type": "string",
+            "description": "商家备注",
+            "example": "你猜一下"
+          },
+          "payOrderId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "支付订单编号",
+            "example": 1024
+          },
+          "payStatus": {
+            "type": "boolean",
+            "description": "是否已支付",
+            "example": true
+          },
+          "payTime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "付款时间"
+          },
+          "payChannelCode": {
+            "type": "string",
+            "description": "支付渠道",
+            "example": "wx_lite"
+          },
+          "totalPrice": {
+            "type": "integer",
+            "format": "int32",
+            "description": "商品原价（总）",
+            "example": 1000
+          },
+          "discountPrice": {
+            "type": "integer",
+            "format": "int32",
+            "description": "订单优惠（总）",
+            "example": 100
+          },
+          "deliveryPrice": {
+            "type": "integer",
+            "format": "int32",
+            "description": "运费金额",
+            "example": 100
+          },
+          "adjustPrice": {
+            "type": "integer",
+            "format": "int32",
+            "description": "订单调价（总）",
+            "example": 100
+          },
+          "payPrice": {
+            "type": "integer",
+            "format": "int32",
+            "description": "应付金额（总）",
+            "example": 1000
+          },
+          "deliveryType": {
+            "type": "integer",
+            "format": "int32",
+            "description": "配送方式",
+            "example": 10
+          },
+          "pickUpStoreId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "自提门店",
+            "example": 10
+          },
+          "pickUpVerifyCode": {
+            "type": "integer",
+            "format": "int64",
+            "description": "自提核销码",
+            "example": 10
+          },
+          "deliveryTemplateId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "配送模板编号",
+            "example": 1024
+          },
+          "logisticsId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "发货物流公司编号",
+            "example": 1024
+          },
+          "logisticsNo": {
+            "type": "string",
+            "description": "发货物流单号",
+            "example": 1024
+          },
+          "deliveryTime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "发货时间"
+          },
+          "receiveTime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "收货时间"
+          },
+          "receiverName": {
+            "type": "string",
+            "description": "收件人名称",
+            "example": "张三"
+          },
+          "receiverMobile": {
+            "type": "string",
+            "description": "收件人手机",
+            "example": 13800138000
+          },
+          "receiverAreaId": {
+            "type": "integer",
+            "format": "int32",
+            "description": "收件人地区编号",
+            "example": 110000
+          },
+          "receiverDetailAddress": {
+            "type": "string",
+            "description": "收件人详细地址",
+            "example": "中关村大街 1 号"
+          },
+          "afterSaleStatus": {
+            "type": "integer",
+            "format": "int32",
+            "description": "售后状态",
+            "example": 1
+          },
+          "refundPrice": {
+            "type": "integer",
+            "format": "int32",
+            "description": "退款金额",
+            "example": 100
+          },
+          "couponId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "优惠劵编号",
+            "example": 1024
+          },
+          "couponPrice": {
+            "type": "integer",
+            "format": "int32",
+            "description": "优惠劵减免金额",
+            "example": 100
+          },
+          "pointPrice": {
+            "type": "integer",
+            "format": "int32",
+            "description": "积分抵扣的金额",
+            "example": 100
+          },
+          "vipPrice": {
+            "type": "integer",
+            "format": "int32",
+            "description": "VIP 减免金额",
+            "example": 888
+          },
+          "brokerageUserId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "推广人编号",
+            "example": 1
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Item"
+            }
+          },
+          "user": {
+            "$ref": "#/components/schemas/MemberUser"
+          },
+          "brokerageUser": {
+            "$ref": "#/components/schemas/MemberUser"
+          },
+          "logs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OrderLog"
+            }
+          },
+          "receiverAreaName": {
+            "type": "string",
+            "description": "收件人地区名字",
+            "example": "上海 上海市 普陀区"
+          }
+        },
+        "required": [
+          "adjustPrice",
+          "couponPrice",
+          "createTime",
+          "deliveryPrice",
+          "discountPrice",
+          "id",
+          "no",
+          "payChannelCode",
+          "payOrderId",
+          "payPrice",
+          "payStatus",
+          "pointPrice",
+          "productCount",
+          "receiverAreaId",
+          "receiverAreaName",
+          "receiverDetailAddress",
+          "receiverMobile",
+          "receiverName",
+          "refundPrice",
+          "status",
+          "terminal",
+          "totalPrice",
+          "type",
+          "userId",
+          "userIp",
+          "userRemark",
+          "vipPrice"
+        ]
+      },
+      "CommonResultAppMerchantTradeOrderDetailRespVO": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "msg": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/AppMerchantTradeOrderDetailRespVO"
+          }
+        }
+      },
+      "Item": {
+        "type": "object",
+        "description": "商户APP - 交易订单的详情的订单项目",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "description": "编号",
+            "example": 1
+          },
+          "userId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "用户编号",
+            "example": 1
+          },
+          "orderId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "订单编号",
+            "example": 1
+          },
+          "spuId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "商品 SPU 编号",
+            "example": 1
+          },
+          "spuName": {
+            "type": "string",
+            "description": "商品 SPU 名称",
+            "example": "芋道源码"
+          },
+          "skuId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "商品 SKU 编号",
+            "example": 1
+          },
+          "picUrl": {
+            "type": "string",
+            "description": "商品图片",
+            "example": "https://www.iocoder.cn/1.png"
+          },
+          "count": {
+            "type": "integer",
+            "format": "int32",
+            "description": "购买数量",
+            "example": 1
+          },
+          "price": {
+            "type": "integer",
+            "format": "int32",
+            "description": "商品原价（单）",
+            "example": 100
+          },
+          "discountPrice": {
+            "type": "integer",
+            "format": "int32",
+            "description": "商品优惠（总）",
+            "example": 100
+          },
+          "payPrice": {
+            "type": "integer",
+            "format": "int32",
+            "description": "商品实付金额（总）",
+            "example": 100
+          },
+          "orderPartPrice": {
+            "type": "integer",
+            "format": "int32",
+            "description": "子订单分摊金额（总）",
+            "example": 100
+          },
+          "orderDividePrice": {
+            "type": "integer",
+            "format": "int32",
+            "description": "分摊后子订单实付金额（总）",
+            "example": 100
+          },
+          "afterSaleStatus": {
+            "type": "integer",
+            "format": "int32",
+            "description": "售后状态",
+            "example": 1
+          },
+          "properties": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Property"
+            }
+          }
+        },
+        "required": [
+          "afterSaleStatus",
+          "count",
+          "discountPrice",
+          "id",
+          "orderDividePrice",
+          "orderId",
+          "orderPartPrice",
+          "payPrice",
+          "picUrl",
+          "price",
+          "skuId",
+          "spuId",
+          "spuName",
+          "userId"
+        ]
+      },
+      "MemberUser": {
+        "type": "object",
+        "description": "商户APP - 会员用户 Response VO",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "description": "用户 ID",
+            "example": 1
+          },
+          "nickname": {
+            "type": "string",
+            "description": "用户昵称",
+            "example": "芋道源码"
+          },
+          "avatar": {
+            "type": "string",
+            "description": "用户头像",
+            "example": "https://www.iocoder.cn/xxx.png"
+          }
+        },
+        "required": [
+          "id",
+          "nickname"
+        ]
+      },
+      "OrderLog": {
+        "type": "object",
+        "description": "商户APP - 交易订单的操作日志",
+        "properties": {
+          "content": {
+            "type": "string",
+            "description": "操作详情",
+            "example": "订单发货"
+          },
+          "createTime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "创建时间",
+            "example": "2023-06-01 10:50:20"
+          },
+          "userType": {
+            "type": "integer",
+            "format": "int32",
+            "description": "用户类型",
+            "example": 1
+          }
+        },
+        "required": [
+          "content",
+          "createTime",
+          "userType"
+        ]
+      },
+      "AppMerchantProductRespVO": {
+        "type": "object",
+        "description": "商户 APP - 商品 SPU Response VO",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "description": "商品 SPU 编号",
+            "example": 111
+          },
+          "name": {
+            "type": "string",
+            "description": "商品名称",
+            "example": "清凉小短袖"
+          },
+          "keyword": {
+            "type": "string",
+            "description": "关键字",
+            "example": "清凉丝滑不出汗"
+          },
+          "introduction": {
+            "type": "string",
+            "description": "商品简介",
+            "example": "清凉小短袖简介"
+          },
+          "description": {
+            "type": "string",
+            "description": "商品详情",
+            "example": "清凉小短袖详情"
+          },
+          "categoryId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "商品分类编号",
+            "example": 1
+          },
+          "storeId": {
+            "type": "array",
+            "description": "门店ID",
+            "example": 1,
+            "items": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          "picUrl": {
+            "type": "string",
+            "description": "商品封面图",
+            "example": "https://www.iocoder.cn/xx.png"
+          },
+          "sliderPicUrls": {
+            "type": "array",
+            "description": "商品轮播图",
+            "example": "[https://www.iocoder.cn/xx.png, https://www.iocoder.cn/xxx.png]",
+            "items": {
+              "type": "string"
+            }
+          },
+          "sort": {
+            "type": "integer",
+            "format": "int32",
+            "description": "排序字段",
+            "example": 1
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32",
+            "description": "商品状态",
+            "example": 1
+          },
+          "createTime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "商品创建时间",
+            "example": "2023-05-24 00:00:00"
+          },
+          "stock": {
+            "type": "integer",
+            "format": "int32",
+            "description": "商品库存",
+            "example": 10000
+          },
+          "skus": {
+            "type": "array",
+            "description": "SKU 数组",
+            "items": {
+              "$ref": "#/components/schemas/ProductSku"
+            }
+          },
+          "salesCount": {
+            "type": "integer",
+            "format": "int32",
+            "description": "商品销量",
+            "example": 2000
+          },
+          "virtualSalesCount": {
+            "type": "integer",
+            "format": "int32",
+            "description": "虚拟销量",
+            "example": 66
+          },
+          "browseCount": {
+            "type": "integer",
+            "format": "int32",
+            "description": "浏览量",
+            "example": 888
+          }
+        },
+        "required": [
+          "browseCount",
+          "categoryId",
+          "createTime",
+          "description",
+          "id",
+          "introduction",
+          "keyword",
+          "name",
+          "picUrl",
+          "salesCount",
+          "sliderPicUrls",
+          "sort",
+          "status",
+          "stock",
+          "storeId"
+        ]
+      },
+      "CommonResultPageResultAppMerchantProductRespVO": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "msg": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/PageResultAppMerchantProductRespVO"
+          }
+        }
+      },
+      "PageResultAppMerchantProductRespVO": {
+        "type": "object",
+        "description": "分页结果",
+        "properties": {
+          "total": {
+            "type": "integer",
+            "format": "int64",
+            "description": "总量"
+          },
+          "list": {
+            "type": "array",
+            "description": "数据",
+            "items": {
+              "$ref": "#/components/schemas/AppMerchantProductRespVO"
+            }
+          }
+        },
+        "required": [
+          "list",
+          "total"
+        ]
+      },
+      "CommonResultAppMerchantProductRespVO": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "msg": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/AppMerchantProductRespVO"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "Authorization": {
+        "type": "apiKey",
+        "name": "Authorization",
+        "in": "header"
+      }
+    }
+  },
+  "x-openapi": {
+    "x-setting": {
+      "customCode": 200,
+      "language": "zh-CN",
+      "enableSwaggerModels": true,
+      "swaggerModelName": "Swagger Models",
+      "enableReloadCacheParameter": false,
+      "enableAfterScript": true,
+      "enableDocumentManage": true,
+      "enableVersion": false,
+      "enableRequestCache": true,
+      "enableFilterMultipartApis": false,
+      "enableFilterMultipartApiMethodType": "POST",
+      "enableHost": false,
+      "enableHostText": "",
+      "enableDynamicParameter": false,
+      "enableDebug": true,
+      "enableFooter": true,
+      "enableFooterCustom": false,
+      "enableSearch": true,
+      "enableOpenApi": true,
+      "enableHomeCustom": false,
+      "enableGroup": true,
+      "enableResponseCode": true
+    },
+    "x-markdownFiles": []
+  }
+}
