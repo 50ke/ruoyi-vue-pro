@@ -66,13 +66,17 @@
 	import {
 		useAuthStore
 	} from '@/store/auth'
+	import {
+		userApi
+	} from '@/api/user'
 	export default {
 		data() {
 			return {
 				userInfo: {
+					id: 0,
 					avatar: '/static/logo.png',
 					nickname: null,
-					userId: 0,
+					mobile: '',
 					wallet: 888.88,
 					storeCount: 2,
 					courierCount: 3
@@ -119,6 +123,20 @@
 			}
 		},
 		methods: {
+			// 获取用户信息
+			async loadUserInfo() {
+				try {
+					const data = await userApi.getUserInfo()
+					if (data) {
+						this.userInfo = {
+							...this.userInfo,
+							...data
+						}
+					}
+				} catch (error) {
+					console.error('获取用户信息失败:', error)
+				}
+			},
 			navigateTo(path) {
 				uni.navigateTo({
 					url: path
@@ -148,6 +166,9 @@
 					})
 				}
 			}
+		},
+		onLoad() {
+			this.loadUserInfo()
 		}
 	}
 </script>
