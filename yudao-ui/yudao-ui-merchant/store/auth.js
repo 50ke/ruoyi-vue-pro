@@ -85,8 +85,8 @@ export const useAuthStore = defineStore('auth', () => {
 			const data = await authApi.refreshToken(refreshToken.value)
 			if (data) {
 				setTokens({
-					accessToken: response.data.accessToken,
-					refreshToken: response.data.refreshToken
+					accessToken: data.accessToken,
+					refreshToken: data.refreshToken
 				})
 
 				// 通知所有等待的请求

@@ -14,7 +14,7 @@ export const request = (options) => {
 		// 合并配置
 		const config = {
 			...options,
-			url: `${BASE_URL}${options.url}`,
+			url: options.retry ? `${options.url}` : `${BASE_URL}${options.url}`,
 			method: options.method || 'GET',
 			data: options.data || {},
 			params: options.params || {},
@@ -25,12 +25,12 @@ export const request = (options) => {
 				...options.headers
 			}
 		}
-
+		
 		// 添加认证 token
 		if (authStore.accessToken) {
 			config.header.Authorization = `Bearer ${authStore.accessToken}`
 		}
-
+		
 		const doRequest = () => {
 			uni.request({
 				...config,
@@ -52,6 +52,7 @@ export const request = (options) => {
 					}
 				},
 				fail: (error) => {
+					console.error('请求执行失败' + error)
 					reject(new Error(`服务器开小差啦,请稍后再试~`))
 				}
 			})
@@ -60,6 +61,7 @@ export const request = (options) => {
 		// Token 过期处理
 		const handleTokenExpired = async (originalConfig, resolve, reject) => {
 			// 将原始请求加入队列
+			originalConfig.retry = true
 			requestQueue.push({
 				config: originalConfig,
 				resolve,

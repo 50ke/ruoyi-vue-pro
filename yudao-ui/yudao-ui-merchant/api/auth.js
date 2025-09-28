@@ -13,9 +13,8 @@ export const authApi = {
   // 刷新令牌
   refreshToken(refreshToken) {
     return request({
-      url: '/app-api/merchant/auth/refresh-token',
-      method: 'POST',
-      params: { refreshToken }
+      url: `/app-api/merchant/auth/refresh-token?refreshToken=${refreshToken}`,
+      method: 'POST'
     })
   },
 
