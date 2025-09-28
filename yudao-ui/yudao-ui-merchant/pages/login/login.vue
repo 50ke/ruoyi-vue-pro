@@ -37,7 +37,6 @@
 		useAuthStore
 	} from '@/store/auth'
 	export default {
-		name: 'LoginPage',
 		data() {
 			return {
 				loading: false,
