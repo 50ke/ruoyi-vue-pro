@@ -167,7 +167,7 @@
 				}
 			}
 		},
-		onLoad() {
+		onShow() {
 			this.loadUserInfo()
 		}
 	}
