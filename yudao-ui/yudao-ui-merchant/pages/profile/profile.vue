@@ -59,6 +59,11 @@
       </view>
     </view>
   </view>
+  
+  <!-- 退出登录按钮 -->
+  <view class="logout-wrapper">
+    <button class="logout-btn" type="warn" @click="handleLogout">退出登录</button>
+  </view>
 </template>
 
 <script>
@@ -89,6 +94,25 @@ export default {
   methods: {
     navigateTo(path) {
       uni.navigateTo({ url: path })
+    },
+    async handleLogout(){
+      try{
+        const ok = await new Promise((resolve)=>{
+          uni.showModal({
+            title:'提示',
+            content:'确定要退出登录吗？',
+            confirmText:'退出',
+            cancelText:'取消',
+            success:(res)=> resolve(res.confirm)
+          })
+        })
+        if(!ok) return
+        const authStore = require('@/store/auth').useAuthStore()
+        await authStore().logout()
+        uni.reLaunch({ url:'/pages/login/login' })
+      }catch(e){
+        uni.showToast({ title: e.message || '退出失败', icon:'none' })
+      }
     }
   }
 }
