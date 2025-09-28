@@ -1,103 +1,94 @@
 <template>
   <view class="login-container">
     <view class="login-card">
-      <!-- 应用 Logo -->
       <view class="logo-section">
         <image class="app-logo" src="/static/logo.png" mode="aspectFit"></image>
-        <text class="app-name">商户应用</text>
-        <text class="app-slogan">专业商户管理平台</text>
+        <text class="app-name">顺驿宝</text>
+        <text class="app-slogan">取件顺带宝，生活更美好。</text>
       </view>
 
-      <!-- 登录表单 -->
       <view class="login-form">
-        <!-- 微信一键登录按钮 -->
         <button 
           class="login-btn wechat-btn" 
+          :loading="loading"
+          :disabled="loading || !agreed"
           @click="handleWechatLogin"
-          :disabled="loading"
         >
-          <image class="btn-icon" src="/static/wechat-icon.png" mode="aspectFit"></image>
+          <image class="btn-icon" src="/static/logo.png" mode="aspectFit"></image>
           <text class="btn-text">微信一键登录</text>
         </button>
 
-        <!-- 加载状态 -->
-        <view v-if="loading" class="loading-section">
-          <text class="loading-text">登录中...</text>
+        <view class="agreement">
+          <label class="agree-row" @click="agreed = !agreed">
+            <checkbox :checked="agreed" color="#07c160" />
+            <text class="agree-text">我已阅读并同意</text>
+            <text class="link" @click.stop="openAgreement('user-agreement')">《用户协议》</text>
+            <text class="agree-text">和</text>
+            <text class="link" @click.stop="openAgreement('privacy')">《隐私政策》</text>
+          </label>
         </view>
       </view>
 
-      <!-- 底部信息 -->
-      <view class="footer">
-        <text class="footer-text">登录即代表同意《用户协议》和《隐私政策》</text>
+      <view class="footer safe-area-bottom">
+        <text class="footer-text">版权所有 © 顺驿宝</text>
       </view>
     </view>
   </view>
+  
 </template>
 
-<script setup>
-import { ref } from 'vue'
+<script>
 import { useAuthStore } from '@/store/auth'
-import { onLoad } from '@dcloudio/uni-app'
-
-const authStore = useAuthStore()
-const loading = ref(false)
-
-onLoad((options) => {
-  // 检查是否有回调参数
-  if (options.code) {
-    handleLoginCallback(options)
-  }
-})
-
-const handleWechatLogin = async () => {
-  if (loading.value) return
-
-  loading.value = true
-
-  try {
-    // 这里模拟微信登录流程
-    // 实际开发中需要调用微信小程序的登录API
-    const loginData = {
-      loginCode: '模拟登录code',
-      phoneCode: '模拟手机code',
-      state: '9b2ffbc1-7425-4155-9894-9d5c08541d62'
+export default {
+  name: 'LoginPage',
+  data() {
+    return {
+      loading: false,
+      agreed: true
     }
-
-    await authStore.login(loginData)
-    
-    uni.showToast({
-      title: '登录成功',
-      icon: 'success'
-    })
-
-    // 登录成功后跳转回原页面或首页
-    setTimeout(() => {
-      uni.switchTab({
-        url: '/pages/index/index'
-      })
-    }, 1500)
-
-  } catch (error) {
-    console.error('登录失败:', error)
-    uni.showToast({
-      title: error.message || '登录失败',
-      icon: 'none'
-    })
-  } finally {
-    loading.value = false
+  },
+  onLoad(options) {
+    if (options && options.code) {
+      this.handleLoginCallback(options)
+    }
+  },
+  methods: {
+    async handleWechatLogin() {
+      if (this.loading || !this.agreed) return
+      this.loading = true
+      try {
+        const loginData = {
+          loginCode: '模拟登录code',
+          phoneCode: '模拟手机code',
+          state: '9b2ffbc1-7425-4155-9894-9d5c08541d62'
+        }
+        const authStore = useAuthStore()
+        await authStore.login(loginData)
+        uni.showToast({ title: '登录成功', icon: 'success' })
+        setTimeout(() => {
+          uni.switchTab({ url: '/pages/index/index' })
+        }, 800)
+      } catch (error) {
+        uni.showToast({ title: error.message || '登录失败', icon: 'none' })
+      } finally {
+        this.loading = false
+      }
+    },
+    handleLoginCallback(options) {
+      // 预留：可在此处理三方回跳参数
+    },
+    openAgreement(type) {
+      const url = `/pages/profile/help?type=${type}`
+      uni.navigateTo({ url })
+    }
   }
-}
-
-const handleLoginCallback = (options) => {
-  // 处理微信登录回调
-  console.log('登录回调参数:', options)
 }
 </script>
 
 <style scoped>
 .login-container {
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: #f7f8fa;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -105,12 +96,13 @@ const handleLoginCallback = (options) => {
 }
 
 .login-card {
-  background: white;
-  border-radius: 24rpx;
-  padding: 60rpx 40rpx;
   width: 100%;
-  max-width: 600rpx;
-  box-shadow: 0 20rpx 60rpx rgba(0, 0, 0, 0.1);
+  max-width: 640rpx;
+  padding: 60rpx 40rpx;
+  border-radius: 24rpx;
+  background: #ffffff;
+  box-shadow: 0 12rpx 32rpx rgba(0, 0, 0, 0.06);
+  border: 2rpx solid #f0f0f0;
 }
 
 .logo-section {
@@ -129,7 +121,7 @@ const handleLoginCallback = (options) => {
   display: block;
   font-size: 48rpx;
   font-weight: bold;
-  color: #333;
+  color: #222;
   margin-bottom: 16rpx;
 }
 
@@ -139,7 +131,7 @@ const handleLoginCallback = (options) => {
 }
 
 .login-form {
-  margin-bottom: 60rpx;
+  margin-bottom: 40rpx;
 }
 
 .login-btn {
@@ -180,6 +172,18 @@ const handleLoginCallback = (options) => {
   font-size: 32rpx;
 }
 
+.agreement {
+  margin-top: 28rpx;
+}
+.agree-row {
+  display: inline-flex;
+  align-items: center;
+  color: #666;
+  font-size: 26rpx;
+}
+.agree-text { margin: 0 8rpx; }
+.link { color: #07c160; }
+
 .loading-section {
   text-align: center;
   margin-top: 40rpx;
@@ -198,5 +202,9 @@ const handleLoginCallback = (options) => {
   font-size: 24rpx;
   color: #999;
   line-height: 1.6;
+}
+
+.safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
 }
 </style>
