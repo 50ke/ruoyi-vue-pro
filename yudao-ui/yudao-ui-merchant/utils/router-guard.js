@@ -5,7 +5,6 @@ export const checkLoginOnLaunch = () => {
   const authStore = useAuthStore()
   
   if (!authStore.isLoggedIn) {
-	  console.log('------------')
 	  uni.redirectTo({
 	    url: '/pages/login/login'
 	  })
