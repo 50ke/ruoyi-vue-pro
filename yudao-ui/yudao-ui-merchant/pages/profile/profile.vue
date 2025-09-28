@@ -55,7 +55,10 @@
 
 	<!-- 退出登录按钮 -->
 	<view class="logout-wrapper">
-		<button class="logout-btn" type="warn" @click="handleLogout">退出登录</button>
+		<button class="logout-btn" @click="handleLogout">
+			<uni-icons type="logout" size="18" color="#ff4d4f"></uni-icons>
+			<text class="logout-text">退出登录</text>
+		</button>
 	</view>
 </template>
 
@@ -154,6 +157,7 @@
 		min-height: 100vh;
 		background: #f5f6fa;
 		padding: 30rpx;
+		padding-bottom: 160rpx; // 为底部固定按钮留出空间
 	}
 
 	.user-card {
@@ -343,5 +347,50 @@
 
 	.bg-gray {
 		background: #666666;
+	}
+
+	// 退出登录按钮样式
+	.logout-wrapper {
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		padding: 30rpx;
+		background: #fff;
+		border-top: 2rpx solid #f0f0f0;
+		z-index: 100;
+	}
+
+	.logout-btn {
+		width: 100%;
+		height: 88rpx;
+		background: #fff;
+		border: 2rpx solid #ff4d4f;
+		border-radius: 44rpx;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 32rpx;
+		font-weight: 500;
+		color: #ff4d4f;
+		transition: all 0.3s ease;
+		box-shadow: 0 4rpx 12rpx rgba(255, 77, 79, 0.15);
+	}
+
+	.logout-btn:active {
+		background: #ff4d4f;
+		color: #fff;
+		transform: scale(0.98);
+		box-shadow: 0 2rpx 8rpx rgba(255, 77, 79, 0.3);
+	}
+
+	.logout-text {
+		margin-left: 12rpx;
+		font-size: 32rpx;
+	}
+
+	// 安全区域适配
+	.logout-wrapper {
+		padding-bottom: calc(30rpx + env(safe-area-inset-bottom));
 	}
 </style>
