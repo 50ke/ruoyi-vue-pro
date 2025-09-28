@@ -1,6 +1,9 @@
 package cn.iocoder.yudao.module.product.api.category;
 
+import cn.iocoder.yudao.module.product.api.category.dto.ProductCategoryRespDTO;
+
 import java.util.Collection;
+import java.util.List;
 
 /**
  * 商品分类 API 接口
@@ -17,4 +20,11 @@ public interface ProductCategoryApi {
      * @param ids 商品分类编号数组
      */
     void validateCategoryList(Collection<Long> ids);
+
+    /**
+     * 根据parentId查询商品分类
+     * @param parentId 父分类ID
+     * @return 分类
+     */
+    List<ProductCategoryRespDTO> getCategoryListByParentId(Long parentId);
 }

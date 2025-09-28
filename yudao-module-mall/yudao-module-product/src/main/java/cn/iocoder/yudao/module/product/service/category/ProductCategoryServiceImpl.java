@@ -4,6 +4,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.iocoder.yudao.framework.common.enums.CommonStatusEnum;
 import cn.iocoder.yudao.framework.common.util.collection.CollectionUtils;
 import cn.iocoder.yudao.framework.common.util.object.BeanUtils;
+import cn.iocoder.yudao.framework.mybatis.core.query.LambdaQueryWrapperX;
 import cn.iocoder.yudao.module.product.controller.admin.category.vo.ProductCategoryListReqVO;
 import cn.iocoder.yudao.module.product.controller.admin.category.vo.ProductCategorySaveReqVO;
 import cn.iocoder.yudao.module.product.dal.dataobject.category.ProductCategoryDO;
@@ -127,6 +128,14 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
                 throw exception(SPU_SAVE_FAIL_CATEGORY_LEVEL_ERROR);
             }
         });
+    }
+
+    @Override
+    public List<ProductCategoryDO> getCategoryByParentId(Long parentId) {
+        return productCategoryMapper.selectList(new LambdaQueryWrapperX<ProductCategoryDO>()
+                .eq(ProductCategoryDO::getParentId, parentId)
+                .orderByAsc(ProductCategoryDO::getSort)
+        );
     }
 
     @Override

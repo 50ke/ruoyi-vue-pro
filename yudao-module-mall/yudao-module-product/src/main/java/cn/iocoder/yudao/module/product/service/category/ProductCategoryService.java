@@ -93,4 +93,5 @@ public interface ProductCategoryService {
      */
     void validateCategoryList(Collection<Long> ids);
 
+    List<ProductCategoryDO> getCategoryByParentId(Long parentId);
 }

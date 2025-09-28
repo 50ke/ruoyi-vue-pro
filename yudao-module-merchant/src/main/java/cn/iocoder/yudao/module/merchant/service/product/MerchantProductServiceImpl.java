@@ -5,6 +5,7 @@ import cn.iocoder.yudao.framework.common.exception.util.ServiceExceptionUtil;
 import cn.iocoder.yudao.framework.common.pojo.PageResult;
 import cn.iocoder.yudao.framework.common.util.object.BeanUtils;
 import cn.iocoder.yudao.framework.mybatis.core.query.LambdaQueryWrapperX;
+import cn.iocoder.yudao.module.merchant.controller.app.product.vo.AppMerchantProductCategoryRespVO;
 import cn.iocoder.yudao.module.merchant.controller.app.product.vo.AppMerchantProductPageReqVO;
 import cn.iocoder.yudao.module.merchant.controller.app.product.vo.AppMerchantProductRespVO;
 import cn.iocoder.yudao.module.merchant.controller.app.product.vo.AppMerchantProductSaveReqVO;
@@ -15,6 +16,8 @@ import cn.iocoder.yudao.module.merchant.dal.mysql.product.MerchantStoreProductSp
 import cn.iocoder.yudao.module.merchant.service.user.MerchantUserService;
 import cn.iocoder.yudao.module.product.api.brand.ProductBrandApi;
 import cn.iocoder.yudao.module.product.api.brand.dto.ProductBrandRespDTO;
+import cn.iocoder.yudao.module.product.api.category.ProductCategoryApi;
+import cn.iocoder.yudao.module.product.api.category.dto.ProductCategoryRespDTO;
 import cn.iocoder.yudao.module.product.api.sku.ProductSkuApi;
 import cn.iocoder.yudao.module.product.api.sku.dto.ProductSkuRespDTO;
 import cn.iocoder.yudao.module.product.api.spu.ProductSpuApi;
@@ -49,6 +52,9 @@ public class MerchantProductServiceImpl implements MerchantProductService{
 
     @Resource
     private ProductBrandApi productBrandApi;
+
+    @Resource
+    private ProductCategoryApi productCategoryApi;
 
     @Resource
     private MerchantUserService merchantUserService;
@@ -99,6 +105,12 @@ public class MerchantProductServiceImpl implements MerchantProductService{
         List<ProductSkuRespDTO> skuRespDTOS = productSkuApi.getSkuListBySpuId(Collections.singletonList(spuId));
         List<MerchantStoreProductSpuDO> merchantStoreProductSpuDOList = merchantStoreProductSpuMapper.selectList(new LambdaQueryWrapperX<MerchantStoreProductSpuDO>().eq(MerchantStoreProductSpuDO::getMerchantId, loginUserId).eq(MerchantStoreProductSpuDO::getSpuId, spuId));
         return MerchantProductConvert.INSTANCE.convert(spuDetailRespDTO, skuRespDTOS, merchantStoreProductSpuDOList.stream().map(MerchantStoreProductSpuDO::getStoreId).toList());
+    }
+
+    @Override
+    public List<AppMerchantProductCategoryRespVO> getProductCategory(Long loginUserId, Long categoryId) {
+        List<ProductCategoryRespDTO> categoryRespDTOList = productCategoryApi.getCategoryListByParentId(categoryId);
+        return BeanUtils.toBean(categoryRespDTOList, AppMerchantProductCategoryRespVO.class);
     }
 
     private void validateMerchantProductExists(Long merchantId, Long spuId){

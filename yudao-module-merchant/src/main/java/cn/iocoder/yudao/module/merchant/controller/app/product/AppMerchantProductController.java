@@ -2,6 +2,7 @@ package cn.iocoder.yudao.module.merchant.controller.app.product;
 
 import cn.iocoder.yudao.framework.common.pojo.CommonResult;
 import cn.iocoder.yudao.framework.common.pojo.PageResult;
+import cn.iocoder.yudao.module.merchant.controller.app.product.vo.AppMerchantProductCategoryRespVO;
 import cn.iocoder.yudao.module.merchant.controller.app.product.vo.AppMerchantProductPageReqVO;
 import cn.iocoder.yudao.module.merchant.controller.app.product.vo.AppMerchantProductRespVO;
 import cn.iocoder.yudao.module.merchant.controller.app.product.vo.AppMerchantProductSaveReqVO;
@@ -13,6 +14,8 @@ import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 import static cn.iocoder.yudao.framework.common.pojo.CommonResult.success;
 import static cn.iocoder.yudao.framework.security.core.util.SecurityFrameworkUtils.getLoginUserId;
@@ -57,5 +60,11 @@ public class AppMerchantProductController {
     @Operation(summary = "获得商品详情")
     public CommonResult<AppMerchantProductRespVO> getProductDetail(@PathVariable Long spuId) {
         return success(merchantProductService.getProductDetail(getLoginUserId(), spuId));
+    }
+
+    @GetMapping("/category/{categoryId}")
+    @Operation(summary = "获取商品分类")
+    public CommonResult<List<AppMerchantProductCategoryRespVO>> getProductCategory(@PathVariable Long categoryId) {
+        return success(merchantProductService.getProductCategory(getLoginUserId(), categoryId));
     }
 }
