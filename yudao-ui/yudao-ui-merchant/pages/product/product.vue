@@ -13,7 +13,8 @@
 				<!-- 搜索框 -->
 				<view class="search-box">
 					<view class="search-input-wrapper">
-						<input v-model="searchKeyword" placeholder="请输出商品名称" class="search-input" @confirm="handleSearch" />
+						<input v-model="searchKeyword" placeholder="请输出商品名称" class="search-input"
+							@confirm="handleSearch" />
 					</view>
 					<button class="search-btn" @click="handleSearch">搜索</button>
 				</view>
@@ -77,7 +78,7 @@
 						</view>
 					</view>
 
-				
+
 				</view>
 
 				<!-- 商品列表滚动区域 -->
@@ -99,7 +100,8 @@
 							</view>
 							<view class="create-time">
 								<text>上架时间: </text>
-								<uni-dateformat :date="product.createTime" format="yyyy-MM-dd hh:mm:ss"></uni-dateformat>
+								<uni-dateformat :date="product.createTime"
+									format="yyyy-MM-dd hh:mm:ss"></uni-dateformat>
 							</view>
 							<view class="product-actions">
 								<view class="icon-btn view" @click="viewProduct(product)">
@@ -408,7 +410,8 @@
 
 		.header-row-1 {
 			display: flex;
-			flex-direction: column; /* 改为两行布局 */
+			flex-direction: column;
+			/* 改为两行布局 */
 			align-items: flex-start;
 			padding: 20rpx;
 			gap: 16rpx;
@@ -487,7 +490,8 @@
 				font-size: 24rpx;
 				color: #666;
 				text-align: center;
-				width: auto; /* 自适应宽度，保证文字完整显示 */
+				width: auto;
+				/* 自适应宽度，保证文字完整显示 */
 
 				.category-icon {
 					display: block;
@@ -499,18 +503,23 @@
 
 				.category-name {
 					display: inline-block;
-					width: auto; /* 让内容决定宽度 */
+					width: auto;
+					/* 让内容决定宽度 */
 					text-align: center;
 					padding: 8rpx 10rpx;
 					border-radius: 18rpx;
-					white-space: nowrap; /* 禁止换行 */
-					overflow: visible; /* 不裁切 */
-					text-overflow: initial; /* 不省略 */
+					white-space: nowrap;
+					/* 禁止换行 */
+					overflow: visible;
+					/* 不裁切 */
+					text-overflow: initial;
+					/* 不省略 */
 					line-height: 1.3;
 				}
 
 				&.active {
 					color: #2979ff;
+
 					.category-name {
 						background: #2979ff;
 						color: #fff;
@@ -523,17 +532,23 @@
 	.content {
 		flex: 1;
 		display: flex;
-		 height: 0; /* 让flex布局正确计算高度 */
-		    min-height: 0; /* 防止内容溢出 */
+		height: 0;
+		/* 让flex布局正确计算高度 */
+		min-height: 0;
+		/* 防止内容溢出 */
 
 		.subcategory-sidebar {
-			width: 200rpx; /* 固定宽度 */
-			min-width: 200rpx; /* 最小宽度，防止被压缩 */
-			max-width: 200rpx; /* 最大宽度，防止被拉伸 */
+			width: 200rpx;
+			/* 固定宽度 */
+			min-width: 200rpx;
+			/* 最小宽度，防止被压缩 */
+			max-width: 200rpx;
+			/* 最大宽度，防止被拉伸 */
 			background: white;
 			border-right: 1rpx solid #eee;
 			height: 100%;
-			flex-shrink: 0; /* 关键：防止在flex布局中被压缩 */
+			flex-shrink: 0;
+			/* 关键：防止在flex布局中被压缩 */
 
 			.subcategory-item {
 				padding: 32rpx 20rpx;
@@ -568,7 +583,8 @@
 				padding: 0 24rpx;
 				border-bottom: 1rpx solid #f5f5f5;
 				background: white;
-				flex-shrink: 0; /* 防止被压缩 */
+				flex-shrink: 0;
+				/* 防止被压缩 */
 				z-index: 10;
 
 				.sort-options {
@@ -632,7 +648,8 @@
 					border-bottom: 1rpx solid #f5f5f5;
 					// 为内容与边框之间添加内边距
 					padding: 20rpx;
-					margin: 20rpx 0; // 上下保持间距
+					margin: 20rpx 20rpx; // 上下保持间距
+					margin-right: 30rpx;
 					border-radius: 12rpx;
 					box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.1);
 
@@ -640,7 +657,7 @@
 						width: 160rpx;
 						height: 160rpx;
 						border-radius: 8rpx;
-						margin-right: 24rpx;
+						margin-right: 12rpx;
 					}
 
 					.product-info {
@@ -650,12 +667,14 @@
 							font-size: 30rpx;
 							color: #333;
 							font-weight: 500;
-							display: block;
 							margin-bottom: 12rpx;
 							line-height: 1.4;
-							white-space: nowrap;
 							overflow: hidden;
 							text-overflow: ellipsis;
+							display: -webkit-box;
+							-webkit-line-clamp: 2;
+							-webkit-box-orient: vertical;
+							word-break: break-all;
 						}
 
 						.product-status {
