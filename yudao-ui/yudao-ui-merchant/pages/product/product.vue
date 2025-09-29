@@ -22,7 +22,8 @@
 				<view class="category-tab" v-for="category in primaryCategories" :key="category.id"
 					:class="{ active: selectedPrimaryCategory?.id === category.id }"
 					@click="selectPrimaryCategory(category)">
-					<text>{{ category.name }}</text>
+					<image class="category-icon" :src="category.picUrl" mode="aspectFill" />
+					<text class="category-name">{{ category.name }}</text>
 				</view>
 			</scroll-view>
 		</view>
@@ -41,6 +42,42 @@
 			<!-- 右侧：商品列表 -->
 			<scroll-view class="product-list" scroll-y="true" @scrolltolower="loadMore" refresher-enabled="true"
 				@refresherrefresh="onRefresh" :refresher-triggered="refreshing">
+				<!-- 排序和筛选区域 -->
+				<view class="sort-filter-area">
+					<!-- 排序选项 -->
+					<view class="sort-options">
+						<view class="sort-option" :class="{ active: sortField === 'createTime' }"
+							@click="setSortField('createTime')">
+							<text>上架时间</text>
+							<text class="sort-icon"
+								:class="{ asc: sortAsc, desc: !sortAsc && sortField === 'createTime' }">
+								{{ sortField === 'createTime' ? (sortAsc ? '↑' : '↓') : '' }}
+							</text>
+						</view>
+						<view class="sort-option" :class="{ active: sortField === 'salesCount' }"
+							@click="setSortField('salesCount')">
+							<text>销量</text>
+							<text class="sort-icon"
+								:class="{ asc: sortAsc && sortField === 'salesCount', desc: !sortAsc && sortField === 'salesCount' }">
+								{{ sortField === 'salesCount' ? (sortAsc ? '↑' : '↓') : '' }}
+							</text>
+						</view>
+						<view class="sort-option" :class="{ active: sortField === 'stock' }"
+							@click="setSortField('stock')">
+							<text>库存</text>
+							<text class="sort-icon"
+								:class="{ asc: sortAsc && sortField === 'stock', desc: !sortAsc && sortField === 'stock' }">
+								{{ sortField === 'stock' ? (sortAsc ? '↑' : '↓') : '' }}
+							</text>
+						</view>
+					</view>
+
+					<!-- 筛选按钮 -->
+					<view class="filter-btn" @click="showFilterPanel = true">
+						<text>筛选</text>
+					</view>
+				</view>
+
 				<view class="product-item" v-for="product in products" :key="product.id">
 					<image class="product-image" :src="product.picUrl" mode="aspectFill" />
 					<view class="product-info">
@@ -95,6 +132,31 @@
 				</view>
 			</view>
 		</view>
+
+		<!-- 筛选面板 -->
+		<view class="picker-mask" v-if="showFilterPanel" @click="showFilterPanel = false">
+			<view class="picker-content" @click.stop>
+				<view class="picker-header">
+					<text>筛选</text>
+					<text class="close-btn" @click="showFilterPanel = false">×</text>
+				</view>
+				<view class="filter-list">
+					<view class="filter-section">
+						<text class="section-title">商品状态</text>
+						<view class="filter-options">
+							<view class="filter-option" v-for="option in statusOptions" :key="option.value"
+								:class="{ selected: tabType === option.value }" @click="setTabType(option.value)">
+								<text>{{ option.label }}</text>
+							</view>
+						</view>
+					</view>
+				</view>
+				<view class="filter-actions">
+					<button class="action-btn reset-btn" @click="resetFilter">重置</button>
+					<button class="action-btn confirm-btn" @click="completeFilter">确定</button>
+				</view>
+			</view>
+		</view>
 	</view>
 </template>
 
@@ -115,18 +177,45 @@
 				primaryCategories: [], //一级分类
 				subCategories: [], //子分类
 				selectedPrimaryCategory: null, //选中一级分类
-				selectedSubCategory: null, //选中二级分类
+				selectedSubCategory: null, // 选中二级分类
 				products: [], //商品列表
 				pageNo: 1, //第几页
 				pageSize: 10, //每页数据量
 				showStorePicker: false, //显示门店选择器
 				searchKeyword: '', //商品名称
-				refreshing: false, //
-				loading: false, //
-				hasMore: true, //
+				refreshing: false,
+				loading: false,
+				hasMore: true,
+				sortField: 'createTime', // 排序字段：createTime, salesCount, stock
+				sortAsc: false, // 是否升序
+				tabType: -1, // 状态筛选：-1全部, 0-出售中, 1-仓库中, 2-已售罄, 3-警戒库存, 4-回收站
+				showFilterPanel: false, // 是否显示筛选面板
+				statusOptions: [{
+						value: -1,
+						label: '全部'
+					},
+					{
+						value: 0,
+						label: '出售中'
+					},
+					{
+						value: 1,
+						label: '仓库中'
+					},
+					{
+						value: 2,
+						label: '已售罄'
+					},
+					{
+						value: 3,
+						label: '警戒库存'
+					},
+					{
+						value: 4,
+						label: '回收站'
+					}
+				]
 			}
-		},
-		computed: {
 		},
 		methods: {
 			// 获取门店
@@ -213,10 +302,12 @@
 					const params = {
 						pageNo: this.pageNo,
 						pageSize: this.pageSize,
-						tabType: 0,
+						tabType: this.tabType !== -1 ? this.tabType : 0,
 						storeId: this.currentStore.id,
 						name: this.searchKeyword,
 						categoryId: this.selectedSubCategory?.id,
+						sortFiled: this.sortField,
+						sortAsc: this.sortAsc
 					}
 					const data = await productApi.getProductPage(params)
 					if (this.pageNo === 1) {
@@ -235,6 +326,37 @@
 					this.loading = false
 				}
 			},
+			// 设置排序类型
+			setSortField(field) {
+				if (this.sortField === field) {
+					// 如果点击的是当前排序类型，则切换排序顺序
+					this.sortAsc = !this.sortAsc
+				} else {
+					// 否则设置新的排序类型，并默认降序
+					this.sortField = field
+					this.sortAsc = false
+				}
+				// 重新加载商品列表
+				this.pageNo = 1
+				this.hasMore = true
+				this.loadProducts()
+			},
+			// 设置状态筛选
+			setTabType(tabType) {
+				this.tabType = tabType
+			},
+			// 清除筛选条件
+			resetFilter() {
+				this.tabType = -1
+			},
+			// 完成筛选
+			completeFilter() {
+				this.showFilterPanel = false
+				// 重新加载商品列表
+				this.pageNo = 1
+				this.hasMore = true
+				this.loadProducts()
+			},
 			addProduct() {
 				uni.navigateTo({
 					url: '/pages/product/add'
@@ -250,14 +372,9 @@
 					url: `/pages/product/edit?id=${product.id}`
 				})
 			},
-			formatTime(timestamp) {
-				if (!timestamp) return ''
-				const date = new Date(timestamp)
-				return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`
-			},
 			async initData() {
-			    await this.loadStores()
-			    await this.loadPrimaryCategories()
+				await this.loadStores()
+				await this.loadPrimaryCategories()
 			},
 		},
 		onShow() {
@@ -335,12 +452,29 @@
 
 			.category-tab {
 				display: inline-block;
-				padding: 16rpx 32rpx;
+				padding: 16rpx;
 				margin-right: 20rpx;
 				background: #f8f9fa;
 				border-radius: 8rpx;
-				font-size: 28rpx;
+				font-size: 24rpx;
 				color: #666;
+				text-align: center;
+				width: 120rpx;
+
+				.category-icon {
+					display: block;
+					width: 60rpx;
+					height: 60rpx;
+					margin: 0 auto 8rpx;
+					border-radius: 6rpx;
+				}
+
+				.category-name {
+					display: block;
+					overflow: hidden;
+					text-overflow: ellipsis;
+					white-space: nowrap;
+				}
 
 				&.active {
 					background: #2979ff;
@@ -377,6 +511,59 @@
 		.product-list {
 			flex: 1;
 			background: white;
+
+			.sort-filter-area {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				padding: 0 24rpx;
+				border-bottom: 1rpx solid #f5f5f5;
+
+				.sort-options {
+					display: flex;
+
+					.sort-option {
+						display: flex;
+						align-items: center;
+						padding: 24rpx 32rpx;
+						font-size: 28rpx;
+						color: #666;
+
+						.sort-icon {
+							font-size: 20rpx;
+							margin-left: 8rpx;
+							color: #999;
+
+							&.asc,
+							&.desc {
+								color: #2979ff;
+							}
+						}
+
+						&.active {
+							color: #2979ff;
+						}
+					}
+				}
+
+				.filter-btn {
+					padding: 24rpx 32rpx;
+					font-size: 28rpx;
+					color: #666;
+					position: relative;
+
+					&::after {
+						content: '';
+						position: absolute;
+						left: 0;
+						top: 50%;
+						transform: translateY(-50%);
+						width: 1rpx;
+						height: 40rpx;
+						background: #f5f5f5;
+					}
+				}
+			}
 
 			.product-item {
 				display: flex;
@@ -530,10 +717,12 @@
 				}
 			}
 
-			.store-list {
+			.store-list,
+			.filter-list {
 				flex: 1;
 				overflow-y: auto;
-				max-height: 260rpx; /* 限制高度为3个门店项的高度 */
+				max-height: 260rpx;
+				/* 限制高度为3个门店项的高度 */
 
 				.store-option {
 					padding: 32rpx;
@@ -543,6 +732,63 @@
 					&.selected {
 						background: #f0f7ff;
 						color: #2979ff;
+					}
+				}
+
+				.filter-section {
+					padding: 24rpx;
+
+					.section-title {
+						font-size: 28rpx;
+						font-weight: 500;
+						margin-bottom: 24rpx;
+						display: block;
+					}
+
+					.filter-options {
+						display: flex;
+						flex-wrap: wrap;
+
+						.filter-option {
+							display: inline-block;
+							margin: 0 16rpx 16rpx 0;
+							padding: 12rpx 24rpx;
+							border: 1rpx solid #eee;
+							border-radius: 6rpx;
+							background: white;
+							border-bottom: none;
+
+							&.selected {
+								background: #2979ff;
+								color: white;
+								border-color: #2979ff;
+							}
+						}
+					}
+				}
+			}
+
+			.filter-actions {
+				display: flex;
+				padding: 24rpx;
+				border-top: 1rpx solid #f5f5f5;
+
+				.action-btn {
+					flex: 1;
+					padding: 20rpx;
+					margin: 0 12rpx;
+					border-radius: 6rpx;
+					font-size: 28rpx;
+					border: none;
+
+					&.reset-btn {
+						background: #f5f5f5;
+						color: #666;
+					}
+
+					&.confirm-btn {
+						background: #2979ff;
+						color: white;
 					}
 				}
 			}
