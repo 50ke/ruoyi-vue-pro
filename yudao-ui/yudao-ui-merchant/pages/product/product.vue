@@ -630,6 +630,11 @@
 					display: flex;
 					padding: 24rpx;
 					border-bottom: 1rpx solid #f5f5f5;
+					// 为内容与边框之间添加内边距
+					padding: 20rpx;
+					margin: 20rpx 0; // 上下保持间距
+					border-radius: 12rpx;
+					box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.1);
 
 					.product-image {
 						width: 160rpx;
