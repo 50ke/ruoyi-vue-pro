@@ -452,33 +452,41 @@
 
 			.category-tab {
 				display: inline-block;
-				padding: 16rpx;
-				margin-right: 20rpx;
-				background: #f8f9fa;
-				border-radius: 8rpx;
+				padding: 8rpx 12rpx;
+				margin-right: 12rpx;
+				background: transparent;
+				border-radius: 0;
 				font-size: 24rpx;
 				color: #666;
 				text-align: center;
-				width: 120rpx;
+				width: auto; /* 自适应宽度，保证文字完整显示 */
 
 				.category-icon {
 					display: block;
-					width: 60rpx;
-					height: 60rpx;
+					width: 100rpx;
+					height: 100rpx;
 					margin: 0 auto 8rpx;
-					border-radius: 6rpx;
+					border-radius: 8rpx;
 				}
 
 				.category-name {
-					display: block;
-					overflow: hidden;
-					text-overflow: ellipsis;
-					white-space: nowrap;
+					display: inline-block;
+					width: auto; /* 让内容决定宽度 */
+					text-align: center;
+					padding: 8rpx 10rpx;
+					border-radius: 18rpx;
+					white-space: nowrap; /* 禁止换行 */
+					overflow: visible; /* 不裁切 */
+					text-overflow: initial; /* 不省略 */
+					line-height: 1.3;
 				}
 
 				&.active {
-					background: #2979ff;
-					color: white;
+					color: #2979ff;
+					.category-name {
+						background: #2979ff;
+						color: #fff;
+					}
 				}
 			}
 		}
