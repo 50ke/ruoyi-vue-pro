@@ -41,11 +41,10 @@
 				</view>
 			</scroll-view>
 
-			<!-- 右侧：商品列表 -->
-			<scroll-view class="product-list" scroll-y="true" @scrolltolower="loadMore" refresher-enabled="true"
-				@refresherrefresh="onRefresh" :refresher-triggered="refreshing">
-				<!-- 排序和筛选区域 -->
-				<view class="sort-filter-area">
+			<!-- 右侧：商品列表区域 -->
+			<view class="right-content">
+				<!-- 固定的排序和筛选区域 -->
+				<view class="sort-filter-area fixed">
 					<!-- 排序选项 -->
 					<view class="sort-options">
 						<view class="sort-option" :class="{ active: sortField === 'createTime' }"
@@ -72,50 +71,56 @@
 								{{ sortField === 'stock' ? (sortAsc ? '↑' : '↓') : '' }}
 							</text>
 						</view>
+						<!-- 筛选按钮 -->
+						<view class="filter-btn" @click="showFilterPanel = true">
+							<text>筛选</text>
+						</view>
 					</view>
 
-					<!-- 筛选按钮 -->
-					<view class="filter-btn" @click="showFilterPanel = true">
-						<text>筛选</text>
-					</view>
+				
 				</view>
 
-				<view class="product-item" v-for="product in products" :key="product.id">
-					<image class="product-image" :src="product.picUrl" mode="aspectFill" />
-					<view class="product-info">
-						<text class="product-name">{{ product.name }}</text>
-						<view class="product-status">
-							<text :class="['status-badge', product.status === 1 ? 'online' : 'offline']">
-								{{ product.status === 1 ? '已上架' : '已下架' }}
-							</text>
-						</view>
-						<view class="product-stats">
-							<text class="sales">销量: {{ product.salesCount || 0 }}</text>
-							<text class="stock">库存: {{ product.stock || 0 }}</text>
-						</view>
-						<view class="create-time">
-							<text>上架时间: </text>
-							<uni-dateformat :date="product.createTime" format="yyyy-MM-dd hh:mm:ss"></uni-dateformat>
-						</view>
-						<view class="product-actions">
-							<view class="icon-btn view" @click="viewProduct(product)">
-								<text class="icon-label">查看</text>
+				<!-- 商品列表滚动区域 -->
+				<scroll-view class="product-list" scroll-y="true" @scrolltolower="loadMore" refresher-enabled="true"
+					@refresherrefresh="onRefresh" :refresher-triggered="refreshing">
+					<!-- 商品展示区域 -->
+					<view class="product-item" v-for="product in products" :key="product.id">
+						<image class="product-image" :src="product.picUrl" mode="aspectFill" />
+						<view class="product-info">
+							<text class="product-name">{{ product.name }}</text>
+							<view class="product-status">
+								<text :class="['status-badge', product.status === 1 ? 'online' : 'offline']">
+									{{ product.status === 1 ? '已上架' : '已下架' }}
+								</text>
 							</view>
-							<view class="icon-btn edit" @click="editProduct(product)">
-								<text class="icon-label">编辑</text>
+							<view class="product-stats">
+								<text class="sales">销量: {{ product.salesCount || 0 }}</text>
+								<text class="stock">库存: {{ product.stock || 0 }}</text>
+							</view>
+							<view class="create-time">
+								<text>上架时间: </text>
+								<uni-dateformat :date="product.createTime" format="yyyy-MM-dd hh:mm:ss"></uni-dateformat>
+							</view>
+							<view class="product-actions">
+								<view class="icon-btn view" @click="viewProduct(product)">
+									<text class="icon-label">查看</text>
+								</view>
+								<view class="icon-btn edit" @click="editProduct(product)">
+									<text class="icon-label">编辑</text>
+								</view>
 							</view>
 						</view>
 					</view>
-				</view>
 
-				<!-- 加载更多提示 -->
-				<view class="load-more" v-if="loading">
-					<text>加载中...</text>
-				</view>
-				<view class="no-more" v-if="!hasMore && products.length > 0">
-					<text>没有更多了</text>
-				</view>
-			</scroll-view>
+					<!-- 加载更多提示 -->
+					<view class="load-more" v-if="loading">
+						<text>加载中...</text>
+					</view>
+					<view class="no-more" v-if="!hasMore && products.length > 0">
+						<text>没有更多了</text>
+					</view>
+				</scroll-view>
+			</view>
 		</view>
 
 		<!-- 右下角悬浮添加按钮 -->
@@ -401,21 +406,21 @@
 		background: white;
 		border-bottom: 1rpx solid #eee;
 
-			.header-row-1 {
-				display: flex;
-				flex-direction: column; /* 改为两行布局 */
-				align-items: flex-start;
-				padding: 20rpx;
-				gap: 16rpx;
+		.header-row-1 {
+			display: flex;
+			flex-direction: column; /* 改为两行布局 */
+			align-items: flex-start;
+			padding: 20rpx;
+			gap: 16rpx;
 
-				.store-selector {
-					width: 50%;
+			.store-selector {
+				width: 50%;
 				display: flex;
 				align-items: center;
 				padding: 16rpx 24rpx;
 				background: #f8f9fa;
 				border-radius: 8rpx;
-					min-width: 0;
+				min-width: 0;
 
 				.store-name {
 					flex: 1;
@@ -434,7 +439,7 @@
 				}
 			}
 
-				.search-box {
+			.search-box {
 				width: 90%;
 				margin: 0;
 				display: flex;
@@ -518,11 +523,17 @@
 	.content {
 		flex: 1;
 		display: flex;
+		 height: 0; /* 让flex布局正确计算高度 */
+		    min-height: 0; /* 防止内容溢出 */
 
 		.subcategory-sidebar {
-			width: 200rpx;
+			width: 200rpx; /* 固定宽度 */
+			min-width: 200rpx; /* 最小宽度，防止被压缩 */
+			max-width: 200rpx; /* 最大宽度，防止被拉伸 */
 			background: white;
 			border-right: 1rpx solid #eee;
+			height: 100%;
+			flex-shrink: 0; /* 关键：防止在flex布局中被压缩 */
 
 			.subcategory-item {
 				padding: 32rpx 20rpx;
@@ -542,26 +553,33 @@
 			}
 		}
 
-		.product-list {
+		/* 右侧内容区域 */
+		.right-content {
 			flex: 1;
+			display: flex;
+			flex-direction: column;
 			background: white;
 
-			.sort-filter-area {
+			/* 固定的排序筛选区域 */
+			.sort-filter-area.fixed {
 				display: flex;
 				justify-content: space-between;
 				align-items: center;
 				padding: 0 24rpx;
 				border-bottom: 1rpx solid #f5f5f5;
+				background: white;
+				flex-shrink: 0; /* 防止被压缩 */
+				z-index: 10;
 
 				.sort-options {
 					display: flex;
 					flex-wrap: nowrap;
-					gap: 8rpx;
+					gap: 4rpx;
 
 					.sort-option {
 						display: flex;
 						align-items: center;
-						padding: 24rpx 32rpx;
+						padding: 24rpx 24rpx;
 						font-size: 28rpx;
 						color: #666;
 						white-space: nowrap;
@@ -603,109 +621,115 @@
 				}
 			}
 
-			.product-item {
-				display: flex;
-				padding: 24rpx;
-				border-bottom: 1rpx solid #f5f5f5;
+			/* 商品列表滚动区域 */
+			.product-list {
+				flex: 1;
+				background: white;
 
-				.product-image {
-					width: 160rpx;
-					height: 160rpx;
-					border-radius: 8rpx;
-					margin-right: 24rpx;
-				}
+				.product-item {
+					display: flex;
+					padding: 24rpx;
+					border-bottom: 1rpx solid #f5f5f5;
 
-				.product-info {
-					flex: 1;
-
-					.product-name {
-						font-size: 30rpx;
-						color: #333;
-						font-weight: 500;
-						display: block;
-						margin-bottom: 12rpx;
-						line-height: 1.4;
-						white-space: nowrap;
-						overflow: hidden;
-						text-overflow: ellipsis;
+					.product-image {
+						width: 160rpx;
+						height: 160rpx;
+						border-radius: 8rpx;
+						margin-right: 24rpx;
 					}
 
-					.product-status {
-						margin-bottom: 12rpx;
+					.product-info {
+						flex: 1;
 
-						.status-badge {
-							padding: 4rpx 12rpx;
-							border-radius: 4rpx;
-							font-size: 22rpx;
+						.product-name {
+							font-size: 30rpx;
+							color: #333;
+							font-weight: 500;
+							display: block;
+							margin-bottom: 12rpx;
+							line-height: 1.4;
+							white-space: nowrap;
+							overflow: hidden;
+							text-overflow: ellipsis;
+						}
 
-							&.online {
-								background: #e8f5e8;
-								color: #52c41a;
-							}
+						.product-status {
+							margin-bottom: 12rpx;
 
-							&.offline {
-								background: #fff2e8;
-								color: #fa8c16;
+							.status-badge {
+								padding: 4rpx 12rpx;
+								border-radius: 4rpx;
+								font-size: 22rpx;
+
+								&.online {
+									background: #e8f5e8;
+									color: #52c41a;
+								}
+
+								&.offline {
+									background: #fff2e8;
+									color: #fa8c16;
+								}
 							}
 						}
-					}
 
-					.product-stats {
-						display: flex;
-						gap: 24rpx;
-						margin-bottom: 12rpx;
-
-						.sales,
-						.stock {
-							font-size: 24rpx;
-							color: #666;
-						}
-					}
-
-					.create-time {
-						font-size: 22rpx;
-						color: #999;
-						display: block;
-						margin-bottom: 16rpx;
-					}
-
-					.product-actions {
-						display: flex;
-						gap: 16rpx;
-
-						.icon-btn {
+						.product-stats {
 							display: flex;
-							align-items: center;
-							gap: 8rpx;
-							padding: 10rpx 16rpx;
-							border-radius: 999rpx;
-							font-size: 24rpx;
-							border: none;
+							gap: 24rpx;
+							margin-bottom: 12rpx;
 
-							&.view {
-								background: #f0f7ff;
-								color: #2979ff;
-							}
-
-							&.edit {
-								background: #2979ff;
-								color: #fff;
-							}
-
-							.icon-label {
+							.sales,
+							.stock {
 								font-size: 24rpx;
+								color: #666;
+							}
+						}
+
+						.create-time {
+							font-size: 22rpx;
+							color: #999;
+							display: block;
+							margin-bottom: 16rpx;
+						}
+
+						.product-actions {
+							display: flex;
+							gap: 16rpx;
+
+							.icon-btn {
+								display: flex;
+								align-items: center;
+								gap: 8rpx;
+								padding: 10rpx 16rpx;
+								border-radius: 999rpx;
+								font-size: 24rpx;
+								border: none;
+
+								&.view {
+									background: #f0f7ff;
+									color: #2979ff;
+								}
+
+								&.edit {
+									background: #2979ff;
+									color: #fff;
+								}
+
+								.icon-label {
+									font-size: 24rpx;
+								}
 							}
 						}
 					}
 				}
-			}
 
-			.load-more,
-			.no-more {
-				text-align: center;
-				padding: 40rpx;
-				font-size: 26rpx;
-				color: #999;
+				.load-more,
+				.no-more {
+					text-align: center;
+					padding: 40rpx;
+					font-size: 26rpx;
+					color: #999;
+				}
 			}
 		}
 	}
