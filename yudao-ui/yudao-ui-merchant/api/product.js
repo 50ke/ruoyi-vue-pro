@@ -2,11 +2,11 @@ import { request } from '@/utils/request'
 
 export const productApi = {
   // 获得商品分页
-  getProductPage(params) {
+  getProductPage(data) {
     return request({
       url: '/app-api/merchant/product/page',
       method: 'GET',
-      params
+      data
     })
   },
 
@@ -41,6 +41,14 @@ export const productApi = {
     return request({
       url: `/app-api/merchant/product/disable/${id}`,
       method: 'PUT'
+    })
+  },
+  
+  // 更新商品
+  getProductCategory(parentId) {
+    return request({
+      url: `/app-api/merchant/product/category/${parentId}`,
+      method: 'GET'
     })
   }
 }

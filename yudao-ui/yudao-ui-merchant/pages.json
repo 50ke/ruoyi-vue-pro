@@ -30,6 +30,24 @@
 				"navigationBarTitleText" : ""
 			}
 		}
+		// {
+		// 	"path": "pages/product/add",
+		// 	"style": {
+		// 		"navigationBarTitleText": "添加商品"
+		// 	}
+		// },
+		// {
+		// 	"path": "pages/product/detail",
+		// 	"style": {
+		// 		"navigationBarTitleText": "商品详情"
+		// 	}
+		// },
+		// {
+		// 	"path": "pages/product/edit",
+		// 	"style": {
+		// 		"navigationBarTitleText": "编辑商品"
+		// 	}
+		// }
 	],
 	"globalStyle": {
 		"navigationBarTextStyle": "white",
