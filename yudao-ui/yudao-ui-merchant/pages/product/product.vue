@@ -13,7 +13,6 @@
 				<!-- 搜索框 -->
 				<view class="search-box">
 					<input v-model="searchKeyword" placeholder="请输出商品名称" class="search-input" @confirm="handleSearch" />
-					<text class="search-icon">🔍</text>
 				</view>
 			</view>
 
@@ -395,19 +394,21 @@
 		background: white;
 		border-bottom: 1rpx solid #eee;
 
-		.header-row-1 {
-			display: flex;
-			align-items: center;
-			padding: 20rpx;
-			gap: 20rpx;
+			.header-row-1 {
+				display: flex;
+				flex-direction: column; /* 改为两行布局 */
+				align-items: stretch;
+				padding: 20rpx;
+				gap: 16rpx;
 
-			.store-selector {
+				.store-selector {
+					width: 100%;
 				display: flex;
 				align-items: center;
 				padding: 16rpx 24rpx;
 				background: #f8f9fa;
 				border-radius: 8rpx;
-				min-width: 160rpx;
+					min-width: 0;
 
 				.store-name {
 					font-size: 28rpx;
@@ -421,9 +422,9 @@
 				}
 			}
 
-			.search-box {
-				flex: 1;
-				position: relative;
+				.search-box {
+					width: 100%;
+					position: relative;
 
 				.search-input {
 					width: 100%;
@@ -433,15 +434,6 @@
 					border-radius: 36rpx;
 					font-size: 28rpx;
 					border: none;
-				}
-
-				.search-icon {
-					position: absolute;
-					right: 24rpx;
-					top: 50%;
-					transform: translateY(-50%);
-					font-size: 28rpx;
-					color: #999;
 				}
 			}
 		}
