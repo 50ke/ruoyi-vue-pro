@@ -80,24 +80,21 @@
 			<text class="add-icon">+</text>
 		</view>
 
-		<!-- 门店选择器 -->
-		<picker :value="storePickerIndex" :range="storeOptions" range-key="name" @change="onStoreChange"
-			v-if="showStorePicker">
-			<view class="picker-mask" @click="showStorePicker = false">
-				<view class="picker-content" @click.stop>
-					<view class="picker-header">
-						<text>选择门店</text>
-						<text class="close-btn" @click="showStorePicker = false">×</text>
-					</view>
-					<view class="store-list">
-						<view class="store-option" v-for="(store, index) in stores" :key="store.id"
-							:class="{ selected: currentStore?.id === store.id }" @click="selectStore(store)">
-							<text>{{ store.name }}</text>
-						</view>
+		<!-- 自定义门店选择弹窗 -->
+		<view class="picker-mask" v-if="showStorePicker" @click="showStorePicker = false">
+			<view class="picker-content" @click.stop>
+				<view class="picker-header">
+					<text>选择门店</text>
+					<text class="close-btn" @click="showStorePicker = false">×</text>
+				</view>
+				<view class="store-list">
+					<view class="store-option" v-for="store in stores" :key="store.id"
+						:class="{ selected: currentStore?.id === store.id }" @click="selectStore(store)">
+						<text>{{ store.name }}</text>
 					</view>
 				</view>
 			</view>
-		</picker>
+		</view>
 	</view>
 </template>
 
@@ -123,7 +120,6 @@
 				pageNo: 1, //第几页
 				pageSize: 10, //每页数据量
 				showStorePicker: false, //显示门店选择器
-				storePickerIndex: 0,
 				searchKeyword: '', //商品名称
 				refreshing: false, //
 				loading: false, //
@@ -131,12 +127,6 @@
 			}
 		},
 		computed: {
-			storeOptions() {
-				return this.stores.map(store => ({
-					name: store.name,
-					value: store.id
-				}))
-			}
 		},
 		methods: {
 			// 获取门店
