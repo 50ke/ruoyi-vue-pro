@@ -499,6 +499,9 @@
 				font-size: 26rpx;
 				color: #666;
 				border-bottom: 1rpx solid #f5f5f5;
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
 
 				&.active {
 					background: #f0f7ff;
@@ -521,6 +524,8 @@
 
 				.sort-options {
 					display: flex;
+					flex-wrap: nowrap;
+					gap: 8rpx;
 
 					.sort-option {
 						display: flex;
@@ -528,6 +533,7 @@
 						padding: 24rpx 32rpx;
 						font-size: 28rpx;
 						color: #666;
+						white-space: nowrap;
 
 						.sort-icon {
 							font-size: 20rpx;
@@ -551,6 +557,7 @@
 					font-size: 28rpx;
 					color: #666;
 					position: relative;
+					white-space: nowrap;
 
 					&::after {
 						content: '';
