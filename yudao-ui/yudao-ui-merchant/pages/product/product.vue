@@ -98,8 +98,12 @@
 							<uni-dateformat :date="product.createTime" format="yyyy-MM-dd hh:mm:ss"></uni-dateformat>
 						</view>
 						<view class="product-actions">
-							<button class="action-btn view-btn" @click="viewProduct(product)">查看</button>
-							<button class="action-btn edit-btn" @click="editProduct(product)">编辑</button>
+							<view class="icon-btn view" @click="viewProduct(product)">
+								<text class="icon-label">查看</text>
+							</view>
+							<view class="icon-btn edit" @click="editProduct(product)">
+								<text class="icon-label">编辑</text>
+							</view>
 						</view>
 					</view>
 				</view>
@@ -621,6 +625,9 @@
 						display: block;
 						margin-bottom: 12rpx;
 						line-height: 1.4;
+						white-space: nowrap;
+						overflow: hidden;
+						text-overflow: ellipsis;
 					}
 
 					.product-status {
@@ -666,20 +673,27 @@
 						display: flex;
 						gap: 16rpx;
 
-						.action-btn {
-							padding: 12rpx 24rpx;
-							border-radius: 6rpx;
+						.icon-btn {
+							display: flex;
+							align-items: center;
+							gap: 8rpx;
+							padding: 10rpx 16rpx;
+							border-radius: 999rpx;
 							font-size: 24rpx;
 							border: none;
 
-							&.view-btn {
+							&.view {
 								background: #f0f7ff;
 								color: #2979ff;
 							}
 
-							&.edit-btn {
+							&.edit {
 								background: #2979ff;
-								color: white;
+								color: #fff;
+							}
+
+							.icon-label {
+								font-size: 24rpx;
 							}
 						}
 					}
