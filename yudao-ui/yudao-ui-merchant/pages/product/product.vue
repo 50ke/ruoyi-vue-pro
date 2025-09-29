@@ -400,12 +400,12 @@
 			.header-row-1 {
 				display: flex;
 				flex-direction: column; /* 改为两行布局 */
-				align-items: stretch;
+				align-items: flex-start;
 				padding: 20rpx;
 				gap: 16rpx;
 
 				.store-selector {
-					width: 100%;
+					width: 50%;
 				display: flex;
 				align-items: center;
 				padding: 16rpx 24rpx;
@@ -414,9 +414,14 @@
 					min-width: 0;
 
 				.store-name {
+					flex: 1;
+					min-width: 0;
 					font-size: 28rpx;
 					color: #333;
 					margin-right: 8rpx;
+					white-space: nowrap;
+					overflow: hidden;
+					text-overflow: ellipsis;
 				}
 
 				.arrow {
@@ -427,7 +432,7 @@
 
 				.search-box {
 				width: 90%;
-				margin: 0 auto;
+				margin: 0;
 				display: flex;
 				align-items: center;
 				gap: 10rpx;
