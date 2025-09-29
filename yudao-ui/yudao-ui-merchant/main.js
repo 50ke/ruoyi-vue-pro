@@ -18,13 +18,14 @@ import {
 } from 'vue'
 import App from './App.vue'
 import * as Pinia from 'pinia'
-import { checkLoginOnLaunch } from './utils/router-guard'
+import { useAuthStore } from '@/store/auth'
 
 export function createApp() {
 	const app = createSSRApp(App)
 	app.use(Pinia.createPinia())
 	// 检查登录状态
-	checkLoginOnLaunch()
+	const authStore = useAuthStore()
+	authStore.checkLoginOnLaunch()
 	return {
 		app,
 		Pinia

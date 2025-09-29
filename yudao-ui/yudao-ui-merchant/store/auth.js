@@ -119,6 +119,15 @@ export const useAuthStore = defineStore('auth', () => {
 		// 这里可以添加更复杂的检查逻辑，比如验证 token 是否即将过期
 		return true
 	}
+	
+	// 应用启动时检查登录状态
+	const checkLoginOnLaunch = async () => {	  
+	  if (!isLoggedIn.value) {
+		  uni.redirectTo({
+		    url: '/pages/login/login'
+		  })
+	  }
+	}
 
 	return {
 		// State
@@ -135,6 +144,7 @@ export const useAuthStore = defineStore('auth', () => {
 		login,
 		logout,
 		refreshAccessToken,
-		checkAuth
+		checkAuth,
+		checkLoginOnLaunch,
 	}
 })
