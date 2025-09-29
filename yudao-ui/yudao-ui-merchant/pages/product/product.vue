@@ -12,7 +12,10 @@
 
 				<!-- 搜索框 -->
 				<view class="search-box">
-					<input v-model="searchKeyword" placeholder="请输出商品名称" class="search-input" @confirm="handleSearch" />
+					<view class="search-input-wrapper">
+						<input v-model="searchKeyword" placeholder="请输出商品名称" class="search-input" @confirm="handleSearch" />
+					</view>
+					<button class="search-btn" @click="handleSearch">搜索</button>
 				</view>
 			</view>
 
@@ -423,14 +426,33 @@
 			}
 
 				.search-box {
-					width: 100%;
-					position: relative;
+				width: 90%;
+				margin: 0 auto;
+				display: flex;
+				align-items: center;
+				gap: 10rpx;
+
+				.search-input-wrapper {
+					flex: 0 0 80%;
+				}
 
 				.search-input {
-					width: 100%;
+					width: 80%;
 					height: 72rpx;
-					padding: 0 60rpx 0 24rpx;
+					padding: 0 24rpx;
 					background: #f8f9fa;
+					border-radius: 36rpx;
+					font-size: 28rpx;
+					border: none;
+				}
+
+				.search-btn {
+					flex: 0 0 20%;
+					height: 72rpx;
+					line-height: 72rpx;
+					text-align: center;
+					background: #2979ff;
+					color: #fff;
 					border-radius: 36rpx;
 					font-size: 28rpx;
 					border: none;
