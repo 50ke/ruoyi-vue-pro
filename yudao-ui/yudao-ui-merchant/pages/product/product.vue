@@ -512,6 +512,8 @@
 			background: white;
 			border-radius: 24rpx 24rpx 0 0;
 			max-height: 80vh;
+			display: flex;
+			flex-direction: column;
 
 			.picker-header {
 				display: flex;
@@ -529,8 +531,9 @@
 			}
 
 			.store-list {
-				max-height: 60vh;
+				flex: 1;
 				overflow-y: auto;
+				max-height: 260rpx; /* 限制高度为3个门店项的高度 */
 
 				.store-option {
 					padding: 32rpx;
