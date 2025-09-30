@@ -42,12 +42,12 @@
 		// 		"navigationBarTitleText": "商品详情"
 		// 	}
 		// },
-		// {
-		// 	"path": "pages/product/edit",
-		// 	"style": {
-		// 		"navigationBarTitleText": "编辑商品"
-		// 	}
-		// }
+		{
+			"path": "pages/product/edit",
+			"style": {
+				"navigationBarTitleText": "编辑商品"
+			}
+		}
 	],
 	"globalStyle": {
 		"navigationBarTextStyle": "white",
