@@ -1,242 +1,159 @@
 <template>
-	<view class="product-detail-page">
-		<view class="product-info" v-if="product">
-			<image class="product-image" :src="product.picUrl" mode="aspectFill" />
-			<view class="product-content">
-				<text class="product-name">{{ product.name }}</text>
-				<view class="product-status">
-					<text :class="['status-badge', product.status === 1 ? 'online' : 'offline']">
-						{{ product.status === 1 ? '已上架' : '已下架' }}
-					</text>
-				</view>
-				<text class="product-intro">{{ product.introduction }}</text>
-				<view class="product-stats">
-					<view class="stat-item">
-						<text class="stat-label">销量</text>
-						<text class="stat-value">{{ product.salesCount || 0 }}</text>
-					</view>
-					<view class="stat-item">
-						<text class="stat-label">库存</text>
-						<text class="stat-value">{{ product.stock || 0 }}</text>
-					</view>
-					<view class="stat-item">
-						<text class="stat-label">价格</text>
-						<text class="stat-value">¥{{ (product.price || 0) / 100 }}</text>
-					</view>
-				</view>
-				<text class="create-time">创建时间: {{ formatTime(product.createTime) }}</text>
-			</view>
-		</view>
-		
-		<view class="actions">
-			<button class="action-btn edit-btn" @click="editProduct">编辑商品</button>
-			<button class="action-btn disable-btn" @click="disableProduct" v-if="product?.status === 1">
-				下架商品
-			</button>
-		</view>
-		
-		<view class="loading" v-if="loading">
-			<text>加载中...</text>
+	<view class="detail-product-page">
+		<view>
+			<uni-section title="商品信息" type="line" padding style="height: calc(100vh - 100px);">
+				<uni-forms>
+					<uni-forms-item label="商品名称">
+						<uni-easyinput disabled v-model="product.name" placeholder="请输入商品名称" />
+					</uni-forms-item>
+					<uni-forms-item label="商品分类">
+						<uni-data-picker readonly popup-title="商品分类" v-model="product.categoryId" :localdata="categories" />
+					</uni-forms-item>
+					<uni-forms-item label="上架门店">
+						<uni-data-select disabled v-model="product.storeId" multiple wrap :localdata="stores" />
+					</uni-forms-item>
+					<uni-forms-item label="商品关键字">
+						<uni-easyinput disabled v-model="product.keyword"/>
+					</uni-forms-item>
+					<uni-forms-item label="商品简介">
+						<uni-easyinput disabled type="textarea" v-model="product.introduction"/>
+					</uni-forms-item>
+					<uni-forms-item label="商品详情">
+						<uni-easyinput disabled type="textarea" v-model="product.description"/>
+					</uni-forms-item>
+					<uni-forms-item label="商品封面图">
+						<uni-file-picker
+							readonly
+							limit=1
+							return-type=object
+							v-model="picUrl"
+							file-mediatype="image"/>
+					</uni-forms-item>
+					<uni-forms-item label="商品轮播图">
+						<uni-file-picker
+							readonly
+							limit=5
+							v-model="sliderPicUrls"
+							file-mediatype="image"/>
+					</uni-forms-item>
+					<uni-forms-item label="商品条码">
+						<uni-easyinput disabled v-model="product.barCode" placeholder="请输入商品条码" />
+					</uni-forms-item>
+					<uni-forms-item label="商品价格(分)">
+						<uni-easyinput disabled type="number" v-model="product.price" placeholder="请输入商品价格" />
+					</uni-forms-item>
+					<uni-forms-item label="商品库存">
+						<uni-easyinput disabled type="number" v-model="product.stock" placeholder="请输入商品库存" />
+					</uni-forms-item>
+				</uni-forms>
+			</uni-section>
 		</view>
 	</view>
 </template>
 
 <script>
-import { ref, onMounted } from 'vue'
-import { useProductStore } from '@/store/product.js'
-
-export default {
-	name: 'ProductDetail',
-	setup() {
-		const productStore = useProductStore()
-		
-		const product = ref(null)
-		const loading = ref(false)
-		
-		const loadProductDetail = async () => {
-			const pages = getCurrentPages()
-			const currentPage = pages[pages.length - 1]
-			const productId = currentPage.options.id
-			
-			if (!productId) {
-				uni.showToast({ title: '商品ID不存在', icon: 'none' })
-				return
+	import {
+		productApi
+	} from '@/api/product'
+	import {
+		userApi
+	} from '@/api/user'
+	import {
+		infraApi
+	} from '@/api/infra'
+	export default {
+		data() {
+			return {
+				product: {
+					id: 0,				//商品ID
+					name: '', 			//商品名称
+					keyword: '', 		//关键字
+					introduction: '', 	//简介
+					description: '', 	//详情
+					categoryId: 0, 		//分类
+					storeId: [], 		//门店
+					picUrl: {}, 		//封面图
+					sliderPicUrls: [], 	//轮播图
+					barCode: '',		//商品条码
+					price: 0,			//价格
+					stock: 0,			//库存
+				},
+				categories: [], //商品分类
+				stores: [],		//门店列表
+				picUrl: {},
+				sliderPicUrls: []
 			}
-			
-			loading.value = true
-			try {
-				const data = await productStore.fetchProductDetail(productId)
-				product.value = data
-			} catch (error) {
-				console.error('加载商品详情失败:', error)
-				uni.showToast({ title: '加载商品详情失败', icon: 'none' })
-			} finally {
-				loading.value = false
-			}
-		}
-		
-		const editProduct = () => {
-			uni.navigateTo({
-				url: `/pages/product/edit?id=${product.value.id}`
-			})
-		}
-		
-		const disableProduct = async () => {
-			uni.showModal({
-				title: '确认下架',
-				content: '确定要下架这个商品吗？',
-				success: async (res) => {
-					if (res.confirm) {
-						try {
-							await productStore.disableProduct(product.value.id)
-							uni.showToast({ title: '下架成功', icon: 'success' })
-							product.value.status = 0
-						} catch (error) {
-							console.error('下架商品失败:', error)
-							uni.showToast({ title: '下架失败', icon: 'none' })
-						}
+		},
+		methods: {
+			// 加载商品数据
+			async loadProduct(id) {
+				try {
+					const data = await productApi.getProductDetail(id)
+					this.product = {
+						id: data.id,
+						name: data.name,
+						keyword: data.keyword,
+						introduction: data.introduction,
+						description: data.description,
+						categoryId: data.categoryId,
+						storeId: data.storeId,
+						picUrl: data.picUrl,
+						sliderPicUrls: data.sliderPicUrls,
+						barCode: data.skus[0].barCode,
+						price: data.skus[0].price,
+						stock: data.skus[0].stock
 					}
+					this.picUrl = {
+						name: data.picUrl,
+						extname: data.picUrl,
+						url: data.picUrl,
+					}
+					this.sliderPicUrls = data.sliderPicUrls.map(item => ({
+						name: item,
+						extname: item,
+						url: item,
+					}))
+				} catch (error) {
+					console.error('获取商品详情失败:', error)
 				}
-			})
-		}
-		
-		const formatTime = (time) => {
-			if (!time) return ''
-			const date = new Date(time)
-			return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')} ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`
-		}
-		
-		onMounted(() => {
-			loadProductDetail()
-		})
-		
-		return {
-			product,
-			loading,
-			editProduct,
-			disableProduct,
-			formatTime
+			},
+			// 加载分类数据
+			async loadCategories() {
+				try {
+					const data = await productApi.getProductCategoryTree()
+					this.categories = data
+				} catch (error) {
+					console.error('获取分类失败:', error)
+				}
+			},
+			// 加载门店数据
+			async loadStores() {
+				try {
+					const data = await userApi.getStores()
+					this.stores = data.map(item => ({
+						value: item.id,
+						text: item.name
+					}))
+				} catch (error) {
+					console.error('获取门店失败:', error)
+				}
+			}
+		},
+		mounted(options) {
+			this.loadCategories()
+			this.loadStores()
+		},
+		onLoad: function (options) {
+			this.loadProduct(options.id)
 		}
 	}
-}
 </script>
 
 <style lang="scss" scoped>
-.product-detail-page {
-	min-height: 100vh;
-	background-color: #f5f5f5;
-}
-
-.product-info {
-	background: white;
-	margin: 32rpx;
-	border-radius: 16rpx;
-	overflow: hidden;
-	
-	.product-image {
-		width: 100%;
-		height: 400rpx;
+	.detail-product-page {
+		min-height: 100vh;
+		background-color: #f5f5f5;
+		display: flex;
+		flex-direction: column;
 	}
-	
-	.product-content {
-		padding: 32rpx;
-		
-		.product-name {
-			font-size: 36rpx;
-			font-weight: 500;
-			color: #333;
-			margin-bottom: 16rpx;
-			display: block;
-			line-height: 1.4;
-		}
-		
-		.product-status {
-			margin-bottom: 16rpx;
-			
-			.status-badge {
-				padding: 8rpx 16rpx;
-				border-radius: 8rpx;
-				font-size: 24rpx;
-				
-				&.online {
-					background: #e8f5e8;
-					color: #52c41a;
-				}
-				
-				&.offline {
-					background: #fff2e8;
-					color: #fa8c16;
-				}
-			}
-		}
-		
-		.product-intro {
-			font-size: 28rpx;
-			color: #666;
-			line-height: 1.5;
-			margin-bottom: 24rpx;
-			display: block;
-		}
-		
-		.product-stats {
-			display: flex;
-			gap: 48rpx;
-			margin-bottom: 24rpx;
-			
-			.stat-item {
-				display: flex;
-				flex-direction: column;
-				align-items: center;
-				
-				.stat-label {
-					font-size: 24rpx;
-					color: #999;
-					margin-bottom: 8rpx;
-				}
-				
-				.stat-value {
-					font-size: 32rpx;
-					font-weight: 500;
-					color: #333;
-				}
-			}
-		}
-		
-		.create-time {
-			font-size: 24rpx;
-			color: #999;
-		}
-	}
-}
-
-.actions {
-	padding: 32rpx;
-	display: flex;
-	gap: 24rpx;
-	
-	.action-btn {
-		flex: 1;
-		height: 88rpx;
-		border-radius: 12rpx;
-		font-size: 32rpx;
-		border: none;
-		
-		&.edit-btn {
-			background: #2979ff;
-			color: white;
-		}
-		
-		&.disable-btn {
-			background: #ff4757;
-			color: white;
-		}
-	}
-}
-
-.loading {
-	text-align: center;
-	padding: 80rpx;
-	font-size: 28rpx;
-	color: #999;
-}
 </style>
