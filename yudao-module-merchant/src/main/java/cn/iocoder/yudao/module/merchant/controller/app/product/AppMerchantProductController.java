@@ -2,10 +2,7 @@ package cn.iocoder.yudao.module.merchant.controller.app.product;
 
 import cn.iocoder.yudao.framework.common.pojo.CommonResult;
 import cn.iocoder.yudao.framework.common.pojo.PageResult;
-import cn.iocoder.yudao.module.merchant.controller.app.product.vo.AppMerchantProductCategoryRespVO;
-import cn.iocoder.yudao.module.merchant.controller.app.product.vo.AppMerchantProductPageReqVO;
-import cn.iocoder.yudao.module.merchant.controller.app.product.vo.AppMerchantProductRespVO;
-import cn.iocoder.yudao.module.merchant.controller.app.product.vo.AppMerchantProductSaveReqVO;
+import cn.iocoder.yudao.module.merchant.controller.app.product.vo.*;
 import cn.iocoder.yudao.module.merchant.service.product.MerchantProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -66,5 +63,11 @@ public class AppMerchantProductController {
     @Operation(summary = "获取商品分类")
     public CommonResult<List<AppMerchantProductCategoryRespVO>> getProductCategory(@PathVariable Long categoryId) {
         return success(merchantProductService.getProductCategory(getLoginUserId(), categoryId));
+    }
+
+    @GetMapping("/category/tree")
+    @Operation(summary = "获取商品分类树形结构")
+    public CommonResult<List<AppMerchantProductCategoryTreeNodeRespVO>> getProductCategoryTree() {
+        return success(merchantProductService.getProductCategoryTree(getLoginUserId()));
     }
 }

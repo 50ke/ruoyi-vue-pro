@@ -1,10 +1,7 @@
 package cn.iocoder.yudao.module.merchant.service.product;
 
 import cn.iocoder.yudao.framework.common.pojo.PageResult;
-import cn.iocoder.yudao.module.merchant.controller.app.product.vo.AppMerchantProductCategoryRespVO;
-import cn.iocoder.yudao.module.merchant.controller.app.product.vo.AppMerchantProductPageReqVO;
-import cn.iocoder.yudao.module.merchant.controller.app.product.vo.AppMerchantProductRespVO;
-import cn.iocoder.yudao.module.merchant.controller.app.product.vo.AppMerchantProductSaveReqVO;
+import cn.iocoder.yudao.module.merchant.controller.app.product.vo.*;
 import jakarta.validation.Valid;
 
 import java.util.List;
@@ -21,4 +18,6 @@ public interface MerchantProductService {
     AppMerchantProductRespVO getProductDetail(Long loginUserId, Long spuId);
 
     List<AppMerchantProductCategoryRespVO> getProductCategory(Long loginUserId, Long categoryId);
+
+    List<AppMerchantProductCategoryTreeNodeRespVO> getProductCategoryTree(Long loginUserId);
 }

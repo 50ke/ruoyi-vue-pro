@@ -5,10 +5,7 @@ import cn.iocoder.yudao.framework.common.exception.util.ServiceExceptionUtil;
 import cn.iocoder.yudao.framework.common.pojo.PageResult;
 import cn.iocoder.yudao.framework.common.util.object.BeanUtils;
 import cn.iocoder.yudao.framework.mybatis.core.query.LambdaQueryWrapperX;
-import cn.iocoder.yudao.module.merchant.controller.app.product.vo.AppMerchantProductCategoryRespVO;
-import cn.iocoder.yudao.module.merchant.controller.app.product.vo.AppMerchantProductPageReqVO;
-import cn.iocoder.yudao.module.merchant.controller.app.product.vo.AppMerchantProductRespVO;
-import cn.iocoder.yudao.module.merchant.controller.app.product.vo.AppMerchantProductSaveReqVO;
+import cn.iocoder.yudao.module.merchant.controller.app.product.vo.*;
 import cn.iocoder.yudao.module.merchant.convert.product.MerchantProductConvert;
 import cn.iocoder.yudao.module.merchant.dal.dataobject.product.MerchantStoreProductSpuDO;
 import cn.iocoder.yudao.module.merchant.dal.dataobject.user.MerchantUserDO;
@@ -33,6 +30,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -111,6 +109,17 @@ public class MerchantProductServiceImpl implements MerchantProductService{
     public List<AppMerchantProductCategoryRespVO> getProductCategory(Long loginUserId, Long categoryId) {
         List<ProductCategoryRespDTO> categoryRespDTOList = productCategoryApi.getCategoryListByParentId(categoryId);
         return BeanUtils.toBean(categoryRespDTOList, AppMerchantProductCategoryRespVO.class);
+    }
+
+    @Override
+    public List<AppMerchantProductCategoryTreeNodeRespVO> getProductCategoryTree(Long loginUserId) {
+        List<ProductCategoryRespDTO> primaryCategoryList = productCategoryApi.getCategoryListByParentId(0L);
+        List<AppMerchantProductCategoryTreeNodeRespVO> res = new ArrayList<>();
+        for (ProductCategoryRespDTO primaryCategory : primaryCategoryList) {
+            List<ProductCategoryRespDTO> subCategoryList = productCategoryApi.getCategoryListByParentId(primaryCategory.getId());
+            res.add(new AppMerchantProductCategoryTreeNodeRespVO(primaryCategory.getId(), primaryCategory.getName(), primaryCategory.getPicUrl(), subCategoryList.stream().map(e -> new AppMerchantProductCategoryTreeNodeRespVO(e.getId(), e.getName(), e.getPicUrl(), Collections.emptyList())).toList()));
+        }
+        return res;
     }
 
     private void validateMerchantProductExists(Long merchantId, Long spuId){
