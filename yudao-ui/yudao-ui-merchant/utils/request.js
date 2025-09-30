@@ -86,6 +86,85 @@ export const request = (options) => {
 	})
 }
 
+export const uploadFileRequest = (options) => {
+	return new Promise(async (resolve, reject) => {
+
+		const authStore = useAuthStore()
+		// 合并配置
+		const config = {
+			...options,
+			url: options.retry ? `${options.url}` : `${BASE_URL}${options.url}`,
+			filePath: options.filePath,
+			name: 'file',
+			header: {
+				'Content-Type': 'application/json',
+				'user-type': 4,
+				'tenant-id': 1,
+				...options.headers
+			}
+		}
+		
+		// 添加认证 token
+		if (authStore.accessToken) {
+			config.header.Authorization = `Bearer ${authStore.accessToken}`
+		}
+		
+		const doRequest = () => {
+			uni.uploadFile({
+				...config,
+				success: (response) => {
+					if(response.statusCode != 200){
+						reject(new Error(`服务繁忙,请稍后再试~`))
+					}
+					const result = JSON.parse(response.data);
+					switch (result.code) {
+						case 0:
+							resolve(result.data)
+							break;
+						case 401:
+							// Token 过期，尝试刷新
+							handleTokenExpired(config, resolve, reject)
+							break;
+						default:
+							reject(new Error(`服务繁忙,请稍后再试~`))
+							break;
+					}
+				},
+				fail: (error) => {
+					console.error('请求执行失败' + error)
+					reject(new Error(`服务器开小差啦,请稍后再试~`))
+				}
+			})
+		}
+
+		// Token 过期处理
+		const handleTokenExpired = async (originalConfig, resolve, reject) => {
+			// 将原始请求加入队列
+			originalConfig.retry = true
+			requestQueue.push({
+				config: originalConfig,
+				resolve,
+				reject
+			})
+
+			// 如果当前没有在刷新 token，则开始刷新
+			if (!authStore.isRefreshing) {
+				try {
+					await authStore.refreshAccessToken()
+					// 刷新成功，重试所有队列中的请求
+					retryQueuedRequests()
+				} catch (error) {
+					// 刷新失败，清空队列并跳转到登录页
+					failQueuedRequests(error)
+					navigateToLogin()
+				}
+			}
+		}
+
+		doRequest()
+	})
+}
+
 // 重试队列中的请求
 const retryQueuedRequests = () => {
 	while (requestQueue.length) {

@@ -44,10 +44,18 @@ export const productApi = {
     })
   },
   
-  // 更新商品
+  // 获取商品分类
   getProductCategory(parentId) {
     return request({
       url: `/app-api/merchant/product/category/${parentId}`,
+      method: 'GET'
+    })
+  },
+  
+  // 获取商品分类树
+  getProductCategoryTree() {
+    return request({
+      url: `/app-api/merchant/product/category/tree`,
       method: 'GET'
     })
   }

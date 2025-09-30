@@ -29,13 +29,13 @@
 			{
 				"navigationBarTitleText" : ""
 			}
-		}
-		// {
-		// 	"path": "pages/product/add",
-		// 	"style": {
-		// 		"navigationBarTitleText": "添加商品"
-		// 	}
-		// },
+		},
+		{
+			"path": "pages/product/add",
+			"style": {
+				"navigationBarTitleText": "添加商品"
+			}
+		},
 		// {
 		// 	"path": "pages/product/detail",
 		// 	"style": {
