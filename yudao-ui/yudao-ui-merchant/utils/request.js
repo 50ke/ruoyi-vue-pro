@@ -16,7 +16,7 @@ export const request = (options) => {
 			...options,
 			url: options.retry ? `${options.url}` : `${BASE_URL}${options.url}`,
 			method: options.method || 'GET',
-			data: options.data || {},
+			data: cleanNull(options.data) || {},
 			params: options.params || {},
 			header: {
 				'Content-Type': 'application/json',
@@ -25,17 +25,17 @@ export const request = (options) => {
 				...options.headers
 			}
 		}
-		
+
 		// 添加认证 token
 		if (authStore.accessToken) {
 			config.header.Authorization = `Bearer ${authStore.accessToken}`
 		}
-		
+
 		const doRequest = () => {
 			uni.request({
 				...config,
 				success: (response) => {
-					if(response.statusCode != 200){
+					if (response.statusCode != 200) {
 						reject(new Error(`服务繁忙,请稍后再试~`))
 					}
 					switch (response.data.code) {
@@ -103,17 +103,17 @@ export const uploadFileRequest = (options) => {
 				...options.headers
 			}
 		}
-		
+
 		// 添加认证 token
 		if (authStore.accessToken) {
 			config.header.Authorization = `Bearer ${authStore.accessToken}`
 		}
-		
+
 		const doRequest = () => {
 			uni.uploadFile({
 				...config,
 				success: (response) => {
-					if(response.statusCode != 200){
+					if (response.statusCode != 200) {
 						reject(new Error(`服务繁忙,请稍后再试~`))
 					}
 					const result = JSON.parse(response.data);
@@ -195,4 +195,15 @@ const navigateToLogin = () => {
 			url: '/pages/login/login'
 		})
 	}
+}
+
+// 安全data
+const cleanNull = (obj) => {
+	const result = {};
+	for (const key in obj) {
+		if (obj[key] !== null) {
+			result[key] = obj[key];
+		}
+	}
+	return result;
 }

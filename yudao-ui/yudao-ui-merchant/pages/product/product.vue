@@ -315,7 +315,7 @@
 					const params = {
 						pageNo: this.pageNo,
 						pageSize: this.pageSize,
-						tabType: this.tabType !== -1 ? this.tabType : 0,
+						tabType: this.tabType !== -1 ? this.tabType : null,
 						storeId: this.currentStore.id,
 						name: this.searchKeyword,
 						categoryId: this.selectedSubCategory?.id,
