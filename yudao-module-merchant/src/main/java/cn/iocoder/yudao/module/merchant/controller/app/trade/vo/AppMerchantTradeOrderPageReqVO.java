@@ -21,7 +21,6 @@ public class AppMerchantTradeOrderPageReqVO  extends PageParam {
     private String no;
 
     @Schema(description = "用户手机号", example = "小王")
-    @Mobile
     private String userMobile;
 
     @Schema(description = "自提门店编号", example = "[1,2]")

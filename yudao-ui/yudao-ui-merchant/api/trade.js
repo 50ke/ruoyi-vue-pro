@@ -10,11 +10,11 @@ export const tradeApi = {
   },
 
   // 获得交易订单分页
-  getTradeOrderPage(params) {
+  getTradeOrderPage(data) {
     return request({
       url: '/app-api/merchant/trade/order/page',
       method: 'GET',
-      params
+      data
     })
   },
 
