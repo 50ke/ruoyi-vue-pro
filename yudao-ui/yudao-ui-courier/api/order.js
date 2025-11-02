@@ -1,16 +1,29 @@
-import http from '@/utils/request.js';
+import { request } from '@/utils/request'
 
-// 订单分页列表（POST）
-export function getOrderPage(params) {
-  return http.post('/trade/delivery/express/order/page', params);
+export const orderApi = {
+  // 获得配送订单分页
+  getCourierOrderPage(data) {
+    return request({
+      url: '/app-api/courier/order/page',
+      method: 'GET',
+      data
+    })
+  },
+
+  // 获得配送订单详情
+  getCourierOrderDetail(orderId) {
+    return request({
+      url: `/app-api/courier/order/get/${orderId}`,
+      method: 'GET'
+    })
+  },
+
+  // 修改配送订单
+  updateCourierOrder(data) {
+    return request({
+      url: '/app-api/courier/order/update',
+      method: 'POST',
+      data
+    })
+  }
 }
-
-// 订单详情（GET，orderId为路径参数）
-export function getOrderDetail(orderId) {
-  return http.get(`/trade/delivery/express/order/detail/${orderId}`);
-}
-
-// 配送状态变更（POST）
-export function updateOrderStatus(data) {
-  return http.post('/trade/delivery/express/order/update-status', data);
-} 

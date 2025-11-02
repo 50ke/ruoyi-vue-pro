@@ -1,132 +1,209 @@
-// 参考博客方法二重构的请求拦截器
-import { baseUrl, tenantId, loginUserType } from '@/utils/config.js';
-import { getToken, isTokenExpired, autoRefreshToken, clearToken } from '@/utils/auth.js';
+import {
+	useAuthStore
+} from '@/store/auth'
 
-function getPlatform() {
-  // 可根据实际平台区分，默认返回 'courier-app'
-  return 'courier-app';
+const BASE_URL = 'http://127.0.0.1:48080'
+
+// 请求队列，用于处理 token 刷新时的请求重试
+const requestQueue = []
+
+export const request = (options) => {
+	return new Promise(async (resolve, reject) => {
+
+		const authStore = useAuthStore()
+		// 合并配置
+		const config = {
+			...options,
+			url: options.retry ? `${options.url}` : `${BASE_URL}${options.url}`,
+			method: options.method || 'GET',
+			data: cleanNull(options.data) || {},
+			params: options.params || {},
+			header: {
+				'Content-Type': 'application/json',
+				'user-type': 3,
+				'tenant-id': 1,
+				...options.headers
+			}
+		}
+
+		// 添加认证 token
+		if (authStore.accessToken) {
+			config.header.Authorization = `Bearer ${authStore.accessToken}`
+		}
+
+		const doRequest = () => {
+			uni.request({
+				...config,
+				success: (response) => {
+					if (response.statusCode != 200) {
+						reject(new Error(`服务繁忙,请稍后再试~`))
+					}
+					switch (response.data.code) {
+						case 0:
+							resolve(response.data.data)
+							break;
+						case 401:
+							// Token 过期，尝试刷新
+							handleTokenExpired(config, resolve, reject)
+							break;
+						default:
+							reject(new Error(`服务繁忙,请稍后再试~`))
+							break;
+					}
+				},
+				fail: (error) => {
+					console.error('请求执行失败' + error)
+					reject(new Error(`服务器开小差啦,请稍后再试~`))
+				}
+			})
+		}
+
+		// Token 过期处理
+		const handleTokenExpired = async (originalConfig, resolve, reject) => {
+			// 将原始请求加入队列
+			originalConfig.retry = true
+			requestQueue.push({
+				config: originalConfig,
+				resolve,
+				reject
+			})
+
+			// 如果当前没有在刷新 token，则开始刷新
+			if (!authStore.isRefreshing) {
+				try {
+					await authStore.refreshAccessToken()
+					// 刷新成功，重试所有队列中的请求
+					retryQueuedRequests()
+				} catch (error) {
+					// 刷新失败，清空队列并跳转到登录页
+					failQueuedRequests(error)
+					navigateToLogin()
+				}
+			}
+		}
+
+		doRequest()
+	})
 }
 
-// 请求队列，防止重复刷新token
-let isRefreshing = false;
-let requests = [];
+export const uploadFileRequest = (options) => {
+	return new Promise(async (resolve, reject) => {
 
-function request({ url, method = 'GET', data = {}, header = {}, custom = {} }) {
-  let realHeader = {
-    'Content-Type': 'application/json',
-    Accept: 'application/json',
-    'tenant-id': tenantId,
-    'login-user-type': loginUserType,
-    platform: getPlatform(),
-    ...header
-  };
+		const authStore = useAuthStore()
+		// 合并配置
+		const config = {
+			...options,
+			url: options.retry ? `${options.url}` : `${BASE_URL}${options.url}`,
+			filePath: options.filePath,
+			name: 'file',
+			header: {
+				'Content-Type': 'application/json',
+				'user-type': 3,
+				'tenant-id': 1,
+				...options.headers
+			}
+		}
 
-  // 默认所有请求都加token，除非custom.auth===false
-  if (custom.auth !== false) {
-    const token = getToken();
-    if (token) {
-      realHeader.Authorization = `Bearer ${token}`;
-    }
-  }
+		// 添加认证 token
+		if (authStore.accessToken) {
+			config.header.Authorization = `Bearer ${authStore.accessToken}`
+		}
 
-  if (custom.showLoading !== false) {
-    uni.showLoading({ title: custom.loadingMsg || '加载中', mask: true });
-  }
+		const doRequest = () => {
+			uni.uploadFile({
+				...config,
+				success: (response) => {
+					if (response.statusCode != 200) {
+						reject(new Error(`服务繁忙,请稍后再试~`))
+					}
+					const result = JSON.parse(response.data);
+					switch (result.code) {
+						case 0:
+							resolve(result.data)
+							break;
+						case 401:
+							// Token 过期，尝试刷新
+							handleTokenExpired(config, resolve, reject)
+							break;
+						default:
+							reject(new Error(`服务繁忙,请稍后再试~`))
+							break;
+					}
+				},
+				fail: (error) => {
+					console.error('请求执行失败' + error)
+					reject(new Error(`服务器开小差啦,请稍后再试~`))
+				}
+			})
+		}
 
-  return new Promise((resolve, reject) => {
-    uni.request({
-      url: baseUrl + url,
-      method,
-      data,
-      header: realHeader,
-      success: async (res) => {
-        if (custom.showLoading !== false) {
-          uni.hideLoading();
-        }
+		// Token 过期处理
+		const handleTokenExpired = async (originalConfig, resolve, reject) => {
+			// 将原始请求加入队列
+			originalConfig.retry = true
+			requestQueue.push({
+				config: originalConfig,
+				resolve,
+				reject
+			})
 
-        const resp = res.data;
-        
-        // 处理401未授权错误
-        if (resp.code === 401) {
-          // 如果是刷新token的请求失败，直接清除token并跳转登录
-          if (url.includes('/refresh-token')) {
-            clearToken();
-            uni.reLaunch({ url: '/pages/profile/login' });
-            reject(new Error('Token refresh failed'));
-            return;
-          }
+			// 如果当前没有在刷新 token，则开始刷新
+			if (!authStore.isRefreshing) {
+				try {
+					await authStore.refreshAccessToken()
+					// 刷新成功，重试所有队列中的请求
+					retryQueuedRequests()
+				} catch (error) {
+					// 刷新失败，清空队列并跳转到登录页
+					failQueuedRequests(error)
+					navigateToLogin()
+				}
+			}
+		}
 
-          // 尝试自动刷新token
-          if (!isRefreshing) {
-            isRefreshing = true;
-            try {
-              const newToken = await autoRefreshToken();
-              // 重新发起原始请求
-              const retryResult = await request({ url, method, data, header, custom });
-              resolve(retryResult);
-            } catch (error) {
-              // 刷新失败，清除token并跳转登录
-              clearToken();
-              uni.reLaunch({ url: '/pages/profile/login' });
-              reject(error);
-            } finally {
-              isRefreshing = false;
-            }
-          } else {
-            // 将请求加入队列，等待token刷新完成后重试
-            requests.push(() => {
-              request({ url, method, data, header, custom }).then(resolve).catch(reject);
-            });
-          }
-          return;
-        }
-
-        // 处理其他错误
-        if (resp.code !== 0 && custom.showError !== false) {
-          uni.showToast({ title: resp.msg || '请求失败', icon: 'none' });
-        }
-
-        resolve(resp);
-      },
-      fail: (err) => {
-        if (custom.showLoading !== false) {
-          uni.hideLoading();
-        }
-        
-        // 网络错误处理
-        let errorMsg = '网络错误';
-        if (err.errMsg) {
-          if (err.errMsg.includes('timeout')) {
-            errorMsg = '请求超时';
-          } else if (err.errMsg.includes('fail')) {
-            errorMsg = '网络连接失败';
-          }
-        }
-        
-        uni.showToast({ title: errorMsg, icon: 'none' });
-        reject(err);
-      }
-    });
-  });
+		doRequest()
+	})
 }
 
-// 处理token刷新成功后的队列请求
-export function processRequestQueue() {
-  requests.forEach(callback => callback());
-  requests = [];
+// 重试队列中的请求
+const retryQueuedRequests = () => {
+	while (requestQueue.length) {
+		const {
+			config,
+			resolve,
+			reject
+		} = requestQueue.shift()
+		request(config).then(resolve).catch(reject)
+	}
 }
 
-export default {
-  get(url, params = {}, custom = {}) {
-    return request({ url, method: 'GET', data: params, custom });
-  },
-  post(url, data = {}, custom = {}) {
-    return request({ url, method: 'POST', data, custom });
-  },
-  put(url, data = {}, custom = {}) {
-    return request({ url, method: 'PUT', data, custom });
-  },
-  delete(url, data = {}, custom = {}) {
-    return request({ url, method: 'DELETE', data, custom });
-  }
-}; 
+// 处理队列中请求的失败
+const failQueuedRequests = (error) => {
+	while (requestQueue.length) {
+		const {
+			reject
+		} = requestQueue.shift()
+		reject(error)
+	}
+}
+
+// 跳转到登录页
+const navigateToLogin = () => {
+	const currentPage = getCurrentPages().pop()
+	if (currentPage && currentPage.route !== 'pages/login/login') {
+		uni.redirectTo({
+			url: '/pages/login/login'
+		})
+	}
+}
+
+// 安全data
+const cleanNull = (obj) => {
+	const result = {};
+	for (const key in obj) {
+		if (obj[key] !== null) {
+			result[key] = obj[key];
+		}
+	}
+	return result;
+}

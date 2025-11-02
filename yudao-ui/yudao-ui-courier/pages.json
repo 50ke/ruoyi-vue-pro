@@ -2,7 +2,7 @@
 	"pages": [{
 		"path": "pages/index/index",
 		"style": {
-			"navigationBarTitleText": "安泉到家",
+			"navigationBarTitleText": "顺驿达",
 			"navigationBarBackgroundColor": "#2979ff",
 			"navigationBarTextStyle": "white",
 			"backgroundColor": "#f8f9fa"
@@ -19,7 +19,7 @@
 			}
 		},
 		{
-			"path" : "pages/profile/login",
+			"path" : "pages/login/login",
 			"style" :
 			{
 				"navigationBarTitleText" : "登录",
@@ -40,7 +40,7 @@
 		}],
 	"globalStyle": {
 		"navigationBarTextStyle": "white",
-		"navigationBarTitleText": "安泉到家",
+		"navigationBarTitleText": "顺驿达",
 		"navigationBarBackgroundColor": "#2979ff",
 		"backgroundColor": "#f8f9fa",
 		"app-plus": {

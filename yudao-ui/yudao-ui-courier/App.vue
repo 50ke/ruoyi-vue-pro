@@ -1,78 +1,61 @@
-<script>
-import store from '@/utils/store.js';
-import { isLoggedIn, getUserInfo } from '@/utils/auth.js';
+<template>
+	<view>
+		<!-- 全局加载提示 -->
+		<view v-if="globalLoading" class="global-loading">
+			<text>加载中...</text>
+		</view>
+		<!-- 页面内容 -->
+		<view v-else>
+			<slot />
+		</view>
+	</view>
+</template>
 
-export default {
-	onLaunch: function() {
-		console.log('App Launch');
-		
-		// 初始化认证状态
-		this.initAuth();
-		
-		// 检查登录状态
-		this.checkAuthStatus();
-	},
-	
-	onShow: function() {
-		console.log('App Show');
-		
-		// 每次显示时检查认证状态
-		this.checkAuthStatus();
-	},
-	
-	onHide: function() {
-		console.log('App Hide');
-	},
-	
-	methods: {
-		// 初始化认证状态
-		initAuth() {
-			try {
-				const authenticated = isLoggedIn();
-				const userInfo = getUserInfo();
-				
-				store.setAuthStatus(authenticated);
-				if (userInfo) {
-					store.setUserInfo(userInfo);
-				}
-				
-				console.log('认证状态初始化完成:', {
-					authenticated,
-					hasUserInfo: !!userInfo
-				});
-			} catch (error) {
-				console.error('认证状态初始化失败:', error);
+<script>
+	export default {
+		data() {
+			return {
+				globalLoading: false
 			}
 		},
-		
-		// 检查认证状态
-		checkAuthStatus() {
-			try {
-				const authenticated = isLoggedIn();
-				const userInfo = getUserInfo();
-				
-				// 更新全局状态
-				store.setAuthStatus(authenticated);
-				if (userInfo) {
-					store.setUserInfo(userInfo);
+		onLaunch: function() {
+			console.warn('当前组件仅支持 uni_modules 目录结构 ，请升级 HBuilderX 到 3.1.0 版本以上！')
+			console.log('App Launch')
+			// 应用启动时检查更新等
+			// #ifdef MP-WEIXIN
+			this.checkAppUpdate()
+			// #endif
+		},
+		onShow: function() {
+			console.log('App Show')
+		},
+		onHide: function() {
+			console.log('App Hide')
+		},
+		methods: {
+			checkAppUpdate() {
+				// 检查应用更新逻辑
+				if (uni.canIUse('getUpdateManager')) {
+					const updateManager = uni.getUpdateManager()
+					updateManager.onCheckForUpdate((res) => {
+						if (res.hasUpdate) {
+							updateManager.onUpdateReady(() => {
+								uni.showModal({
+									title: '更新提示',
+									content: '新版本已经准备好，是否重启应用？',
+									success: (res) => {
+										if (res.confirm) {
+											updateManager.applyUpdate()
+										}
+									}
+								})
+							})
+						}
+					})
 				}
-				
-				// 如果未认证且不在登录页，跳转到登录页
-				if (!authenticated) {
-					const pages = getCurrentPages();
-					const currentPage = pages[pages.length - 1];
-					
-					if (currentPage && currentPage.route !== 'pages/profile/login') {
-						console.log('用户未认证，跳转到登录页');
-						uni.reLaunch({ url: '/pages/profile/login' });
-					}
-				}
-			} catch (error) {
-				console.error('认证状态检查失败:', error);
 			}
 		}
 	}
-}
 </script>
 
 <style lang="scss">

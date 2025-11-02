@@ -34,7 +34,7 @@ public class AppCourierUserController {
         return success(CourierUserConvert.INSTANCE.convert(user));
     }
 
-    @PutMapping("/update")
+    @PostMapping("/update")
     @Operation(summary = "修改基本信息")
     public CommonResult<Boolean> updateUser(@RequestBody @Valid AppCourierUserUpdateReqVO reqVO) {
         userService.updateUser(getLoginUserId(), reqVO);
